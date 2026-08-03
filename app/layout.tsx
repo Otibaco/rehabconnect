@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import TopBar from "@/components/layout/TopBar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rehabconnect.com"),
+  metadataBase: new URL("https://rehabconnect-three.vercel.app/"),
 
   title: {
     default: "RehabConnect | Professional Rehabilitation Support",
