@@ -66,7 +66,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased theme-bg theme-text" cz-shortcut-listen="true">
         <AuthProvider>
-          <TopBar />
+          {/* <TopBar /> */}
 
           <div className="sticky top-0 z-[80]">
             <Navbar />
