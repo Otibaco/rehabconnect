@@ -1,12 +1,12 @@
-'use client'
-import React from 'react';
-import { FadeIn } from '../components/animations/FadeIn';
-import { StaggerContainer } from '../components/animations/StaggerContainer';
-import { TestimonialCarousel } from '../components/ui/TestimonialCarousel';
-import { RehabCentreCard } from '../components/ui/RehabCentreCard';
-import { CoordinatorCard } from '../components/ui/CoordinatorCard';
-import { FAQAccordion } from '../components/ui/FAQAccordion';
-import { HeroParallaxMedia } from '../components/ui/HeroParallaxMedia';
+"use client";
+import React from "react";
+import { FadeIn } from "../components/animations/FadeIn";
+import { StaggerContainer } from "../components/animations/StaggerContainer";
+import { TestimonialCarousel } from "../components/ui/TestimonialCarousel";
+import { RehabCentreCard } from "../components/ui/RehabCentreCard";
+import { CoordinatorCard } from "../components/ui/CoordinatorCard";
+import { FAQAccordion } from "../components/ui/FAQAccordion";
+import { HeroParallaxMedia } from "../components/ui/HeroParallaxMedia";
 import {
   Sparkles,
   ShieldCheck,
@@ -22,9 +22,14 @@ import {
   Lock,
   KeyRound,
   LayoutDashboard,
-} from 'lucide-react';
-import { CARE_COORDINATORS, FAQS, REHAB_CENTRES, STATS } from '@/lib/data/mockData';
-import { useRouter } from 'next/navigation';
+} from "lucide-react";
+import {
+  CARE_COORDINATORS,
+  FAQS,
+  REHAB_CENTRES,
+  STATS,
+} from "@/lib/data/mockData";
+import { useRouter } from "next/navigation";
 
 export const HomePage: React.FC = () => {
   const router = useRouter();
@@ -42,8 +47,7 @@ export const HomePage: React.FC = () => {
     <div className="space-y-24 md:space-y-32 pb-20 transition-colors duration-300">
       {/* 1. Parallax Hero Section with Auto-Playing Background Video */}
       <HeroParallaxMedia
-        mediaType="video"
-        videoUrl="https://assets.mixkit.co/videos/preview/mixkit-doctor-checking-a-patients-arm-42934-large.mp4"
+        videoSrc="/videos/rehabvid4.mp4"
         badgeText="Accredited Healthcare & Rehabilitation Network"
         title={
           <span>
@@ -53,16 +57,16 @@ export const HomePage: React.FC = () => {
         }
         subtitle="RehabConnect helps individuals and families connect with professional rehabilitation support, compassionate Care Coordinators, and verified rehabilitation centres."
         primaryCtaText="Start Confidential Assessment"
-        onPrimaryCtaClick={() => openModal('assessment')}
+        onPrimaryCtaClick={() => openModal("assessment")}
         secondaryCtaText="Explore Partner Facilities"
-        onSecondaryCtaClick={() => router.push('/rehabilitation-centres')}
+        onSecondaryCtaClick={() => router.push("/rehabilitation-centres")}
       />
 
       {/* Interactive Quick Tools Bar */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
-            onClick={() => router.push('/referral-portal')}
+            onClick={() => router.push("/referral-portal")}
             className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl hover:shadow-2xl hover:border-teal-500/40 transition-all text-left flex items-center justify-between group"
           >
             <div className="flex items-center gap-4">
@@ -82,7 +86,7 @@ export const HomePage: React.FC = () => {
           </button>
 
           <button
-            onClick={() => router.push('/portal-dashboard')}
+            onClick={() => router.push("/portal-dashboard")}
             className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl hover:shadow-2xl hover:border-teal-500/40 transition-all text-left flex items-center justify-between group"
           >
             <div className="flex items-center gap-4">
@@ -112,14 +116,17 @@ export const HomePage: React.FC = () => {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center">
               {[
-                { label: 'JCI Accredited Network', icon: Award },
-                { label: 'Ministry of Health Standards', icon: ShieldCheck },
-                { label: 'Encrypted Tele-Consults', icon: Lock },
-                { label: '24/7 Care Coordinator Dispatch', icon: PhoneCall },
+                { label: "JCI Accredited Network", icon: Award },
+                { label: "Ministry of Health Standards", icon: ShieldCheck },
+                { label: "Encrypted Tele-Consults", icon: Lock },
+                { label: "24/7 Care Coordinator Dispatch", icon: PhoneCall },
               ].map((item, idx) => {
                 const IconComponent = item.icon;
                 return (
-                  <div key={idx} className="flex items-center justify-center gap-2.5 text-slate-700 dark:text-slate-300 font-heading font-semibold text-sm">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-center gap-2.5 text-slate-700 dark:text-slate-300 font-heading font-semibold text-sm"
+                  >
                     <IconComponent className="w-5 h-5 text-teal-600 dark:text-teal-400" />
                     <span>{item.label}</span>
                   </div>
@@ -137,7 +144,7 @@ export const HomePage: React.FC = () => {
           <FadeIn direction="right">
             <div className="rounded-3xl bg-slate-900 text-white p-8 md:p-10 relative overflow-hidden shadow-xl border border-slate-800">
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-rose-500/10 blur-3xl pointer-events-none" />
-              
+
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-semibold mb-4 border border-rose-500/30">
                 <span>The Challenge</span>
               </div>
@@ -148,16 +155,31 @@ export const HomePage: React.FC = () => {
 
               <ul className="space-y-3.5 text-sm text-slate-300">
                 <li className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">✕</div>
-                  <span>Unverified facilities making misleading recovery promises online.</span>
+                  <div className="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+                    ✕
+                  </div>
+                  <span>
+                    Unverified facilities making misleading recovery promises
+                    online.
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">✕</div>
-                  <span>Unclear pricing and hidden facility fees causing financial stress.</span>
+                  <div className="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+                    ✕
+                  </div>
+                  <span>
+                    Unclear pricing and hidden facility fees causing financial
+                    stress.
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">✕</div>
-                  <span>Fragmented communication between hospital discharge and rehab admission.</span>
+                  <div className="w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+                    ✕
+                  </div>
+                  <span>
+                    Fragmented communication between hospital discharge and
+                    rehab admission.
+                  </span>
                 </li>
               </ul>
             </div>
@@ -180,15 +202,24 @@ export const HomePage: React.FC = () => {
               <ul className="space-y-3.5 text-sm text-teal-100">
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
-                  <span>Dedicated Care Coordinators managing clinical evaluation & family support.</span>
+                  <span>
+                    Dedicated Care Coordinators managing clinical evaluation &
+                    family support.
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
-                  <span>Transparent, audited rehab options verified for accreditation and safety.</span>
+                  <span>
+                    Transparent, audited rehab options verified for
+                    accreditation and safety.
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
-                  <span>Seamless referral tracking ensuring zero delays in patient care transfer.</span>
+                  <span>
+                    Seamless referral tracking ensuring zero delays in patient
+                    care transfer.
+                  </span>
                 </li>
               </ul>
             </div>
@@ -208,7 +239,8 @@ export const HomePage: React.FC = () => {
               How RehabConnect works for you
             </h2>
             <p className="text-base text-slate-600 dark:text-slate-300">
-              A transparent, human-guided pathway designed to eliminate confusion and deliver peace of mind.
+              A transparent, human-guided pathway designed to eliminate
+              confusion and deliver peace of mind.
             </p>
           </FadeIn>
         </div>
@@ -216,29 +248,29 @@ export const HomePage: React.FC = () => {
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {[
             {
-              step: '01',
-              title: 'Tell Us Your Need',
-              desc: 'Complete a brief 2-minute confidential assessment quiz online or via phone.',
+              step: "01",
+              title: "Tell Us Your Need",
+              desc: "Complete a brief 2-minute confidential assessment quiz online or via phone.",
             },
             {
-              step: '02',
-              title: 'Clinical Review',
-              desc: 'A dedicated Care Coordinator reviews medical history and placement goals.',
+              step: "02",
+              title: "Clinical Review",
+              desc: "A dedicated Care Coordinator reviews medical history and placement goals.",
             },
             {
-              step: '03',
-              title: 'Care Lead Match',
-              desc: 'Meet your assigned Care Coordinator via encrypted video or telephone consultation.',
+              step: "03",
+              title: "Care Lead Match",
+              desc: "Meet your assigned Care Coordinator via encrypted video or telephone consultation.",
             },
             {
-              step: '04',
-              title: 'Verified Placement',
-              desc: 'Receive tailored, transparent recommendations for accredited rehab centres.',
+              step: "04",
+              title: "Verified Placement",
+              desc: "Receive tailored, transparent recommendations for accredited rehab centres.",
             },
             {
-              step: '05',
-              title: 'Recovery & Aftercare',
-              desc: 'Begin admission with continuous coordinator advocacy throughout your journey.',
+              step: "05",
+              title: "Recovery & Aftercare",
+              desc: "Begin admission with continuous coordinator advocacy throughout your journey.",
             },
           ].map((item) => (
             <div
@@ -277,16 +309,20 @@ export const HomePage: React.FC = () => {
               </div>
 
               <h2 className="font-heading font-extrabold text-3xl md:text-4xl leading-tight">
-                "When my brother needed help, RehabConnect gave us clarity when we had none."
+                "When my brother needed help, RehabConnect gave us clarity when
+                we had none."
               </h2>
 
               <p className="text-base text-slate-300 leading-relaxed">
-                We believe healthcare navigation shouldn’t be a bureaucratic obstacle course. Our platform is built around real human care coordinators who treat your family with the dignity and empathy you deserve.
+                We believe healthcare navigation shouldn’t be a bureaucratic
+                obstacle course. Our platform is built around real human care
+                coordinators who treat your family with the dignity and empathy
+                you deserve.
               </p>
 
               <div>
                 <button
-                  onClick={() => router.push('/for-families')}
+                  onClick={() => router.push("/for-families")}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-teal-500 hover:bg-teal-400 text-white font-semibold text-sm shadow-lg transition-all"
                 >
                   <span>Read Family Support Guide</span>
@@ -311,7 +347,7 @@ export const HomePage: React.FC = () => {
             </h2>
           </div>
           <button
-            onClick={() => router.push('/care-coordinators')}
+            onClick={() => router.push("/care-coordinators")}
             className="inline-flex items-center gap-2 text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline"
           >
             <span>View All Coordinators</span>
@@ -339,7 +375,7 @@ export const HomePage: React.FC = () => {
             </h2>
           </div>
           <button
-            onClick={() => router.push('/rehabilitation-centres')}
+            onClick={() => router.push("/rehabilitation-centres")}
             className="inline-flex items-center gap-2 text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline"
           >
             <span>Browse All Centres</span>
@@ -364,17 +400,26 @@ export const HomePage: React.FC = () => {
         <FadeIn direction="up">
           <div className="rounded-3xl bg-slate-900 text-white p-8 md:p-12 border border-slate-800 shadow-xl">
             <div className="text-center max-w-xl mx-auto mb-10">
-              <h3 className="font-heading font-bold text-2xl md:text-3xl">Impact in Numbers</h3>
+              <h3 className="font-heading font-bold text-2xl md:text-3xl">
+                Impact in Numbers
+              </h3>
               <p className="text-xs text-slate-400 mt-2">
-                Demonstrating transparent clinical excellence across every referral.
+                Demonstrating transparent clinical excellence across every
+                referral.
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {STATS.map((stat, i) => (
                 <div key={i} className="space-y-1">
-                  <div className="font-heading font-extrabold text-3xl md:text-4xl text-teal-400">{stat.value}</div>
-                  <div className="font-bold text-sm text-white">{stat.label}</div>
-                  <div className="text-[11px] text-slate-400">{stat.change}</div>
+                  <div className="font-heading font-extrabold text-3xl md:text-4xl text-teal-400">
+                    {stat.value}
+                  </div>
+                  <div className="font-bold text-sm text-white">
+                    {stat.label}
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    {stat.change}
+                  </div>
                 </div>
               ))}
             </div>
@@ -389,13 +434,14 @@ export const HomePage: React.FC = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Have questions about how RehabConnect assists you or your family? We have clear answers.
+            Have questions about how RehabConnect assists you or your family? We
+            have clear answers.
           </p>
         </div>
         <FAQAccordion items={FAQS.slice(0, 5)} allowSearch={false} />
         <div className="text-center pt-2">
           <button
-            onClick={() => router.push('/faq')}
+            onClick={() => router.push("/faq")}
             className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline"
           >
             View Full FAQ Center →
