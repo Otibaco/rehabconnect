@@ -14,6 +14,14 @@
     --color-surface: #ffffff;
     --color-surface-elevated: #f8fafc;
     --color-surface-muted: #f1f5f9;
+
+    /* New section backgrounds */
+    --color-section-soft: #FAF8F4;
+    --color-section-light: #FCFBF8;
+    --color-section-muted: #F7F9FC;
+    --color-section-accent: #F2FCFA;
+
+
     --color-surface-card: rgba(255, 255, 255, 0.9);
     --color-surface-glass: rgba(255, 255, 255, 0.75);
     --color-border: rgba(15, 23, 42, 0.12);
@@ -40,6 +48,13 @@
     --color-surface: #181b1d;
     --color-surface-elevated: #1e2224;
     --color-surface-muted: #23282b;
+
+    --color-section-soft: #15181A;
+    --color-section-light: #1A1E20;
+    --color-section-muted: #202528;
+    --color-section-accent: #14201E;
+
+
     --color-surface-card: #181b1d;
     --color-surface-glass: rgba(24, 27, 29, 0.82);
     --color-border: rgba(255, 255, 255, 0.11);
@@ -292,22 +307,18 @@ HERO GRADIENTS
 
 .hero-gradient-light {
   background:
-    radial-gradient(
-      circle at 50% 0%,
+    radial-gradient(circle at 50% 0%,
       rgba(20, 184, 166, 0.08) 0%,
       rgba(59, 130, 246, 0.04) 50%,
-      transparent 100%
-    );
+      transparent 100%);
 }
 
 .hero-gradient-dark {
   background:
-    radial-gradient(
-      circle at 50% 0%,
+    radial-gradient(circle at 50% 0%,
       rgba(20, 184, 166, 0.10) 0%,
       rgba(20, 184, 166, 0.04) 35%,
-      transparent 70%
-    );
+      transparent 70%);
 }
 
 /*

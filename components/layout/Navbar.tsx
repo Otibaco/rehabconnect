@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { HeartHandshake, Menu, X, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
-import { ThemeToggle } from '../ui/ThemeToggle';
 import { RoutePath } from '@/lib/types';
 
 export const Navbar: React.FC = () => {
@@ -98,7 +97,7 @@ export const Navbar: React.FC = () => {
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-2.5">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
 
             <button
               onClick={() => router.push('/register')}
