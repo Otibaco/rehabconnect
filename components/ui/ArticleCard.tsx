@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Clock, ArrowRight, BookOpen } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import router from 'next/dist/shared/lib/router/router';
 import { Article } from '@/lib/types';
 
 export const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {

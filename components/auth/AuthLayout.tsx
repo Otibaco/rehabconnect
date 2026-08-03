@@ -3,7 +3,6 @@ import React from 'react';
 import { HeartHandshake, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { ThemeToggle } from '../ui/ThemeToggle';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -48,7 +47,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
               <span>Back to Site</span>
             </button>
           )}
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
         </div>
       </div>
 
