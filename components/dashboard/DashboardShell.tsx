@@ -33,7 +33,6 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { RoutePath } from '@/lib/types';
 import { useRouter as useNextRouter, usePathname, useRouter } from 'next/navigation';
-import { ThemeToggle } from '../ui/ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
 
 interface SidebarItem {
@@ -351,7 +350,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             </AnimatePresence>
           </div>
 
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
 
           {/* User Profile Dropdown */}
           <div className="relative">
