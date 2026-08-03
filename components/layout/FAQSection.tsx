@@ -191,7 +191,7 @@ export const FAQSection: React.FC = () => {
 
   return (
     <section
-      className="relative py-20 sm:py-28"
+      className="relative py-16 sm:py-20"
       style={{ backgroundColor: 'var(--color-section-soft)' }}
     >
       <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">

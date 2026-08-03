@@ -88,7 +88,7 @@ export const OurServicesCarousel: React.FC = () => {
   ];
 
   return (
-    <section className="relative w-full bg-[var(--color-section-light)] py-20 sm:py-28">
+    <section className="relative w-full bg-[var(--color-section-light)] py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         
         {/* Header */}

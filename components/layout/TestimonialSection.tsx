@@ -156,7 +156,7 @@ export default function TestimonialSection() {
 
   return (
     <section
-      className="relative py-20 sm:py-28 overflow-hidden"
+      className="relative py-16 sm:py-20 overflow-hidden"
       style={{ backgroundColor: 'var(--color-section-accent)' }}
     >
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">

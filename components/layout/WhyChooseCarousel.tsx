@@ -93,7 +93,7 @@ export const WhyChooseCarousel: React.FC = () => {
   ];
 
   return (
-    <section className="relative w-full overflow-hidden bg-[var(--color-section-muted)] py-20 sm:py-28">
+    <section className="relative w-full overflow-hidden bg-[var(--color-section-muted)] py-16 sm:py-20">
       {/* Subtle background texture — clean, not distracting */}
       <div className="pointer-events-none absolute top-0 right-0 h-80 w-80 -translate-y-12 translate-x-12 opacity-[0.06]">
         <svg

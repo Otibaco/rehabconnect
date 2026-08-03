@@ -9,7 +9,7 @@ interface AboutSectionProps {
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ onOurProgramsClick }) => {
   return (
-    <section className="relative w-full overflow-hidden bg-[var(--color-bg)] py-20 sm:py-28">
+    <section className="relative w-full overflow-hidden bg-[var(--color-bg)] py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-12 lg:gap-12">
           

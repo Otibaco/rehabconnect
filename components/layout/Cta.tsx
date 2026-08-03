@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Phone, MessageCircle } from 'lucide-react';
+import { ArrowRight, Phone, MessageCircle, ShieldCheck } from 'lucide-react';
 import type { Variants } from 'framer-motion';
 
 // ---------------------------------------------------------------------------
@@ -10,30 +10,19 @@ import type { Variants } from 'framer-motion';
 // ---------------------------------------------------------------------------
 
 interface CTAProps {
-  /** Main heading line */
   headline?: string;
-  /** Accent-coloured word/phrase within the headline */
   accentWord?: string;
-  /** Supporting paragraph below the headline */
   description?: string;
-  /** Primary button text */
   primaryButtonText?: string;
-  /** Primary button href */
   primaryHref?: string;
-  /** Secondary button text — rendered as a ghost/outline style */
   secondaryButtonText?: string;
-  /** Secondary button href */
   secondaryHref?: string;
-  /** Optional callback when primary button is clicked (overrides href) */
   onPrimaryClick?: () => void;
-  /** Optional callback when secondary button is clicked (overrides href) */
   onSecondaryClick?: () => void;
-  /** Background colour variable — defaults to --color-surface */
   bgVariable?: string;
-  /** If true, renders a slightly elevated card rather than a full-width banner */
-  variant?: 'banner' | 'card';
-  /** Optional className for additional overrides */
+  variant?: 'banner' | 'card' | 'split';
   className?: string;
+  showTrustBadges?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -57,16 +46,24 @@ const childTransition = {
 };
 
 const childVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
     transition: childTransition,
   },
 };
+
+// ---------------------------------------------------------------------------
+// Helper
+// ---------------------------------------------------------------------------
+
+function secondaryButtonIcon(text: string): React.ReactNode {
+  const lower = text.toLowerCase();
+  if (lower.includes('call') || lower.includes('phone')) return <Phone className="h-4 w-4" />;
+  if (lower.includes('chat') || lower.includes('message')) return <MessageCircle className="h-4 w-4" />;
+  return null;
+}
 
 // ---------------------------------------------------------------------------
 // Component
@@ -85,16 +82,12 @@ export const CTA: React.FC<CTAProps> = ({
   bgVariable = 'var(--color-surface)',
   variant = 'banner',
   className = '',
+  showTrustBadges = true,
 }) => {
-  // Build headline with accent word
   const renderHeadline = () => {
-    if (!accentWord) {
-      return headline;
-    }
-
+    if (!accentWord) return headline;
     const parts = headline.split(accentWord);
     if (parts.length === 1) return headline;
-
     return (
       <>
         {parts[0]}
@@ -105,109 +98,152 @@ export const CTA: React.FC<CTAProps> = ({
   };
 
   const isCard = variant === 'card';
+  const isSplit = variant === 'split';
 
-  return (
-    <section
-      className={`relative w-full overflow-hidden ${className}`}
-      style={{ backgroundColor: bgVariable }}
-    >
-      <div className={isCard ? 'mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-20 sm:py-28' : ''}>
-        
-        {/* Card variant wrapper */}
-        <div
-          className={
-            isCard
-              ? 'relative overflow-hidden rounded-2xl bg-[var(--color-section-soft)] theme-border theme-shadow px-8 py-12 sm:px-12 sm:py-14'
-              : 'relative overflow-hidden px-6 py-20 sm:px-8 sm:py-28 lg:px-12'
-          }
-        >
-          {/* Subtle ambient glow behind content */}
-          <div
-            className="pointer-events-none absolute -top-32 -right-32 h-72 w-72 rounded-full opacity-[0.07] blur-[100px]"
-            style={{ background: 'var(--color-hero-glow)' }}
-          />
-          <div
-            className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full opacity-[0.05] blur-[100px]"
-            style={{ background: 'var(--color-hero-glow-2)' }}
-          />
+  // ── Banner variant ──
+  if (!isCard && !isSplit) {
+    return (
+      <section
+        className={`relative w-full overflow-hidden ${className}`}
+        style={{ backgroundColor: bgVariable }}
+      >
+        <div className="relative overflow-hidden px-6 py-20 sm:px-8 sm:py-28 lg:px-12">
+          {/* Ambient glow */}
+          <div className="pointer-events-none absolute -top-40 -right-40 h-80 w-80 rounded-full opacity-[0.06] blur-[120px]" style={{ background: 'var(--color-hero-glow)' }} />
+          <div className="pointer-events-none absolute -bottom-32 -left-32 h-72 w-72 rounded-full opacity-[0.04] blur-[120px]" style={{ background: 'var(--color-hero-glow-2)' }} />
 
-          {/* Content */}
           <motion.div
-            className="relative z-10 flex flex-col items-center text-center gap-8"
+            className="relative z-10 flex flex-col items-center text-center gap-8 max-w-2xl mx-auto"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
           >
-            {/* Headline */}
-            <motion.h2
-              variants={childVariants}
-              className="text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl lg:text-[2.5rem] max-w-2xl"
-            >
+            <motion.h2 variants={childVariants} className="text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl lg:text-[2.5rem]">
               {renderHeadline()}
             </motion.h2>
 
-            {/* Description */}
-            <motion.p
-              variants={childVariants}
-              className="text-sm leading-relaxed text-[var(--color-text-muted)] sm:text-base max-w-xl"
-            >
+            <motion.p variants={childVariants} className="text-sm leading-relaxed text-[var(--color-text-muted)] sm:text-base max-w-xl">
               {description}
             </motion.p>
 
-            {/* Buttons */}
-            <motion.div
-              variants={childVariants}
-              className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto"
-            >
-              {/* Primary */}
-              {onPrimaryClick ? (
-                <button
-                  type="button"
-                  onClick={onPrimaryClick}
-                  className="inline-flex items-center gap-2 theme-btn-primary px-7 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] w-full sm:w-auto justify-center"
-                >
-                  {primaryButtonText}
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              ) : (
-                <a
-                  href={primaryHref}
-                  className="inline-flex items-center gap-2 theme-btn-primary px-7 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] w-full sm:w-auto justify-center"
-                >
-                  {primaryButtonText}
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-              )}
-
-              {/* Secondary */}
-              {onSecondaryClick ? (
-                <button
-                  type="button"
-                  onClick={onSecondaryClick}
-                  className="inline-flex items-center gap-2 theme-btn-ghost px-7 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto justify-center"
-                >
-                  {secondaryButtonIcon(secondaryButtonText)}
-                  {secondaryButtonText}
-                </button>
-              ) : (
-                <a
-                  href={secondaryHref}
-                  className="inline-flex items-center gap-2 theme-btn-ghost px-7 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto justify-center"
-                >
-                  {secondaryButtonIcon(secondaryButtonText)}
-                  {secondaryButtonText}
-                </a>
-              )}
+            <motion.div variants={childVariants} className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+              <PrimaryButton text={primaryButtonText} href={primaryHref} onClick={onPrimaryClick} />
+              <SecondaryButton text={secondaryButtonText} href={secondaryHref} onClick={onSecondaryClick} />
             </motion.div>
 
-            {/* Trust line */}
-            <motion.p
-              variants={childVariants}
-              className="text-xs text-[var(--color-text-muted)]"
+            {showTrustBadges && (
+              <motion.div variants={childVariants} className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <span className="inline-flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+                  Confidential
+                </span>
+                <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+                <span className="text-xs text-[var(--color-text-muted)]">Free initial consultation</span>
+                <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+                <span className="text-xs text-[var(--color-text-muted)]">No commitment required</span>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
+
+  // ── Card variant ──
+  if (isCard) {
+    return (
+      <section className={`relative w-full overflow-hidden ${className}`} style={{ backgroundColor: bgVariable }}>
+        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-16 sm:py-20">
+          <div className="relative overflow-hidden rounded-2xl bg-[var(--color-section-soft)] theme-border theme-shadow px-8 py-12 sm:px-14 sm:py-16">
+            <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full opacity-[0.05] blur-[80px]" style={{ background: 'var(--color-hero-glow)' }} />
+
+            <motion.div
+              className="relative z-10 flex flex-col items-center text-center gap-8 max-w-xl mx-auto"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
             >
-              Confidential · Free initial consultation · No commitment required
+              <motion.h2 variants={childVariants} className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[var(--color-text)]">
+                {renderHeadline()}
+              </motion.h2>
+
+              <motion.p variants={childVariants} className="text-sm leading-relaxed text-[var(--color-text-muted)] sm:text-base">
+                {description}
+              </motion.p>
+
+              <motion.div variants={childVariants} className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                <PrimaryButton text={primaryButtonText} href={primaryHref} onClick={onPrimaryClick} />
+                <SecondaryButton text={secondaryButtonText} href={secondaryHref} onClick={onSecondaryClick} />
+              </motion.div>
+
+              {showTrustBadges && (
+                <motion.p variants={childVariants} className="text-xs text-[var(--color-text-muted)]">
+                  Confidential · Free initial consultation · No commitment required
+                </motion.p>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // ── Split variant ──
+  return (
+    <section className={`relative w-full overflow-hidden ${className}`} style={{ backgroundColor: bgVariable }}>
+      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          
+          {/* Left: Text */}
+          <motion.div
+            className="space-y-6 text-center lg:text-left"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+          >
+            <motion.h2 variants={childVariants} className="text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl lg:text-[2.5rem]">
+              {renderHeadline()}
+            </motion.h2>
+            <motion.p variants={childVariants} className="text-sm leading-relaxed text-[var(--color-text-muted)] sm:text-base max-w-md lg:max-w-none">
+              {description}
             </motion.p>
+            <motion.div variants={childVariants} className="flex flex-col sm:flex-row items-center lg:items-start gap-3 pt-2">
+              <PrimaryButton text={primaryButtonText} href={primaryHref} onClick={onPrimaryClick} />
+              <SecondaryButton text={secondaryButtonText} href={secondaryHref} onClick={onSecondaryClick} />
+            </motion.div>
+            {showTrustBadges && (
+              <motion.p variants={childVariants} className="text-xs text-[var(--color-text-muted)] pt-2">
+                Confidential · Free initial consultation · No commitment required
+              </motion.p>
+            )}
+          </motion.div>
+
+          {/* Right: Visual accent */}
+          <motion.div
+            className="hidden lg:flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
+          >
+            <div className="relative w-72 h-72">
+              {/* Concentric decorative rings */}
+              <div className="absolute inset-0 rounded-full border border-[var(--color-accent)]/10" />
+              <div className="absolute inset-4 rounded-full border border-[var(--color-accent)]/15" />
+              <div className="absolute inset-10 rounded-full border border-[var(--color-accent)]/20" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-24 h-24 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)]">
+                  <ShieldCheck className="w-10 h-10" />
+                </div>
+              </div>
+              {/* Floating dots */}
+              <div className="absolute top-6 right-8 w-2.5 h-2.5 rounded-full bg-[var(--color-accent)]/30" />
+              <div className="absolute bottom-10 left-6 w-2 h-2 rounded-full bg-[var(--color-accent)]/25" />
+              <div className="absolute top-20 left-3 w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]/35" />
+            </div>
           </motion.div>
         </div>
       </div>
@@ -216,25 +252,64 @@ export const CTA: React.FC<CTAProps> = ({
 };
 
 // ---------------------------------------------------------------------------
-// Helper — choose icon based on button text
+// Button Sub-components
 // ---------------------------------------------------------------------------
 
-function secondaryButtonIcon(text: string): React.ReactNode {
-  const lower = text.toLowerCase();
-  if (lower.includes('call') || lower.includes('phone')) {
-    return <Phone className="h-4 w-4" />;
+const PrimaryButton: React.FC<{
+  text: string;
+  href: string;
+  onClick?: () => void;
+}> = ({ text, href, onClick }) => {
+  const className =
+    'inline-flex items-center gap-2 theme-btn-primary px-7 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98] w-full sm:w-auto justify-center';
+
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={className}>
+        {text}
+        <ArrowRight className="h-4 w-4" />
+      </button>
+    );
   }
-  if (lower.includes('chat') || lower.includes('message')) {
-    return <MessageCircle className="h-4 w-4" />;
+
+  return (
+    <a href={href} className={className}>
+      {text}
+      <ArrowRight className="h-4 w-4" />
+    </a>
+  );
+};
+
+const SecondaryButton: React.FC<{
+  text: string;
+  href: string;
+  onClick?: () => void;
+}> = ({ text, href, onClick }) => {
+  const className =
+    'inline-flex items-center gap-2 theme-btn-ghost px-7 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98] w-full sm:w-auto justify-center';
+
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={className}>
+        {secondaryButtonIcon(text)}
+        {text}
+      </button>
+    );
   }
-  return null;
-}
+
+  return (
+    <a href={href} className={className}>
+      {secondaryButtonIcon(text)}
+      {text}
+    </a>
+  );
+};
 
 // ---------------------------------------------------------------------------
-// Pre-configured variants for quick usage
+// Pre-configured variants
 // ---------------------------------------------------------------------------
 
-export const CTADefault: React.FC<Partial<CTAProps>> = (props) => (
+export const CTABanner: React.FC<Partial<CTAProps>> = (props) => (
   <CTA
     headline="Ready to take the first step?"
     accentWord="here to help"
@@ -256,6 +331,19 @@ export const CTACard: React.FC<Partial<CTAProps>> = (props) => (
     secondaryButtonText="Chat with us"
     bgVariable="var(--color-bg)"
     variant="card"
+    {...props}
+  />
+);
+
+export const CTASplit: React.FC<Partial<CTAProps>> = (props) => (
+  <CTA
+    headline="Let's find the right path"
+    accentWord="together"
+    description="Recovery isn't meant to be navigated alone. Our team is ready to listen, guide, and support you — starting with a free, confidential conversation."
+    primaryButtonText="Book a consultation"
+    secondaryButtonText="Call now"
+    bgVariable="var(--color-section-soft)"
+    variant="split"
     {...props}
   />
 );

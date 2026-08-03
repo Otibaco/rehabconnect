@@ -54,7 +54,7 @@ export const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-20 md:space-y-28 pb-20 transition-colors duration-300">
+    <div className="transition-colors duration-300">
 
       {/* <ServicesSection /> */}
 
