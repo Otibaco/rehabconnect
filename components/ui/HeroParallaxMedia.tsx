@@ -51,13 +51,13 @@ const AnimatedStat: React.FC<{ value: string; label: string; live?: boolean }> =
   return (
     <div ref={ref} className="flex flex-col items-center gap-1.5 sm:items-center">
       <div className="flex items-center gap-1.5">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{label}</span>
-        {live && <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-emerald-400" />}
+        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] theme-text-muted">{label}</span>
+        {live && <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-(--color-accent)" />}
       </div>
-      <div className="font-heading text-2xl font-bold tabular-nums text-slate-900 dark:text-white sm:text-3xl md:text-4xl">
+      <div className="font-heading text-2xl font-bold tabular-nums theme-text sm:text-3xl md:text-4xl">
         {prefix}
         {display.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
-        <span className="text-teal-400">{suffix}</span>
+        <span className="text-(--color-accent)">{suffix}</span>
       </div>
     </div>
   );
@@ -149,8 +149,8 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
   const transitionOverlay = useTransform(scrollYProgress, [0.3, 1], [0, 0.9]);
 
   return (
-    <div ref={wrapperRef} className="relative overflow-hidden bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
-      <div className="relative flex min-h-svh w-full items-center overflow-hidden bg-slate-50 transition-colors duration-300 dark:bg-slate-950">
+    <div ref={wrapperRef} className="relative overflow-hidden theme-bg theme-text theme-transition">
+      <div className="relative flex min-h-svh w-full items-center overflow-hidden theme-bg theme-transition">
         <motion.div style={{ y: bgY, scale: bgScale }} className="absolute inset-0 z-0 h-full w-full">
           {showVideo && (
             <video
@@ -184,9 +184,9 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
             </AnimatePresence>
           )}
 
-          <div className="absolute inset-0 bg-linear-to-t from-slate-50 via-slate-50/60 to-slate-50/40 dark:from-slate-950 dark:via-slate-950/60 dark:to-slate-950/40" />
-          <div className="absolute inset-0 bg-radial-at-c from-transparent via-slate-50/40 to-slate-50/80 dark:via-slate-950/40 dark:to-slate-950/80" />
-          <motion.div style={{ opacity: transitionOverlay }} className="absolute inset-0 bg-slate-50 dark:bg-slate-950" />
+          <div className="absolute inset-0 bg-linear-to-t from-(--color-bg) via-(--color-bg)/60 to-(--color-bg)/40" />
+          <div className="absolute inset-0 bg-radial-at-c from-transparent via-(--color-bg)/40 to-(--color-bg)/80" />
+          <motion.div style={{ opacity: transitionOverlay }} className="absolute inset-0 bg-(--color-bg)" />
         </motion.div>
 
         {process.env.NODE_ENV === 'development' && videoError && (
@@ -196,14 +196,14 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
         )}
 
         {showSlideshow && slides.length > 1 && (
-          <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-slate-300/70 bg-white/70 px-3.5 py-1.5 backdrop-blur-md dark:border-slate-700/50 dark:bg-slate-900/60">
+          <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-(--color-border) bg-(--color-surface-card)/70 px-3.5 py-1.5 backdrop-blur-md">
             {slides.map((slide, idx) => (
               <button
                 key={slide.id}
                 onClick={() => setCurrentSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === idx ? 'w-6 bg-teal-500' : 'w-2 bg-slate-400 hover:bg-slate-600 dark:bg-slate-500 dark:hover:bg-slate-300'
+                  currentSlide === idx ? 'w-6 bg-(--color-accent)' : 'w-2 bg-(--color-text-subtle) hover:bg-(--color-text-muted)'
                 }`}
               />
             ))}
@@ -219,18 +219,18 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 rounded-full border border-teal-500/30 bg-teal-500/15 px-4 py-1.5 text-xs font-semibold text-teal-700 backdrop-blur-md dark:text-teal-300 sm:text-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-(--color-accent)/30 bg-(--color-accent-soft) px-4 py-1.5 text-xs font-semibold text-(--color-accent) backdrop-blur-md sm:text-sm"
             >
-              <ShieldCheck className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+              <ShieldCheck className="h-4 w-4 text-(--color-accent)" />
               <span>{badgeText}</span>
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-teal-400" />
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-(--color-accent)" />
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-heading text-4xl font-extrabold leading-[1.08] tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl lg:text-7xl max-w-4xl"
+              className="font-heading text-4xl font-extrabold leading-[1.08] tracking-tight theme-text sm:text-5xl md:text-6xl lg:text-7xl max-w-4xl"
             >
               {title}
             </motion.div>
@@ -239,7 +239,7 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="max-w-2xl text-base font-light leading-relaxed text-slate-700 dark:text-slate-200/90 sm:text-lg md:text-xl"
+              className="max-w-2xl text-base font-light leading-relaxed theme-text-muted sm:text-lg md:text-xl"
             >
               {subtitle}
             </motion.p>
@@ -253,16 +253,16 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
               {onPrimaryCtaClick && (
                 <button
                   onClick={onPrimaryCtaClick}
-                  className="group flex items-center justify-center gap-2 rounded-full bg-linear-to-r from-teal-500 to-emerald-500 px-7 py-3.5 text-sm font-bold text-white shadow-xl shadow-teal-500/25 transition-all hover:-translate-y-0.5 hover:from-teal-400 hover:to-emerald-400 active:translate-y-0 sm:px-9 sm:py-4 sm:text-base"
+                  className="group flex items-center justify-center gap-2 rounded-full bg-linear-to-r from-(--color-accent) to-(--color-accent-strong) px-7 py-3.5 text-sm font-bold text-(--color-accent-contrast) shadow-xl transition-all hover:-translate-y-0.5 active:translate-y-0 sm:px-9 sm:py-4 sm:text-base"
                 >
-                  <Sparkles className="h-5 w-5 text-teal-100 transition-transform group-hover:rotate-12" />
+                  <Sparkles className="h-5 w-5 text-(--color-accent-contrast) transition-transform group-hover:rotate-12" />
                   <span>{primaryCtaText}</span>
                 </button>
               )}
               {onSecondaryCtaClick && (
                 <button
                   onClick={onSecondaryCtaClick}
-                  className="flex items-center justify-center gap-2 rounded-full border border-slate-300/70 bg-white/80 px-7 py-3.5 text-sm font-semibold text-slate-800 backdrop-blur-md transition-all hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 sm:px-8 sm:py-4 sm:text-base"
+                  className="flex items-center justify-center gap-2 rounded-full border border-(--color-border) bg-(--color-surface-card)/80 px-7 py-3.5 text-sm font-semibold theme-text backdrop-blur-md transition-all hover:bg-(--color-surface-muted) sm:px-8 sm:py-4 sm:text-base"
                 >
                   <span>{secondaryCtaText}</span>
                 </button>
@@ -274,11 +274,11 @@ export const HeroParallaxMedia: React.FC<HeroParallaxMediaProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
-                className="mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-x-8 gap-y-6 border-t border-slate-300/70 pt-8 dark:border-white/10 sm:gap-x-12 sm:pt-10"
+                className="mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-x-8 gap-y-6 border-t border-(--color-border) pt-8 sm:gap-x-12 sm:pt-10"
               >
                 {stats.map((stat, i) => (
                   <React.Fragment key={i}>
-                    {i > 0 && <div className="hidden h-10 w-px bg-white/10 sm:block" />}
+                    {i > 0 && <div className="hidden h-10 w-px bg-(--color-border) sm:block" />}
                     <AnimatedStat value={stat.value} label={stat.label} live={stat.label.toLowerCase().includes('verified')} />
                   </React.Fragment>
                 ))}
