@@ -30,6 +30,7 @@ import {
   STATS,
 } from "@/lib/data/mockData";
 import { useRouter } from "next/navigation";
+import AboutSection from "@/components/layout/AboutSection.tsx";
 
 export const HomePage: React.FC = () => {
   const router = useRouter();
@@ -61,6 +62,8 @@ export const HomePage: React.FC = () => {
         secondaryCtaText="Explore Partner Facilities"
         onSecondaryCtaClick={() => router.push("/rehabilitation-centres")}
       />
+
+      <AboutSection />
 
       {/* Interactive Quick Tools Bar */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20">
