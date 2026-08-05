@@ -103,7 +103,7 @@ const connectorTransition: Transition = {
 
 export const PathwaySection: React.FC = () => {
   return (
-    <section className="relative w-full bg-[var(--color-bg)] pt-16 sm:pt-24 pb-0 overflow-hidden">
+    <section className="relative w-full bg-[var(--color-section-accent)] pt-16 sm:pt-24 pb-0 overflow-hidden">
       
       {/* ── Decorative background elements ── */}
       <div className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-[#31A8D3] opacity-[0.04] blur-[120px]" />
@@ -208,7 +208,7 @@ export const PathwaySection: React.FC = () => {
       </div>
 
       {/* ── SVG Wavy Curve Bottom Divider ── */}
-      <div className="relative mt-20 sm:mt-24 w-full leading-none">
+      {/* <div className="relative mt-20 sm:mt-24 w-full leading-none">
         <svg
           className="relative block w-full h-[50px] sm:h-[70px] md:h-[100px]"
           viewBox="0 0 1440 120"
@@ -221,7 +221,7 @@ export const PathwaySection: React.FC = () => {
             className="fill-white dark:fill-slate-950"
           />
         </svg>
-      </div>
+      </div> */}
     </section>
   );
 };

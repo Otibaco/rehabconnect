@@ -145,7 +145,7 @@ const statTransition: Transition = {
 
 export const PartnersWithBanner: React.FC = () => {
   return (
-    <section className="relative w-full bg-[var(--color-bg)] pt-20 sm:pt-28 pb-0 overflow-hidden">
+    <section className="relative w-full bg-[var(--color-section-muted)] pt-20 sm:pt-28 pb-0 overflow-hidden">
       
       {/* ── Decorative background ── */}
       <div className="pointer-events-none absolute top-0 left-0 w-[450px] h-[450px] -translate-x-1/3 -translate-y-1/3 rounded-full bg-[var(--color-hero-glow)] opacity-[0.04] blur-[100px]" />

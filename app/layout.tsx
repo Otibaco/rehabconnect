@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
+// import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import TopBar from "@/components/layout/TopBar";
+// import TopBar from "@/components/layout/TopBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rehabconnect-three.vercel.app/"),
