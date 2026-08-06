@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { PhoneCall, ArrowRight } from 'lucide-react';
+import { Compass, ArrowRight } from 'lucide-react';
 import type { Variants, Transition } from 'framer-motion';
 
 // ---------------------------------------------------------------------------
@@ -19,22 +19,20 @@ interface SlideImage {
 // Constants
 // ---------------------------------------------------------------------------
 
-const COORDINATOR_PHONE = '+234 800 000 0000';
-const COORDINATOR_PHONE_HREF = 'tel:+2348000000000';
 const SLIDE_DURATION_MS = 6000;
 
 const heroImages: SlideImage[] = [
   {
-    url: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80',
-    alt: 'Care coordinator speaking warmly with a family member',
+    url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1600&q=80',
+    alt: 'One-on-one conversation between a coordinator and a patient',
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1600&q=80',
+    alt: 'Supportive group session in a rehabilitation centre',
   },
   {
     url: 'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1600&q=80',
-    alt: 'Healthcare professional listening attentively during a consultation',
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1600&q=80',
-    alt: 'Patient receiving guidance in a modern rehabilitation clinic',
+    alt: 'Healthcare professional listening attentively',
   },
   {
     url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1600&q=80',
@@ -80,7 +78,7 @@ const slideVariants: Variants = {
 // Component
 // ---------------------------------------------------------------------------
 
-export default function ContactHero() {
+export default function AboutHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -130,7 +128,7 @@ export default function ContactHero() {
     <section
       ref={sectionRef}
       className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-[var(--color-bg)]"
-      aria-label="Contact hero"
+      aria-label="About us hero"
     >
       {/* ── Background Layer ── */}
       <div className="absolute inset-0 z-0">
@@ -161,11 +159,11 @@ export default function ContactHero() {
 
         {/* Glow */}
         <div
-          className="absolute -top-60 -right-60 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full opacity-[0.1] blur-[120px]"
+          className="absolute -top-60 -left-60 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full opacity-[0.1] blur-[120px]"
           style={{ background: 'var(--color-hero-glow)' }}
         />
         <div
-          className="absolute -bottom-40 -left-40 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] rounded-full opacity-[0.06] blur-[120px]"
+          className="absolute -bottom-40 -right-40 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] rounded-full opacity-[0.06] blur-[120px]"
           style={{ background: 'var(--color-hero-glow-2)' }}
         />
       </div>
@@ -200,25 +198,22 @@ export default function ContactHero() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {/* Status badge */}
+          {/* Badge */}
           <motion.div variants={childVariants}>
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--color-surface)]/80 border border-[var(--color-border)] backdrop-blur-sm text-[var(--color-accent)] text-xs font-medium">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              Care coordinators are online now
+              <Compass className="h-3.5 w-3.5" />
+              Our story
             </span>
           </motion.div>
 
           {/* Headline */}
           <motion.h1
             variants={childVariants}
-            className="text-3xl sm:text-5xl lg:text-[3.2rem] font-bold tracking-tight leading-[1.1] text-[var(--color-text)] max-w-[580px]"
+            className="text-3xl sm:text-5xl lg:text-[3.2rem] font-bold tracking-tight leading-[1.1] text-[var(--color-text)] max-w-[560px]"
           >
-            Let&apos;s talk about
+            Built by people who
             <br />
-            <span className="text-[var(--color-accent)]">the right next step</span>
+            <span className="text-[var(--color-accent)]">understand this search</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -226,9 +221,9 @@ export default function ContactHero() {
             variants={childVariants}
             className="text-sm sm:text-lg text-[var(--color-text-muted)] leading-relaxed max-w-[480px] mx-auto"
           >
-            Reach a real care coordinator, ask questions in confidence, and get
-            matched with a verified rehabilitation centre — no pressure, no
-            obligation.
+            RehabConnect exists because finding the right rehabilitation
+            centre shouldn&apos;t depend on luck, a search engine, or a cold
+            phone call. Here&apos;s how we make it easier.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -237,18 +232,17 @@ export default function ContactHero() {
             className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto pt-1"
           >
             <a
-              href="#contact-form"
+              href="#our-values"
               className="theme-btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 text-sm font-medium rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
             >
-              Start your consultation
+              See what guides us
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
-              href={COORDINATOR_PHONE_HREF}
+              href="/contact"
               className="theme-btn-ghost inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98]"
             >
-              <PhoneCall className="h-4 w-4" aria-hidden="true" />
-              Call {COORDINATOR_PHONE}
+              Talk to a coordinator
             </a>
           </motion.div>
         </motion.div>
