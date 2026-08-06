@@ -243,9 +243,8 @@ export const PartnersWithBanner: React.FC = () => {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ delay: 0.4, duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
         >
-          <div className="relative overflow-hidden rounded-2xl bg-[var(--color-section-soft)] border border-[var(--color-border)] shadow-lg px-8 py-10 sm:px-12 sm:py-14">
+          {/* <div className="relative overflow-hidden rounded-2xl bg-[var(--color-section-soft)] border border-[var(--color-border)] shadow-lg px-8 py-10 sm:px-12 sm:py-14">
             
-            {/* Ambient glow */}
             <div className="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full opacity-[0.06] blur-[80px]" style={{ background: 'var(--color-hero-glow)' }} />
             <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full opacity-[0.04] blur-[80px]" style={{ background: 'var(--color-hero-glow-2)' }} />
 
@@ -272,7 +271,7 @@ export const PartnersWithBanner: React.FC = () => {
               </a>
             </div>
 
-          </div>
+          </div> */}
         </motion.div>
 
       </div>

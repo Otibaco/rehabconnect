@@ -103,7 +103,7 @@ const connectorTransition: Transition = {
 
 export const PathwaySection: React.FC = () => {
   return (
-    <section className="relative w-full bg-[var(--color-section-accent)] pt-16 sm:pt-24 pb-0 overflow-hidden">
+    <section className="relative w-full bg-[var(--color-section-muted)] pt-16 sm:pt-24 pb-0 overflow-hidden">
       
       {/* ── Decorative background elements ── */}
       <div className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-[#31A8D3] opacity-[0.04] blur-[120px]" />

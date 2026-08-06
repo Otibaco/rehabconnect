@@ -6,9 +6,13 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-heading: 'Outfit', sans-serif;
-    --font-serif: 'Playfair Display', Georgia, serif;
+
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-heading);
+    --font-body: var(--font-body);
+    --font-mono: var(--font-mono);
+
+
 
     --color-bg: #F5F2EC;
     --color-surface: #ffffff;
@@ -43,42 +47,11 @@
     --color-hero-glow-2: rgba(59, 130, 246, 0.04);
   }
 
-  .dark {
-    --color-bg: #111315;
-    --color-surface: #181b1d;
-    --color-surface-elevated: #1e2224;
-    --color-surface-muted: #23282b;
 
-    --color-section-soft: #15181A;
-    --color-section-light: #1A1E20;
-    --color-section-muted: #202528;
-    --color-section-accent: #14201E;
-
-
-    --color-surface-card: #181b1d;
-    --color-surface-glass: rgba(24, 27, 29, 0.82);
-    --color-border: rgba(255, 255, 255, 0.11);
-    --color-border-strong: rgba(255, 255, 255, 0.16);
-    --color-border-card: #2a2f31;
-    --color-border-glass: rgba(255, 255, 255, 0.07);
-    --color-text: #f4f5f3;
-    --color-text-muted: #cbd5e1;
-    --color-text-subtle: #94a3b8;
-    --color-accent: #2dd4bf;
-    --color-accent-strong: #34d399;
-    --color-accent-soft: rgba(45, 212, 191, 0.16);
-    --color-accent-contrast: #f8fafc;
-    --color-shadow: rgba(0, 0, 0, 0.28);
-    --color-shadow-strong: rgba(0, 0, 0, 0.38);
-    --color-scrollbar: #2a2f31;
-    --color-scrollbar-hover: #3a4143;
-    --color-hero-glow: rgba(20, 184, 166, 0.10);
-    --color-hero-glow-2: rgba(20, 184, 166, 0.04);
-  }
 
   html {
     scroll-behavior: smooth;
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     color-scheme: light;
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -89,24 +62,32 @@
   }
 
   body {
-    min-height: 100vh;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+    font-family: var(--font-body);
   }
 
   h1,
   h2,
   h3,
   h4,
+  h5,
+  h6,
   .font-heading {
     font-family: var(--font-heading);
   }
 
-  .font-serif {
-    font-family: var(--font-serif);
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
   }
 }
+
 
 @layer utilities {
   .theme-transition {
