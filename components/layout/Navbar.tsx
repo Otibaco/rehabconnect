@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import type { Variants, Transition } from 'framer-motion';
 import type { RoutePath } from '@/lib/types';
+import Link from 'next/link';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -115,9 +116,8 @@ export const Navbar: React.FC = () => {
             {primaryLinks.map((link) => {
               const isActive = currentPath === link.path;
               return (
-                <button
-                  key={link.path}
-                  onClick={() => router.push(link.path)}
+                <Link
+                  href={link.path}
                   className={`relative px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     isActive
                       ? 'text-[var(--color-text)] bg-[var(--color-surface-muted)]'
@@ -132,7 +132,7 @@ export const Navbar: React.FC = () => {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
