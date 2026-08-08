@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { ShieldCheck, Send, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Send, CheckCircle2, Clock3 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -23,14 +23,7 @@ type FormStatus = "idle" | "submitting" | "success";
 // Constants
 // ---------------------------------------------------------------------------
 
-const INITIAL_VALUES: FormValues = {
-  name: "",
-  email: "",
-  phone: "",
-  subject: "",
-  message: "",
-};
-
+const INITIAL_VALUES: FormValues = { name: "", email: "", phone: "", subject: "", message: "" };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const fieldBaseClasses =
@@ -42,11 +35,7 @@ const fieldBaseClasses =
 
 const columnVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.65, ease: [0.22, 0.4, 0.22, 1] },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 0.4, 0.22, 1] } },
 };
 
 // ---------------------------------------------------------------------------
@@ -58,12 +47,11 @@ export default function ContactFormSection() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormValues, string>>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
 
-  const handleChange = (field: keyof FormValues) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setValues((prev) => ({ ...prev, [field]: e.target.value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
+  const handleChange =
+    (field: keyof FormValues) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setValues((prev) => ({ ...prev, [field]: e.target.value }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    };
 
   const validate = (): boolean => {
     const nextErrors: Partial<Record<keyof FormValues, string>> = {};
@@ -106,16 +94,14 @@ export default function ContactFormSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.4 }}
         >
-          <span className="text-xs font-medium tracking-wide theme-accent uppercase">
-            Send a message
-          </span>
+          <span className="text-xs font-medium tracking-wide theme-accent uppercase">Send a message</span>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight theme-text leading-[1.15]">
             Tell us what you&apos;re looking for
           </h2>
           <p className="text-sm sm:text-base theme-text-muted leading-relaxed max-w-md">
             Share a little about your situation and a care coordinator will
-            follow up personally — usually the same day. There&apos;s no
-            commitment, and everything you share stays confidential.
+            follow up personally. There&apos;s no commitment, and everything
+            you share stays confidential.
           </p>
 
           <div className="flex items-start gap-3 rounded-2xl glass-card theme-shadow px-5 py-4 max-w-md">
@@ -126,15 +112,15 @@ export default function ContactFormSection() {
             </p>
           </div>
 
-          <div
-            aria-hidden="true"
-            className="hidden lg:block mt-4 h-40 rounded-2xl theme-border"
-            style={{
-              border: "1px solid var(--color-border)",
-              background:
-                "radial-gradient(circle at 30% 20%, var(--color-hero-glow) 0%, transparent 60%), radial-gradient(circle at 80% 80%, var(--color-hero-glow-2) 0%, transparent 55%), var(--color-surface)",
-            }}
-          />
+          <div className="flex items-center gap-3 pt-2">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg theme-accent-soft">
+              <Clock3 className="h-4 w-4 theme-accent" aria-hidden="true" strokeWidth={1.75} />
+            </span>
+            <p className="text-xs theme-text-muted">
+              Average reply time: <span className="font-semibold theme-text">under 2 hours</span> during
+              office hours
+            </p>
+          </div>
         </motion.div>
 
         {/* ── Right: form ── */}

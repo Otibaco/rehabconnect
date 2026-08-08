@@ -46,15 +46,10 @@ const steps: Step[] = [
 // Animation Variants
 // ---------------------------------------------------------------------------
 
-const listVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
-
-const stepVariants: Variants = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 0.4, 0.22, 1] } },
-};
+const rowVariants = (fromRight: boolean): Variants => ({
+  hidden: { opacity: 0, x: fromRight ? 24 : -24 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.22, 0.4, 0.22, 1] } },
+});
 
 // ---------------------------------------------------------------------------
 // Component
@@ -63,55 +58,82 @@ const stepVariants: Variants = {
 export default function WhatToExpectSection() {
   return (
     <section className="relative w-full theme-surface py-20 sm:py-28" aria-label="What to expect">
-      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+      <div className="max-w-3xl mx-auto px-6 sm:px-8">
         <motion.div
-          className="max-w-xl mb-16"
+          className="mb-16 sm:mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: [0.22, 0.4, 0.22, 1] }}
         >
-          <span className="text-xs font-medium tracking-wide theme-accent uppercase">
-            What to expect
-          </span>
+          <span className="text-xs font-medium tracking-wide theme-accent uppercase">What to expect</span>
           <h2 className="mt-3 text-2xl sm:text-4xl font-bold tracking-tight theme-text">
             From first call to first day, and beyond
           </h2>
         </motion.div>
 
-        <motion.ol
-          className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6"
-          variants={listVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
+        <div className="relative">
+          {/* Continuous vertical line */}
           <div
             aria-hidden="true"
-            className="hidden lg:block absolute top-6 left-[12.5%] right-[12.5%] h-px"
+            className="absolute left-1/2 top-2 bottom-2 w-px -translate-x-1/2 hidden sm:block"
+            style={{ backgroundColor: "var(--color-border)" }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute left-6 top-2 bottom-2 w-px sm:hidden"
             style={{ backgroundColor: "var(--color-border)" }}
           />
 
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <motion.li key={step.title} variants={stepVariants} className="relative flex flex-col gap-5">
-                <div className="relative z-10 flex items-center gap-3">
-                  <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl theme-accent-soft">
-                    <Icon className="h-5 w-5 theme-accent" aria-hidden="true" strokeWidth={1.75} />
+          <div className="flex flex-col gap-14 sm:gap-4">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+              const isRight = index % 2 === 1;
+              return (
+                <motion.div
+                  key={step.title}
+                  variants={rowVariants(isRight)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  className={`relative sm:grid sm:grid-cols-2 sm:gap-10 items-center ${
+                    isRight ? "" : ""
+                  }`}
+                >
+                  {/* Node */}
+                  <span
+                    className="absolute left-6 sm:left-1/2 top-1 sm:top-1/2 -translate-x-1/2 sm:-translate-y-1/2 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full theme-surface theme-shadow theme-border"
+                    style={{ borderWidth: 1 }}
+                  >
+                    <Icon className="h-4.5 w-4.5 theme-accent" aria-hidden="true" strokeWidth={1.75} />
                   </span>
-                  <span className="text-xs font-mono font-medium theme-text-subtle">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold theme-text">{step.title}</p>
-                  <p className="mt-2 text-xs theme-text-muted leading-relaxed">{step.description}</p>
-                </div>
-              </motion.li>
-            );
-          })}
-        </motion.ol>
+
+                  {isRight ? (
+                    <>
+                      <div className="hidden sm:block" />
+                      <div className="pl-16 sm:pl-14 sm:pr-0">
+                        <p className="text-base font-semibold theme-text">{step.title}</p>
+                        <p className="mt-2 text-sm theme-text-muted leading-relaxed max-w-sm">
+                          {step.description}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="pl-16 sm:pl-0 sm:pr-14 sm:text-right">
+                        <p className="text-base font-semibold theme-text">{step.title}</p>
+                        <p className="mt-2 text-sm theme-text-muted leading-relaxed max-w-sm sm:ml-auto">
+                          {step.description}
+                        </p>
+                      </div>
+                      <div className="hidden sm:block" />
+                    </>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

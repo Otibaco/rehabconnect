@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -58,9 +58,9 @@ export default function SupportFAQSection() {
       style={{ backgroundColor: "var(--color-section-muted)" }}
       aria-label="Frequently asked questions"
     >
-      <div className="max-w-3xl mx-auto px-6 sm:px-8">
+      <div className="max-w-2xl mx-auto px-6 sm:px-8">
         <motion.div
-          className="mb-12"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
@@ -84,36 +84,48 @@ export default function SupportFAQSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, ease: [0.22, 0.4, 0.22, 1], delay: index * 0.04 }}
-                className="rounded-2xl glass-card theme-shadow overflow-hidden"
               >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-panel-${index}`}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                <div
+                  className={`theme-transition overflow-hidden ${
+                    isOpen ? "rounded-[26px] glass-panel theme-shadow" : "rounded-full glass-card"
+                  }`}
                 >
-                  <span className="text-sm font-semibold theme-text">{faq.question}</span>
-                  <ChevronDown
-                    className={`h-4 w-4 theme-accent shrink-0 theme-transition ${isOpen ? "rotate-180" : ""}`}
-                    aria-hidden="true"
-                  />
-                </button>
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      id={`faq-panel-${index}`}
-                      role="region"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 0.4, 0.22, 1] }}
-                      className="overflow-hidden"
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-panel-${index}`}
+                    className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
+                  >
+                    <span className="text-sm font-semibold theme-text">{faq.question}</span>
+                    <span
+                      className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full theme-transition ${
+                        isOpen ? "theme-accent-soft" : "theme-surface-muted"
+                      }`}
                     >
-                      <p className="px-6 pb-5 text-sm theme-text-muted leading-relaxed">{faq.answer}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      {isOpen ? (
+                        <Minus className="h-3.5 w-3.5 theme-accent" aria-hidden="true" />
+                      ) : (
+                        <Plus className="h-3.5 w-3.5 theme-text-subtle" aria-hidden="true" />
+                      )}
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={`faq-panel-${index}`}
+                        role="region"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 0.4, 0.22, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-6 pb-5 text-sm theme-text-muted leading-relaxed">{faq.answer}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </motion.li>
             );
           })}

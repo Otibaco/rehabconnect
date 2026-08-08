@@ -78,9 +78,7 @@ export default function WhyContactSection() {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: [0.22, 0.4, 0.22, 1] }}
         >
-          <span className="text-xs font-medium tracking-wide theme-accent uppercase">
-            Why reach out
-          </span>
+          <span className="text-xs font-medium tracking-wide theme-accent uppercase">Why reach out</span>
           <h2 className="mt-3 text-2xl sm:text-4xl font-bold tracking-tight theme-text">
             Talking to us costs nothing but a few minutes
           </h2>
@@ -103,9 +101,7 @@ export default function WhyContactSection() {
               >
                 <div
                   className={`group h-full flex flex-col justify-between rounded-2xl theme-shadow theme-transition hover:-translate-y-1 hover:shadow-lg ${
-                    item.featured
-                      ? "glass-panel px-7 py-8 sm:py-10"
-                      : "glass-card px-6 py-7"
+                    item.featured ? "glass-panel px-7 py-8 sm:py-10" : "glass-card px-6 py-7"
                   }`}
                   style={item.featured ? { borderColor: "var(--color-border-strong)" } : undefined}
                 >

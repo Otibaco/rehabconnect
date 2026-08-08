@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { PhoneCall, ArrowRight } from 'lucide-react';
+import { ArrowRight, Phone } from 'lucide-react';
 import type { Variants, Transition } from 'framer-motion';
 
 // ---------------------------------------------------------------------------
@@ -129,7 +129,7 @@ export default function ContactHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-[var(--color-bg)]"
+      className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-[var(--color-bg)]"
       aria-label="Contact hero"
     >
       {/* ── Background Layer ── */}
@@ -171,7 +171,7 @@ export default function ContactHero() {
       </div>
 
       {/* ── Slide indicators ── */}
-      {/* <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex gap-2">
         {heroImages.map((_, idx) => (
           <button
             key={idx}
@@ -184,7 +184,7 @@ export default function ContactHero() {
             }`}
           />
         ))}
-      </div> */}
+      </div>
 
       {/* ── Content ── */}
       <motion.div
@@ -247,7 +247,7 @@ export default function ContactHero() {
               href={COORDINATOR_PHONE_HREF}
               className="theme-btn-ghost inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98]"
             >
-              <PhoneCall className="h-4 w-4" aria-hidden="true" />
+              <Phone className="h-4 w-4" aria-hidden="true" />
               Call {COORDINATOR_PHONE}
             </a>
           </motion.div>

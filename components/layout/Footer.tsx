@@ -27,14 +27,14 @@ const footerGroups: FooterGroup[] = [
       { label: 'For patients', path: '/for-patients' as RoutePath },
       { label: 'For families', path: '/for-families' as RoutePath },
       { label: 'How it works', path: '/how-it-works' as RoutePath },
-      { label: 'Explore centres', path: '/portal-dashboard' as RoutePath },
+      // { label: 'Explore centres', path: '/portal-dashboard' as RoutePath },
     ],
   },
   {
     title: 'Support',
     links: [
       { label: 'Help centre', path: '/help-center' as RoutePath },
-      { label: 'FAQ', path: '/faq' as RoutePath },
+      // { label: 'FAQ', path: '/faq' as RoutePath },
       { label: 'Contact us', path: '/contact' as RoutePath },
     ],
   },
@@ -43,7 +43,7 @@ const footerGroups: FooterGroup[] = [
     links: [
       { label: 'About', path: '/about' as RoutePath },
       { label: 'Resources', path: '/resources' as RoutePath },
-      { label: 'Careers', path: '/careers' as RoutePath },
+      // { label: 'Careers', path: '/careers' as RoutePath },
     ],
   },
   {

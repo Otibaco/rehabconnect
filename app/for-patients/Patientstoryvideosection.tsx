@@ -2,8 +2,8 @@
 
 import React, { useCallback, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
-import { Play, Pause, ShieldCheck } from "lucide-react";
+import Image from "next/image";
+import { Play, Pause, Quote } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -11,22 +11,8 @@ import { Play, Pause, ShieldCheck } from "lucide-react";
 
 const VIDEO_SRC = "/videos/patient-story.mp4";
 const POSTER_SRC =
-  "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80";
+  "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1800&q=85";
 const CAPTIONS_SRC = "/captions/patient-story.vtt";
-
-const trustPoints = [
-  "Shared with permission, identity protected on request",
-  "Captions available in the player",
-];
-
-// ---------------------------------------------------------------------------
-// Animation Variants
-// ---------------------------------------------------------------------------
-
-const columnVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 0.4, 0.22, 1] } },
-};
 
 // ---------------------------------------------------------------------------
 // Component
@@ -50,101 +36,92 @@ export default function PatientStoryVideoSection() {
   }, []);
 
   return (
-    <section
-      className="relative w-full theme-transition py-20 sm:py-28"
-      style={{ backgroundColor: "var(--color-section-light)" }}
-      aria-label="A patient's story"
-    >
-      <div className="max-w-6xl mx-auto px-6 sm:px-8 grid grid-cols-1 lg:grid-cols-[1fr_0.8fr] gap-12 lg:gap-16 items-center">
-        {/* ── Video ── */}
-        <motion.div
-          variants={columnVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="relative"
+    <section className="relative w-full min-h-[80vh] overflow-hidden theme-bg" aria-label="A patient's story">
+      {!videoFailed ? (
+        <video
+          ref={videoRef}
+          poster={POSTER_SRC}
+          controls={isPlaying}
+          playsInline
+          preload="metadata"
+          onError={() => setVideoFailed(true)}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          className="absolute inset-0 h-full w-full object-cover"
+          aria-label="A patient shares their recovery story"
         >
-          <div className="relative aspect-video w-full overflow-hidden rounded-[24px] theme-shadow theme-border">
-            {!videoFailed ? (
-              <video
-                ref={videoRef}
-                poster={POSTER_SRC}
-                controls={isPlaying}
-                playsInline
-                preload="metadata"
-                onError={() => setVideoFailed(true)}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                className="absolute inset-0 h-full w-full object-cover"
-                aria-label="A patient shares their recovery story"
-              >
-                <source src={VIDEO_SRC} type="video/mp4" />
-                <track kind="captions" src={CAPTIONS_SRC} srcLang="en" label="English" default />
-              </video>
-            ) : (
-              <img
-                src={POSTER_SRC}
-                alt="A patient shares their recovery story"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            )}
+          <source src={VIDEO_SRC} type="video/mp4" />
+          <track kind="captions" src={CAPTIONS_SRC} srcLang="en" label="English" default />
+        </video>
+      ) : (
+        <img
+          src={POSTER_SRC}
+          alt="A patient shares their recovery story"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
 
-            {!isPlaying && (
-              <button
-                type="button"
-                onClick={togglePlayback}
-                aria-label="Play patient story video"
-                className="absolute inset-0 flex items-center justify-center bg-black/20 theme-transition hover:bg-black/30"
-              >
-                <span className="inline-flex h-16 w-16 items-center justify-center rounded-full glass-panel theme-shadow theme-transition hover:scale-105">
-                  <Play className="h-6 w-6 theme-text ml-0.5" aria-hidden="true" fill="currentColor" />
-                </span>
-              </button>
-            )}
+      {/* Warm accent-tinted scrim — legibility without going stark black */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
+      <div
+        className="absolute inset-0 mix-blend-multiply opacity-[0.16]"
+        style={{ background: "var(--color-accent)" }}
+        aria-hidden="true"
+      />
 
-            {isPlaying && (
-              <button
-                type="button"
-                onClick={togglePlayback}
-                aria-label="Pause patient story video"
-                className="absolute top-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full glass-panel theme-transition hover:scale-105"
-              >
-                <Pause className="h-4 w-4 theme-text" aria-hidden="true" />
-              </button>
-            )}
-          </div>
-        </motion.div>
-
-        {/* ── Text ── */}
-        <motion.div
-          variants={columnVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          className="flex flex-col gap-6"
+      {!isPlaying && (
+        <button
+          type="button"
+          onClick={togglePlayback}
+          aria-label="Play patient story video"
+          className="absolute inset-0 flex items-center justify-center theme-transition"
         >
-          <span className="text-xs font-medium tracking-wide theme-accent uppercase">
-            In their words
+          <span className="inline-flex h-20 w-20 items-center justify-center rounded-full glass-panel theme-shadow theme-transition hover:scale-105">
+            <Play className="h-7 w-7 text-white ml-0.5" aria-hidden="true" fill="currentColor" />
           </span>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight theme-text leading-[1.15]">
-            &ldquo;I didn&apos;t know where to start. My coordinator did.&rdquo;
-          </h2>
-          <p className="text-sm sm:text-base theme-text-muted leading-relaxed">
-            Hear directly from someone who used RehabConnect to find outpatient
-            care close to home — and what the first two weeks actually felt
-            like.
-          </p>
+        </button>
+      )}
 
-          <ul className="flex flex-col gap-2.5">
-            {trustPoints.map((point) => (
-              <li key={point} className="flex items-center gap-2.5 text-xs theme-text-muted">
-                <ShieldCheck className="h-4 w-4 theme-accent shrink-0" aria-hidden="true" strokeWidth={1.75} />
-                {point}
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      </div>
+      {isPlaying && (
+        <button
+          type="button"
+          onClick={togglePlayback}
+          aria-label="Pause patient story video"
+          className="absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center rounded-full glass-panel theme-transition hover:scale-105"
+        >
+          <Pause className="h-4 w-4 text-white" aria-hidden="true" />
+        </button>
+      )}
+
+      {/* Floating rounded quote card — patient's signature device, not text baked onto the image */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.7, ease: [0.22, 0.4, 0.22, 1] }}
+        className="absolute left-6 right-6 bottom-6 sm:left-auto sm:right-10 sm:bottom-10 sm:max-w-sm"
+      >
+        <div className="relative rounded-[28px] glass-panel theme-shadow px-6 py-6 sm:px-7 sm:py-7">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full theme-accent-soft mb-4">
+            <Quote className="h-4 w-4 theme-accent" aria-hidden="true" strokeWidth={1.75} />
+          </span>
+          <p className="text-base sm:text-lg font-semibold theme-text leading-snug">
+            A two-minute look at what the first two weeks actually feel like.
+          </p>
+          <div className="mt-5 flex items-center gap-3">
+            <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full theme-shadow">
+              <Image
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=85"
+                alt="Portrait of the patient in the video"
+                fill
+                className="object-cover"
+                sizes="36px"
+              />
+            </div>
+            <p className="text-xs theme-text-muted">Outpatient graduate, in her own words</p>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

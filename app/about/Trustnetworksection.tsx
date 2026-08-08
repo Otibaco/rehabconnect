@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState, memo } from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -59,18 +58,18 @@ const StatItem = memo(function StatItem({ stat, isInView }: { stat: Stat; isInVi
 
   return (
     <motion.div
-      className="flex flex-col items-center px-4 sm:px-6 py-4"
-      initial={{ opacity: 0, y: 12 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+      className="flex flex-col items-start px-0 sm:px-8 py-6 sm:py-0"
+      initial={{ opacity: 0, y: 14 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
     >
-      <div className="flex items-baseline gap-0.5 mb-1">
-        <span className="text-2xl sm:text-3xl font-semibold tracking-tight theme-text tabular-nums">
+      <div className="flex items-baseline gap-1">
+        <span className="text-4xl sm:text-5xl font-bold tracking-tight theme-text tabular-nums">
           {animatedValue.toLocaleString()}
         </span>
-        <span className="text-lg font-medium theme-accent">{stat.suffix}</span>
+        <span className="text-xl sm:text-2xl font-semibold theme-accent">{stat.suffix}</span>
       </div>
-      <p className="text-xs sm:text-sm theme-text-muted text-center leading-tight">{stat.label}</p>
+      <p className="mt-2 text-xs sm:text-sm theme-text-muted">{stat.label}</p>
     </motion.div>
   );
 });
@@ -80,20 +79,11 @@ const StatItem = memo(function StatItem({ stat, isInView }: { stat: Stat; isInVi
 // ---------------------------------------------------------------------------
 
 const stats: Stat[] = [
-  { value: 1250, suffix: "+", label: "Patients helped" },
-  { value: 100, suffix: "%", label: "Verified centres" },
-  { value: 24, suffix: "", label: "States covered" },
+  { value: 1250, suffix: "+", label: "People helped" },
+  { value: 100, suffix: "%", label: "Licensed specialists" },
+  { value: 24, suffix: "", label: "States served virtually" },
   { value: 2, suffix: "h", label: "Avg. response time" },
 ];
-
-// ---------------------------------------------------------------------------
-// Animation Variants
-// ---------------------------------------------------------------------------
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 0.4, 0.22, 1] } },
-};
 
 // ---------------------------------------------------------------------------
 // Component
@@ -126,34 +116,24 @@ export default function TrustNetworkSection() {
       style={{ backgroundColor: "var(--color-section-light)" }}
       aria-label="Our network in numbers"
     >
-      <div className="max-w-5xl mx-auto px-6 sm:px-8 flex flex-col items-center text-center">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-          className="inline-flex items-center gap-2 rounded-full theme-nav-shell px-4 py-1.5"
+          transition={{ duration: 0.6, ease: [0.22, 0.4, 0.22, 1] }}
+          className="max-w-xl mb-14"
         >
-          <ShieldCheck className="h-3.5 w-3.5 theme-accent" aria-hidden="true" strokeWidth={2} />
-          <span className="text-xs font-medium tracking-wide theme-text-muted">A network you can trust</span>
+          <span className="text-xs font-medium tracking-wide theme-accent uppercase">A network you can trust</span>
+          <h2 className="mt-3 text-2xl sm:text-4xl font-bold tracking-tight theme-text">
+            Growing, and every specialist still earns their place
+          </h2>
         </motion.div>
 
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          className="mt-5 text-2xl sm:text-4xl font-bold tracking-tight theme-text max-w-xl"
-        >
-          Growing, and every centre still earns its place
-        </motion.h2>
-
-        <div className="mt-12 glass-panel theme-border theme-shadow w-full max-w-3xl rounded-2xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 theme-border">
-            {stats.map((stat) => (
-              <StatItem key={stat.label} stat={stat} isInView={isInView} />
-            ))}
-          </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 sm:divide-x theme-border">
+          {stats.map((stat) => (
+            <StatItem key={stat.label} stat={stat} isInView={isInView} />
+          ))}
         </div>
       </div>
     </section>

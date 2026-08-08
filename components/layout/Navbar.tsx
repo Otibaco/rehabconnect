@@ -26,7 +26,6 @@ const primaryLinks: NavLink[] = [
   { label: 'For patients', path: '/for-patients' as RoutePath },
   { label: 'For families', path: '/for-families' as RoutePath },
   { label: 'About', path: '/about' as RoutePath },
-  { label: 'Resources', path: '/resources' as RoutePath },
   { label: 'Contact', path: '/contact' as RoutePath },
 ];
 

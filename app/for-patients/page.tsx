@@ -5,8 +5,7 @@ import ProgramsSection from "./Programssection";
 import PatientStoryVideoSection from "./Patientstoryvideosection";
 import TestimonialSection from "./Testimonialsection";
 import PatientCTASection from "./Patientctasection";
-import { forPatientsFAQ } from "@/lib/data/page-content";
-import FAQSection from "@/components/layout/FAQSection";
+
 
 export const metadata: Metadata = {
   title: "For Patients | RehabConnect",
@@ -22,11 +21,7 @@ export default function ForPatientPage() {
       <ProgramsSection />
       <PatientStoryVideoSection />
       <TestimonialSection />
-      <FAQSection
-        title={forPatientsFAQ.title}
-        subtitle={forPatientsFAQ.subtitle}
-        faqs={forPatientsFAQ.faqs}
-      />
+      {/* <SupportFAQSection /> */}
       <PatientCTASection />
     </main>
   );
