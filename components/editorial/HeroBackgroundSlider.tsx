@@ -31,7 +31,7 @@ export const HeroBackgroundSlider: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % heroImages.length);
-    }, 6500);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, []);

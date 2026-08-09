@@ -1,6 +1,5 @@
-import ResourcesPage from "./ResourcesPage";
+import { ResourcesPage } from "./ResourcesPage";
 
-export default function page() {
+export default function Home() {
   return <ResourcesPage />;
 }
-

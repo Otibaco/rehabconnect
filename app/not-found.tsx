@@ -1,124 +1,73 @@
-// app/not-found.tsx
-'use client';
-
+"use client"
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Search, Home } from 'lucide-react';
+import { Home, ArrowLeft, Compass, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import type { Variants } from 'framer-motion';
+import Link from 'next/link';
+import { siteConfig } from '@/lib/config';
 
-// ---------------------------------------------------------------------------
-// Animation Variants
-// ---------------------------------------------------------------------------
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.15,
-    },
-  },
-};
-
-const childTransition = {
-  duration: 0.55,
-  ease: [0.25, 0.4, 0.25, 1] as const,
-};
-
-const childVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: childTransition,
-  },
-};
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
-export default function NotFound() {
+export default function NotFoundPage() {
   const router = useRouter();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--color-bg)]">
+    <div className="min-h-[75vh] flex flex-col items-center justify-center px-4 sm:px-6 py-20 text-center font-sans relative overflow-hidden">
       
-      {/* ── Decorative background ── */}
-      <div className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.06] blur-[120px]"
-          style={{ background: 'var(--color-hero-glow)' }}
-        />
-        <div
-          className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full opacity-[0.04] blur-[120px]"
-          style={{ background: 'var(--color-hero-glow-2)' }}
-        />
-      </div>
+      {/* Background ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[var(--gold)]/5 rounded-full blur-3xl pointer-events-none" />
 
-      {/* ── Content ── */}
-      <motion.div
-        className="relative z-10 max-w-lg mx-auto px-6 text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Large 404 */}
-        <motion.div variants={childVariants} className="mb-6">
-          <span className="text-[8rem] sm:text-[10rem] font-bold tracking-tight leading-none text-[var(--color-accent)] opacity-20 select-none">
-            404
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        
+        {/* Large 404 Display */}
+        <div className="space-y-2">
+          <span className="font-mono text-xs text-[var(--gold)] font-bold tracking-widest uppercase block">
+            ERROR 404
           </span>
-        </motion.div>
-
-        {/* Badge */}
-        <motion.div variants={childVariants}>
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--color-surface-muted)] border border-[var(--color-border)] text-[var(--color-accent)] text-xs font-medium mb-6">
-            <Search className="w-3.5 h-3.5" />
-            Page not found
-          </span>
-        </motion.div>
-
-        {/* Heading */}
-        <motion.h1
-          variants={childVariants}
-          className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text)] mb-3"
-        >
-          This page doesn&apos;t exist
-        </motion.h1>
+          <h1 className="font-cinzel text-7xl sm:text-8xl font-extrabold text-[var(--foreground)] tracking-tight">
+            40<span className="text-[var(--gold)]">4</span>
+          </h1>
+        </div>
 
         {/* Description */}
-        <motion.p
-          variants={childVariants}
-          className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed mb-10 max-w-sm mx-auto"
-        >
-          The page you&apos;re looking for may have been moved, renamed, or is
-          temporarily unavailable. Let us help you find the right path.
-        </motion.p>
+        <div className="space-y-3">
+          <h2 className="font-cinzel text-xl sm:text-2xl font-bold text-[var(--foreground)]">
+            PAGE NOT FOUND
+          </h2>
+          <p className="font-sans text-xs sm:text-sm text-[var(--foreground-muted)] leading-relaxed">
+            The requested page could not be located or may have been moved.
+          </p>
+        </div>
 
         {/* Buttons */}
-        <motion.div
-          variants={childVariants}
-          className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto justify-center"
-        >
-          <button
-            onClick={() => router.push('/')}
-            className="inline-flex items-center gap-2 theme-btn-primary px-6 py-3 text-sm font-medium rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
-          >
-            <Home className="w-4 h-4" />
-            Back to home
-          </button>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 theme-btn-ghost px-6 py-3 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98]"
+            className="w-full sm:w-auto px-5 py-3 bg-[var(--background-secondary)] hover:bg-[var(--background-tertiary)] text-[var(--foreground)] border border-[var(--border)] hover:border-[var(--gold)] font-mono text-xs font-bold uppercase tracking-wider rounded-sm transition-all flex items-center justify-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Go back
+            <span>GO BACK</span>
           </button>
-        </motion.div>
-      </motion.div>
 
-    </section>
+          <Link
+            href="/"
+            className="w-full sm:w-auto px-6 py-3 bg-[var(--gold)] hover:bg-[#c49f2c] text-black font-mono text-xs font-bold uppercase tracking-wider rounded-sm transition-all shadow-md flex items-center justify-center gap-2"
+          >
+            <Home className="w-4 h-4" />
+            <span>RETURN HOME</span>
+          </Link>
+        </div>
+
+        {/* Need Help footer note */}
+        <div className="pt-8 border-t border-[var(--border-subtle)] flex items-center justify-center gap-2 text-xs text-[var(--foreground-subtle)]">
+          <Phone className="w-3.5 h-3.5 text-[var(--accent-sage)]" />
+          <span>24/7 Helpline:</span>
+          <Link
+            href={`tel:${siteConfig.phonePlaceholder.replace(/\s+/g, '')}`}
+            className="text-[var(--gold)] font-mono font-bold hover:underline"
+          >
+            {siteConfig.phonePlaceholder}
+          </Link>
+        </div>
+
+      </div>
+    </div>
   );
-}
+};

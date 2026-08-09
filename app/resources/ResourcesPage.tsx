@@ -1,393 +1,184 @@
-'use client';
+import React, { useState } from 'react';
+import { EditorialHero } from '@/components/editorial/EditorialHero';
+import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { resourceArticles } from '@/lib/data';
+import { Search, BookOpen, Clock, ArrowUpRight, X, Sparkles } from 'lucide-react';
+import { ResourceArticle } from '@/types/type';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import {
-  BookOpen,
-  FileText,
-  Video,
-  Headphones,
-  Download,
-  ExternalLink,
-  ArrowRight,
-  Heart,
-  Shield,
-  Users,
-  Brain,
-  Lightbulb,
-  ChevronRight,
-} from 'lucide-react';
-import type { Variants, Transition } from 'framer-motion';
+export const ResourcesPage: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeArticle, setActiveArticle] = useState<ResourceArticle | null>(null);
 
-// ---------------------------------------------------------------------------
-// Animation Variants
-// ---------------------------------------------------------------------------
+  const categories = ['All', 'Education', 'Family Support', 'Recovery', 'Substance Use', 'Mental Wellbeing'];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
+  const filteredArticles = resourceArticles.filter((art) => {
+    const matchesCategory = selectedCategory === 'All' || art.category === selectedCategory;
+    const matchesSearch = art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          art.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
-const childTransition: Transition = {
-  duration: 0.5,
-  ease: [0.25, 0.4, 0.25, 1],
-};
-
-const childVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: childTransition },
-};
-
-// ---------------------------------------------------------------------------
-// Data
-// ---------------------------------------------------------------------------
-
-const featuredResources = [
-  {
-    icon: <FileText className="w-5 h-5" />,
-    type: 'Guide',
-    title: 'Understanding rehabilitation options',
-    description: 'A comprehensive overview of inpatient, outpatient, and community-based programmes available across Nigeria.',
-    link: '#',
-    readTime: '8 min read',
-  },
-  {
-    icon: <Video className="w-5 h-5" />,
-    type: 'Video',
-    title: 'How care coordination works',
-    description: 'Watch how our coordinators match individuals with the right centres — from first contact to admission.',
-    link: '#',
-    readTime: '4 min watch',
-  },
-  {
-    icon: <Headphones className="w-5 h-5" />,
-    type: 'Podcast',
-    title: 'Voices of recovery: Real stories',
-    description: 'Listen to individuals and families share their experiences navigating rehabilitation in Nigeria.',
-    link: '#',
-    readTime: '22 min listen',
-  },
-  {
-    icon: <Download className="w-5 h-5" />,
-    type: 'Download',
-    title: 'Preparing for a consultation',
-    description: 'A checklist of questions to ask and information to gather before speaking with a care coordinator.',
-    link: '#',
-    readTime: 'PDF · 3 pages',
-  },
-];
-
-const categories = [
-  {
-    icon: <Heart className="w-4 h-4" />,
-    title: 'For patients',
-    count: 12,
-    href: '#',
-  },
-  {
-    icon: <Users className="w-4 h-4" />,
-    title: 'For families',
-    count: 8,
-    href: '#',
-  },
-  {
-    icon: <Brain className="w-4 h-4" />,
-    title: 'Mental health',
-    count: 10,
-    href: '#',
-  },
-  {
-    icon: <Shield className="w-4 h-4" />,
-    title: 'Addiction recovery',
-    count: 9,
-    href: '#',
-  },
-  {
-    icon: <Lightbulb className="w-4 h-4" />,
-    title: 'Self-help tools',
-    count: 6,
-    href: '#',
-  },
-];
-
-const recentArticles = [
-  {
-    title: 'What to expect during your first week of inpatient rehabilitation',
-    category: 'For patients',
-    readTime: '6 min read',
-    href: '#',
-  },
-  {
-    title: 'How to talk to a loved one about seeking help',
-    category: 'For families',
-    readTime: '5 min read',
-    href: '#',
-  },
-  {
-    title: 'Understanding dual diagnosis: Mental health and substance use',
-    category: 'Mental health',
-    readTime: '7 min read',
-    href: '#',
-  },
-  {
-    title: 'The role of aftercare in long-term recovery',
-    category: 'Addiction recovery',
-    readTime: '4 min read',
-    href: '#',
-  },
-  {
-    title: 'Building a support system during outpatient treatment',
-    category: 'For patients',
-    readTime: '5 min read',
-    href: '#',
-  },
-  {
-    title: 'Signs your family member may need professional help',
-    category: 'For families',
-    readTime: '6 min read',
-    href: '#',
-  },
-];
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
-export default function ResourcesPage() {
   return (
-    <main className="bg-[var(--color-bg)]">
+    <div className="space-y-0">
       
-      {/* ── Page Header ── */}
-      <section className="relative pt-20 pb-10 sm:pt-28 sm:pb-14 overflow-hidden">
-        <div className="pointer-events-none absolute -top-32 -left-32 w-[400px] h-[400px] rounded-full opacity-[0.05] blur-[120px]" style={{ background: 'var(--color-hero-glow)' }} />
-        
-        <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-          >
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                <BookOpen className="w-4 h-4" />
-              </span>
-              <span className="text-xs font-medium tracking-wide text-[var(--color-accent)] uppercase">
-                Resources & guides
-              </span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.8rem] font-bold tracking-tight text-[var(--color-text)] leading-[1.12]">
-              Everything you need
-              <br />
-              <span className="text-[var(--color-accent)]">to make informed decisions</span>
-            </h1>
-            <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed max-w-xl">
-              Guides, videos, and tools to help you understand your options and feel confident about the next step.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      {/* HERO */}
+      <EditorialHero
+        number="01"
+        sectionLabel="KNOWLEDGE BASE & GUIDES"
+        title="RESOURCES & EDUCATION."
+        subtitle="Evidence-based insights, educational articles, and recovery advice for individuals and families."
+        breadcrumb="Resources"
+      />
 
-      {/* ── Featured Resources ── */}
-      <section className="pb-16 sm:pb-20">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {featuredResources.map((item) => (
-              <motion.a
-                key={item.title}
-                href={item.link}
-                variants={childVariants}
-                className="group flex flex-col gap-3 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-md hover:border-[var(--color-accent)]/30 transition-all duration-300"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                    {item.icon}
-                  </span>
-                  <span className="text-[10px] font-medium text-[var(--color-text-muted)] bg-[var(--color-surface-muted)] px-2 py-0.5 rounded-full">
-                    {item.type}
-                  </span>
-                </div>
-                <h3 className="text-sm font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors leading-snug">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed flex-1">
-                  {item.description}
-                </p>
-                <div className="flex items-center justify-between pt-2 border-t border-[var(--color-border)]">
-                  <span className="text-[11px] text-[var(--color-text-muted)]">{item.readTime}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-0.5 transition-all" />
-                </div>
-              </motion.a>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Browse by Category ── */}
-      <section className="pb-16 sm:pb-20">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-text)]">
-              Browse by category
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {categories.map((category) => (
-              <motion.a
-                key={category.title}
-                href={category.href}
-                variants={childVariants}
-                className="group flex items-center gap-3 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-accent)]/30 hover:shadow-sm transition-all duration-300"
-              >
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)] shrink-0">
-                  {category.icon}
-                </span>
-                <div className="min-w-0">
-                  <p className="text-xs font-medium text-[var(--color-text)] truncate group-hover:text-[var(--color-accent)] transition-colors">
-                    {category.title}
-                  </p>
-                  <p className="text-[11px] text-[var(--color-text-muted)]">{category.count} resources</p>
-                </div>
-              </motion.a>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Recent Articles ── */}
-      <section className="pb-16 sm:pb-20">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      {/* FILTER & SEARCH BAR */}
+      <section className="py-12 bg-[var(--background-secondary)] border-b border-[var(--border)] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             
-            {/* Articles list */}
-            <div className="lg:col-span-8">
-              <motion.div
-                className="mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5 }}
-              >
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-text)]">
-                  Recent articles
-                </h2>
-              </motion.div>
-
-              <motion.div
-                className="space-y-2"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-40px' }}
-              >
-                {recentArticles.map((article) => (
-                  <motion.a
-                    key={article.title}
-                    href={article.href}
-                    variants={childVariants}
-                    className="group flex items-center justify-between gap-4 p-4 rounded-xl hover:bg-[var(--color-surface-muted)] transition-colors duration-200"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-xs text-[var(--color-accent)] font-medium mb-0.5">{article.category}</p>
-                      <h3 className="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors truncate">
-                        {article.title}
-                      </h3>
-                    </div>
-                    <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-[11px] text-[var(--color-text-muted)] hidden sm:block">{article.readTime}</span>
-                      <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-0.5 transition-all" />
-                    </div>
-                  </motion.a>
-                ))}
-              </motion.div>
+            {/* SEARCH */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-subtle)]" />
+              <input
+                type="text"
+                placeholder="Search articles, topics, or keywords..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border)] rounded-sm text-xs font-sans text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:outline-none focus:border-[var(--gold)]"
+              />
             </div>
 
-            {/* Sidebar CTA */}
-            <div className="lg:col-span-4">
-              <motion.div
-                className="sticky top-24 rounded-2xl bg-[var(--color-section-soft)] border border-[var(--color-border)] p-6 sm:p-8"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ delay: 0.3, duration: 0.55, ease: [0.25, 0.4, 0.25, 1] }}
-              >
-                <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] mb-4">
-                  <ExternalLink className="w-5 h-5" />
-                </span>
-                <h3 className="text-lg font-bold tracking-tight text-[var(--color-text)]">
-                  Need personalised guidance?
-                </h3>
-                <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
-                  Speak with a care coordinator who can help you navigate your options 
-                  based on your specific situation.
-                </p>
-                <a
-                  href="/contact"
-                  className="inline-flex items-center gap-2 mt-5 text-sm font-medium theme-btn-primary px-5 py-2.5 rounded-xl transition-all duration-200 hover:opacity-90"
+            {/* CATEGORIES */}
+            <div className="flex flex-wrap items-center gap-2 font-mono text-xs overflow-x-auto pb-2 md:pb-0">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3.5 py-2 rounded-sm transition-all shrink-0 ${
+                    selectedCategory === cat
+                      ? 'bg-[var(--gold)] text-[#080907] font-bold shadow-lg'
+                      : 'bg-[var(--background-tertiary)] hover:bg-[var(--border)] text-[var(--foreground-muted)] border border-[var(--border-subtle)]'
+                  }`}
                 >
-                  Talk to a coordinator
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </motion.div>
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ARTICLE ROWS */}
+      <section className="py-24 md:py-36 bg-[var(--background)] border-b border-[var(--border)] relative overflow-hidden">
+        
+        {/* Grid */}
+        <div className="absolute inset-0 bg-architectural-grid opacity-15 pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
+          
+          <div className="flex items-center justify-between font-mono text-xs text-[var(--foreground-subtle)] border-b border-[var(--border-subtle)] pb-4">
+            <span>SHOWING {filteredArticles.length} ARTICLES</span>
+            <span>ACTIVE FILTER: {selectedCategory.toUpperCase()}</span>
+          </div>
+
+          <div className="space-y-6">
+            {filteredArticles.map((article) => (
+              <div
+                key={article.id}
+                onClick={() => setActiveArticle(article)}
+                className="group cursor-pointer p-8 bg-[var(--background-secondary)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] hover:border-[var(--gold)] rounded-sm transition-all duration-300 relative crosshair-corner shadow-xl"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  
+                  <div className="md:col-span-3 flex items-center gap-4">
+                    <span className="font-mono text-3xl font-extrabold text-[var(--gold)] group-hover:scale-105 transition-transform">
+                      {article.number}
+                    </span>
+                    <span className="px-3 py-1 bg-[var(--background)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--gold-light)] font-bold uppercase tracking-wider rounded-sm">
+                      {article.category}
+                    </span>
+                  </div>
+
+                  <div className="md:col-span-8 space-y-2">
+                    <h3 className="font-cinzel text-xl sm:text-2xl font-bold text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors">
+                      {article.title}
+                    </h3>
+                    <p className="font-sans text-xs sm:text-sm text-[var(--foreground-muted)] line-clamp-2 leading-relaxed">
+                      {article.description}
+                    </p>
+                    <div className="flex items-center gap-4 text-[10px] font-mono text-[var(--foreground-subtle)] pt-1">
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-[var(--gold)]" />
+                        {article.readTime}
+                      </span>
+                      <span>•</span>
+                      <span>{article.publishedDate}</span>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-1 flex justify-end">
+                    <div className="p-3 rounded-sm bg-[var(--background)] border border-[var(--border-subtle)] text-[var(--foreground-subtle)] group-hover:text-[var(--gold)] group-hover:border-[var(--gold)] transition-all">
+                      <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* READ ARTICLE MODAL */}
+      {activeArticle && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="max-w-3xl w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-sm p-6 sm:p-10 shadow-2xl space-y-6 my-8 relative crosshair-corner">
+            
+            <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
+              <span className="px-3 py-1 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--gold)] font-bold uppercase rounded-sm">
+                {activeArticle.category}
+              </span>
+              <button
+                onClick={() => setActiveArticle(null)}
+                className="p-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <h2 className="font-cinzel text-2xl sm:text-3xl font-bold text-[var(--foreground)] leading-snug">
+              {activeArticle.title}
+            </h2>
+
+            <div className="space-y-4 font-sans text-xs sm:text-sm text-[var(--foreground-muted)] leading-relaxed border-t border-[var(--border-subtle)] pt-6 max-h-[60vh] overflow-y-auto pr-2">
+              {activeArticle.content.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))}
+            </div>
+
+            <div className="pt-4 border-t border-[var(--border)] flex items-center justify-between">
+              <span className="font-mono text-xs text-[var(--gold)] font-bold">
+                REHAB NIGERIA RESOURCE LIBRARY
+              </span>
+              <button
+                onClick={() => setActiveArticle(null)}
+                className="px-6 py-2.5 bg-[var(--gold)] text-[#080907] font-mono text-xs font-bold rounded-sm hover:bg-[var(--gold-light)] transition-colors"
+              >
+                CLOSE ARTICLE
+              </button>
             </div>
 
           </div>
         </div>
-      </section>
+      )}
 
-      {/* ── Newsletter CTA ── */}
-      <section className="pb-20 sm:pb-28">
-        <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="rounded-2xl bg-[var(--color-section-soft)] border border-[var(--color-border)] p-8 sm:p-10 text-center"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, ease: [0.25, 0.4, 0.25, 1] }}
-          >
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] mb-4">
-              <BookOpen className="w-5 h-5" />
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-text)]">
-              Stay informed with our latest resources
-            </h2>
-            <p className="mt-2 text-sm text-[var(--color-text-muted)] max-w-md mx-auto">
-              New guides, articles, and tools added regularly to support your journey.
-              Check back or bookmark this page.
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-[var(--color-accent)] hover:underline"
-            >
-              Get in touch for more information
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </motion.div>
-        </div>
-      </section>
+      {/* FINAL CTA */}
+      <FinalCTA />
 
-    </main>
+    </div>
   );
-}
+};

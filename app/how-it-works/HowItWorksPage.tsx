@@ -1,498 +1,203 @@
-'use client';
-
-import React, { useEffect, useRef, useState } from 'react';
+"use client"
+import React from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
-import {
-  ClipboardList,
-  Stethoscope,
-  UserCheck,
-  Building2,
-  Heart,
-  ArrowRight,
-  Shield,
-  Clock,
-  MessageCircle,
-  Phone,
-  Star,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
-import type { Variants, Transition } from 'framer-motion';
+import { EditorialHero } from '@/components/editorial/EditorialHero';
+import { SectionLabel } from '@/components/editorial/SectionLabel';
+import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { siteConfig } from '@/lib/config';
+import { ShieldCheck, CheckCircle2, ArrowUpRight, Lock, CreditCard, Video, Calendar, Sparkles, HelpCircle } from 'lucide-react';
+import Link from 'next/link';
 
-// ---------------------------------------------------------------------------
-// Animation Variants
-// ---------------------------------------------------------------------------
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
-
-const childTransition: Transition = {
-  duration: 0.5,
-  ease: [0.25, 0.4, 0.25, 1],
-};
-
-const childVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: childTransition },
-};
-
-// ---------------------------------------------------------------------------
-// Data
-// ---------------------------------------------------------------------------
-
-const steps = [
-  {
-    number: '01',
-    icon: <ClipboardList className="w-6 h-6" />,
-    title: 'Tell us your need',
-    description:
-      'Complete a brief, confidential assessment online or by phone. It takes about two minutes and helps us understand your situation.',
-    details: [
-      'Share as much or as little as you\'re comfortable with',
-      'Available 24/7 — complete it on your own time',
-      'No commitment required at this stage',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80',
-    ],
-    alt: 'Person completing a confidential online assessment',
-  },
-  {
-    number: '02',
-    icon: <Stethoscope className="w-6 h-6" />,
-    title: 'Clinical review',
-    description:
-      'A dedicated care coordinator reviews your history, preferences, and goals to understand exactly what kind of support you need.',
-    details: [
-      'Personalised review by a trained professional',
-      'We consider clinical needs, location, and budget',
-      'You\'ll have a clear picture within 48 hours',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=80',
-    ],
-    alt: 'Care coordinator reviewing clinical information',
-  },
-  {
-    number: '03',
-    icon: <UserCheck className="w-6 h-6" />,
-    title: 'Meet your coordinator',
-    description:
-      'Connect via encrypted video call or telephone with your personal care coordinator to discuss options and ask questions.',
-    details: [
-      'Confidential, one-on-one conversation',
-      'Ask anything — no question is too small',
-      'Available during business hours and some evenings',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1200&q=80',
-    ],
-    alt: 'Video consultation with a care coordinator',
-  },
-  {
-    number: '04',
-    icon: <Building2 className="w-6 h-6" />,
-    title: 'Verified placement',
-    description:
-      'Receive tailored recommendations for accredited rehabilitation centres that match your specific needs and preferences.',
-    details: [
-      'All centres are pre-vetted and regularly reviewed',
-      'Compare options side by side',
-      'We handle the coordination and paperwork',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80',
-    ],
-    alt: 'Modern rehabilitation centre facility',
-  },
-  {
-    number: '05',
-    icon: <Heart className="w-6 h-6" />,
-    title: 'Recovery & aftercare',
-    description:
-      'Begin your programme with confidence. Your coordinator remains available for advocacy and support throughout your journey.',
-    details: [
-      'Continuous support during admission',
-      'Regular check-ins to ensure everything is on track',
-      'Aftercare planning for long-term success',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80',
-    ],
-    alt: 'Supportive recovery and aftercare session',
-  },
-];
-
-const features = [
-  {
-    icon: <Shield className="w-5 h-5" />,
-    title: '100% confidential',
-    description: 'Everything you share is encrypted and never disclosed without your consent.',
-  },
-  {
-    icon: <Clock className="w-5 h-5" />,
-    title: 'Fast matching',
-    description: 'Most people receive verified recommendations within 48 hours.',
-  },
-  {
-    icon: <MessageCircle className="w-5 h-5" />,
-    title: 'Human-guided',
-    description: 'Real care coordinators, not algorithms — empathy at every step.',
-  },
-  {
-    icon: <Star className="w-5 h-5" />,
-    title: 'No cost to you',
-    description: 'Our coordination service is completely free for individuals and families.',
-  },
-];
-
-const testimonials = [
-  {
-    quote: 'I had no idea where to start. Within two days, RehabConnect gave me clarity and connected us with a centre that felt right.',
-    name: 'Adebimpe O.',
-    location: 'Lagos',
-  },
-  {
-    quote: 'The coordinator listened without judgement. She understood exactly what my brother needed and made the process feel human.',
-    name: 'Tunde B.',
-    location: 'Abuja',
-  },
-];
-
-// ---------------------------------------------------------------------------
-// Image Carousel Component
-// ---------------------------------------------------------------------------
-
-const ImageCarousel: React.FC<{ images: string[]; alt: string }> = ({ images, alt }) => {
-  const [current, setCurrent] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 4000);
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [images.length]);
-
-  const goTo = (index: number) => {
-    setCurrent(index);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 4000);
-  };
-
-  const goPrev = () => {
-    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const goNext = () => {
-    setCurrent((prev) => (prev + 1) % images.length);
-  };
+export const HowItWorksPage: React.FC = () => {
+  const journeyStages = [
+    {
+      number: '01',
+      title: 'DISCOVER',
+      subtitle: 'Learn about Rehab Nigeria and our digital care model',
+      description: 'Explore our platform to understand our non-stigmatizing digital consultation model, evidence-based services, and strict privacy safeguards.',
+      badge: 'EXPLORATION',
+      icon: ShieldCheck
+    },
+    {
+      number: '02',
+      title: 'REGISTER',
+      subtitle: 'Create your confidential user account',
+      description: 'Register securely with your preferred contact email or phone. Individual patient and family member account options are available.',
+      badge: 'SECURE ACCOUNT',
+      icon: Lock
+    },
+    {
+      number: '03',
+      title: 'ONBOARD',
+      subtitle: 'Provide background and medical history context',
+      description: 'Complete a private online background intake form detailing relevant history, challenges, and goals to help your assigned consultant prepare thoroughly.',
+      badge: 'CLINICAL INTAKE',
+      icon: CheckCircle2
+    },
+    {
+      number: '04',
+      title: 'BOOK',
+      subtitle: 'Select an appointment slot that suits your schedule',
+      description: 'Choose a convenient date and time for your private virtual video consultation with a qualified medical or psychological professional.',
+      badge: 'FLEXIBLE SCHEDULE',
+      icon: Calendar
+    },
+    {
+      number: '05',
+      title: 'PAY',
+      subtitle: 'Complete secure consultation fee payment',
+      description: `Pay the standard ₦${siteConfig.consultationFee} consultation fee via encrypted Nigerian card, bank transfer, or USSD gateway.`,
+      badge: 'ENCRYPTED PAYMENT',
+      icon: CreditCard
+    },
+    {
+      number: '06',
+      title: 'CONSULT',
+      subtitle: 'Attend your private 1-on-1 video session',
+      description: 'Join your assigned healthcare consultant in a private, encrypted virtual video room. Receive an empathetic assessment and a personalized recovery roadmap.',
+      badge: '1-ON-1 VIRTUAL CARE',
+      icon: Video
+    },
+    {
+      number: '07',
+      title: 'FOLLOW UP',
+      subtitle: 'Sustain your momentum with ongoing care',
+      description: 'Schedule recommended follow-up counseling sessions, access lifestyle planning guides, and track long-term progress with continuous professional support.',
+      badge: 'SUSTAINED RECOVERY',
+      icon: ArrowUpRight
+    }
+  ];
 
   return (
-    <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[var(--color-surface-muted)] group">
-      {/* Images */}
-      {images.map((src, idx) => (
-        <motion.div
-          key={idx}
-          className="absolute inset-0"
-          initial={false}
-          animate={{ opacity: idx === current ? 1 : 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
-        >
-          <Image
-            src={src}
-            alt={`${alt} — image ${idx + 1}`}
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-        </motion.div>
-      ))}
+    <div className="space-y-0">
+      
+      {/* HERO */}
+      <EditorialHero
+        number="01"
+        sectionLabel="THE COMPLETE PATIENT JOURNEY"
+        title="HOW REHAB NIGERIA WORKS."
+        subtitle="A clear, confidential 7-stage pathway designed to give you dignified professional care from the comfort of your home."
+        breadcrumb="How It Works"
+      />
 
-      {/* Subtle overlay for text readability if needed */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+      {/* CONSULTATION FEE BANNER */}
+      <section className="py-8 bg-[var(--background-secondary)] border-b border-[var(--border)] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-center sm:text-left">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)] rounded-sm">
+              <CreditCard className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[var(--foreground-muted)] block text-[10px] uppercase">STANDARD ONLINE CONSULTATION FEE:</span>
+              <span className="text-[var(--foreground)] font-bold text-sm sm:text-base">₦{siteConfig.consultationFee} PER SESSION</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-[var(--green-light)] font-bold">
+            <Sparkles className="w-4 h-4 shrink-0" />
+            <span>Includes Pre-Consultation History Review + 1-on-1 Virtual Video Call</span>
+          </div>
+        </div>
+      </section>
 
-      {/* Navigation arrows */}
-      <button
-        onClick={goPrev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm border border-white/40 flex items-center justify-center text-[var(--color-text)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm hover:bg-white"
-        aria-label="Previous image"
-      >
-        <ChevronLeft className="w-4 h-4" />
-      </button>
-      <button
-        onClick={goNext}
-        className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm border border-white/40 flex items-center justify-center text-[var(--color-text)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm hover:bg-white"
-        aria-label="Next image"
-      >
-        <ChevronRight className="w-4 h-4" />
-      </button>
+      {/* 7-STAGE EDITORIAL TIMELINE */}
+      <section className="py-24 md:py-36 bg-[var(--background)] border-b border-[var(--border)] relative overflow-hidden">
+        
+        {/* Subtle Architectural Grid */}
+        <div className="absolute inset-0 bg-architectural-grid opacity-15 pointer-events-none"></div>
 
-      {/* Dots */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goTo(idx)}
-            aria-label={`Go to image ${idx + 1}`}
-            className={`rounded-full transition-all duration-300 ${
-              idx === current
-                ? 'w-5 h-1.5 bg-white shadow-sm'
-                : 'w-1.5 h-1.5 bg-white/60 hover:bg-white/90'
-            }`}
-          />
-        ))}
-      </div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
+          
+          <div className="text-center space-y-4 max-w-2xl mx-auto">
+            <SectionLabel number="02" text="STEP-BY-STEP PATIENT PATHWAY" />
+            <h2 className="font-cinzel text-3xl sm:text-4xl font-bold text-[var(--foreground)]">
+              SEVEN STEPS TO DIGNIFIED CARE.
+            </h2>
+          </div>
+
+          {/* TIMELINE SPINES */}
+          <div className="space-y-8 relative">
+            
+            {/* Vertical spine line */}
+            <div className="hidden md:block absolute left-12 top-8 bottom-8 w-[1px] bg-[var(--border-subtle)] z-0"></div>
+
+            {journeyStages.map((stage, idx) => {
+              const Icon = stage.icon;
+              return (
+                <motion.div
+                  key={stage.number}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ duration: 0.6, delay: idx * 0.05 }}
+                  className="grid grid-cols-1 md:grid-cols-12 gap-6 p-8 bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--gold)] rounded-sm transition-all duration-300 relative z-10 group crosshair-corner shadow-xl"
+                >
+                  <div className="md:col-span-3 flex items-center gap-4">
+                    <span className="font-mono text-4xl font-extrabold text-[var(--gold)] group-hover:scale-110 transition-transform">
+                      {stage.number}
+                    </span>
+                    <div className="p-3 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)] rounded-sm group-hover:border-[var(--gold)] transition-colors">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-9 space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <h3 className="font-cinzel text-xl font-bold text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors">
+                        {stage.title}
+                      </h3>
+                      <span className="px-2.5 py-1 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--gold-light)] font-bold uppercase tracking-wider rounded-sm">
+                        {stage.badge}
+                      </span>
+                    </div>
+
+                    <p className="font-mono text-xs text-[var(--foreground-subtle)] uppercase tracking-wider">
+                      ✦ {stage.subtitle}
+                    </p>
+
+                    <p className="font-sans text-xs sm:text-sm text-[var(--foreground-muted)] leading-relaxed pt-1">
+                      {stage.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+
+          </div>
+
+          {/* NEED HELP / FAQ HIGHLIGHT */}
+          <div className="p-8 bg-[var(--background-secondary)] border border-[var(--border)] rounded-sm flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-[var(--background-tertiary)] text-[var(--gold)] rounded-sm border border-[var(--border-subtle)]">
+                <HelpCircle className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-cinzel text-lg font-bold text-[var(--foreground)]">Have Questions About the Process?</h4>
+                <p className="font-sans text-xs text-[var(--foreground-muted)]">Read our frequently asked questions or reach out to our team directly.</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 shrink-0 font-mono text-xs">
+              <Link
+                href="/faq"
+                className="px-5 py-3 bg-[var(--background-tertiary)] hover:bg-[var(--gold)] text-[var(--foreground)] hover:text-[#080907] border border-[var(--border-subtle)] font-bold rounded-sm transition-colors"
+              >
+                READ FAQ
+              </Link>
+              <Link
+                href="/contact"
+                className="px-5 py-3 bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[#080907] font-bold rounded-sm transition-colors"
+              >
+                GET IN TOUCH
+              </Link>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <FinalCTA />
+
     </div>
   );
 };
-
-// ---------------------------------------------------------------------------
-// Step Card Component
-// ---------------------------------------------------------------------------
-
-const StepCard: React.FC<{ step: typeof steps[0]; index: number }> = ({ step, index }) => {
-  const isEven = index % 2 === 0;
-
-  return (
-    <motion.div
-      variants={childVariants}
-      className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center ${
-        !isEven ? 'lg:grid-flow-dense' : ''
-      }`}
-    >
-      {/* Content */}
-      <div className={`lg:col-span-5 ${!isEven ? 'lg:col-start-8' : ''}`}>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <span className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--color-accent)] opacity-25">
-              {step.number}
-            </span>
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-              {step.icon}
-            </span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-text)]">
-            {step.title}
-          </h3>
-          <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-            {step.description}
-          </p>
-          <ul className="space-y-2">
-            {step.details.map((detail, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-[var(--color-text-muted)]">
-                <span className="mt-1 w-1 h-1 rounded-full bg-[var(--color-accent)]/50 shrink-0" />
-                {detail}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Image Carousel */}
-      <div className={`lg:col-span-6 ${!isEven ? 'lg:col-start-1' : 'lg:col-start-7'}`}>
-        <ImageCarousel images={step.images} alt={step.alt} />
-      </div>
-    </motion.div>
-  );
-};
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
-
-export default function HowItWorksPage() {
-  return (
-    <main className="bg-[var(--color-bg)]">
-      
-      {/* ── Page Header ── */}
-      <section className="relative pt-20 pb-12 sm:pt-28 sm:pb-16 overflow-hidden">
-        <div className="pointer-events-none absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full opacity-[0.05] blur-[120px]" style={{ background: 'var(--color-hero-glow)' }} />
-        
-        <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="space-y-4 text-center"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-          >
-            <div className="flex items-center justify-center gap-3">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                <ClipboardList className="w-4 h-4" />
-              </span>
-              <span className="text-xs font-medium tracking-wide text-[var(--color-accent)] uppercase">
-                How it works
-              </span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.8rem] font-bold tracking-tight text-[var(--color-text)] leading-[1.12]">
-              A clear path to
-              <br />
-              <span className="text-[var(--color-accent)]">the right care</span>
-            </h1>
-            <p className="text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed max-w-lg mx-auto">
-              Five simple steps from where you are now to a verified rehabilitation 
-              centre that fits your needs. Guided by real people, every step of the way.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Steps ── */}
-      <section className="pb-20 sm:pb-28">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="space-y-24 lg:space-y-32"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {steps.map((step, index) => (
-              <StepCard key={step.number} step={step} index={index} />
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Features Grid ── */}
-      <section className="pb-20 sm:pb-28 bg-[var(--color-section-soft)]">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 py-20 sm:py-28">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text)]">
-              Why people trust RehabConnect
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {features.map((feature) => (
-              <motion.div
-                key={feature.title}
-                variants={childVariants}
-                className="flex flex-col gap-3 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"
-              >
-                <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                  {feature.icon}
-                </span>
-                <h3 className="text-sm font-semibold text-[var(--color-text)]">{feature.title}</h3>
-                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Testimonials ── */}
-      <section className="pb-20 sm:pb-28">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text)]">
-              Voices of people we&apos;ve helped
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {testimonials.map((t) => (
-              <motion.div
-                key={t.name}
-                variants={childVariants}
-                className="p-6 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] space-y-4"
-              >
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 text-[var(--color-accent)] fill-current" />
-                  ))}
-                </div>
-                <p className="text-sm text-[var(--color-text)] leading-relaxed italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div>
-                  <p className="text-xs font-semibold text-[var(--color-text)]">{t.name}</p>
-                  <p className="text-[11px] text-[var(--color-text-muted)]">{t.location}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Final CTA ── */}
-      <section className="pb-20 sm:pb-28">
-        <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">
-          <motion.div
-            className="rounded-2xl bg-[var(--color-section-soft)] border border-[var(--color-border)] p-8 sm:p-10 text-center"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, ease: [0.25, 0.4, 0.25, 1] }}
-          >
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] mb-4">
-              <Phone className="w-5 h-5" />
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-text)]">
-              Ready to get started?
-            </h2>
-            <p className="mt-2 text-sm text-[var(--color-text-muted)] max-w-md mx-auto">
-              Take the first step today. It&apos;s free, confidential, and takes just two minutes.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
-              <a
-                href="/assessment"
-                className="inline-flex items-center gap-2 theme-btn-primary px-6 py-3 text-sm font-medium rounded-xl transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
-              >
-                Start your assessment
-                <ArrowRight className="w-4 h-4" />
-              </a>
-              <a
-                href="/contact"
-                className="inline-flex items-center gap-2 theme-btn-ghost px-6 py-3 text-sm font-medium rounded-xl transition-all duration-200 active:scale-[0.98]"
-              >
-                Talk to a coordinator
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-    </main>
-  );
-}
