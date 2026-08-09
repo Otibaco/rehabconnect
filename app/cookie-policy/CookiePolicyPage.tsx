@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { EditorialHero } from '@/components/editorial/EditorialHero';
 import { FinalCTA } from '@/components/editorial/FinalCTA';
