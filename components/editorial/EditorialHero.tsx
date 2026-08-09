@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { SectionLabel } from '@/app/components/editorial/SectionLabel';
+import { SectionLabel } from './SectionLabel';
 
 interface EditorialHeroProps {
   number?: string;
