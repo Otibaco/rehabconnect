@@ -20,7 +20,7 @@ export const FinalCTA: React.FC = () => {
 
       {/* OVERSIZED WATERMARK BRANDING */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-        <span className="font-cinzel text-[10rem] sm:text-[18rem] font-black text-[var(--gold)]/5 tracking-widest leading-none">
+        <span className="font-cinzel text-[10rem] sm:text-[18rem] font-black text-[var(--gold)]/5 tracking-widest/2 leading-none">
           RECOVERY
         </span>
       </div>

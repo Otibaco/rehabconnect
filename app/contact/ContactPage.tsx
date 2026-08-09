@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { EditorialHero } from '@/components/editorial/EditorialHero';
 import { SectionLabel } from '@/components/editorial/SectionLabel';

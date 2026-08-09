@@ -93,10 +93,6 @@ export const SiteHeader: React.FC = () => {
       path: "/professionals",
     },
     {
-      label: "RESOURCES",
-      path: "/resources",
-    },
-    {
       label: "CHALLENGES",
       path: "/challenges",
     },
