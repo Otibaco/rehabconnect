@@ -1,20 +1,18 @@
-"use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HeroBackgroundSlider } from '@/components/editorial/HeroBackgroundSlider';
+import { ArrowUpRight, ShieldCheck, HeartHandshake, Lock, Sparkles, ChevronDown } from 'lucide-react';
 import { SectionLabel } from '@/components/editorial/SectionLabel';
-import Link from 'next/link';
-import { ArrowUpRight, ChevronDown, Lock, ShieldCheck, Sparkles } from 'lucide-react';
-import { siteConfig } from '@/lib/config';
 import { LargeStatement } from '@/components/editorial/LargeStatement';
 import { NumberedTimeline } from '@/components/editorial/NumberedTimeline';
-import { faqsData, professionalsData, resourceArticles, socialChallengesData } from '@/lib/data';
-import { ProfessionalProfile } from '@/components/editorial/ProfessionalProfile';
 import { PricingHighlight } from '@/components/editorial/PricingHighlight';
-import { ResourceList } from '@/components/editorial/ResourceList';
 import { FAQAccordion } from '@/components/editorial/FAQAccordion';
+import { ResourceList } from '@/components/editorial/ResourceList';
+import { ProfessionalProfile } from '@/components/editorial/ProfessionalProfile';
 import { FinalCTA } from '@/components/editorial/FinalCTA';
-
+import { HeroBackgroundSlider } from '@/components/editorial/HeroBackgroundSlider';
+import { servicesData, professionalsData, faqsData, resourceArticles, socialChallengesData } from '@/lib/data';
+import { siteConfig } from '@/lib/config';
+import Link from 'next/link';
 
 export const HomePage: React.FC = () => {
   return (

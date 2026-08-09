@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Shield, Phone, Mail, MessageSquare, AlertTriangle } from 'lucide-react';
 import { siteConfig } from '../../lib/config';
-import Link from 'next/link';
 
 // Platform Brand Social Icons
 const FacebookIcon = () => (
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
           
           {/* BRAND IDENTITY COLUMN */}
           <div className="lg:col-span-5 space-y-6">
-            <Link href= "/" className="flex items-center gap-3 group inline-flex">
+            <Link to="/" className="flex items-center gap-3 group inline-flex">
               <div className="flex items-center justify-center w-11 h-11 rounded-sm bg-[var(--background-tertiary)] border border-[var(--border-subtle)] group-hover:border-[var(--gold)] transition-colors shadow-lg">
                 <Shield className="w-5 h-5 text-[var(--gold)]" />
               </div>
@@ -115,10 +115,10 @@ export const Footer: React.FC = () => {
               <span>ABOUT</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/about" className="hover:text-[var(--gold)] transition-colors">About Rehab Nigeria</Link></li>
-              <li><Link href="/about#story" className="hover:text-[var(--gold)] transition-colors">Our Founding Story</Link></li>
-              <li><Link href="/about#values" className="hover:text-[var(--gold)] transition-colors">Institutional Values</Link></li>
-              <li><Link href="/professionals" className="hover:text-[var(--gold)] transition-colors">Our Clinical Team</Link></li>
+              <li><Link to="/about" className="hover:text-[var(--gold)] transition-colors">About Rehab Nigeria</Link></li>
+              <li><Link to="/about#story" className="hover:text-[var(--gold)] transition-colors">Our Founding Story</Link></li>
+              <li><Link to="/about#values" className="hover:text-[var(--gold)] transition-colors">Institutional Values</Link></li>
+              <li><Link to="/professionals" className="hover:text-[var(--gold)] transition-colors">Our Clinical Team</Link></li>
             </ul>
           </div>
 
@@ -129,11 +129,11 @@ export const Footer: React.FC = () => {
               <span>SERVICES</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/services/online-consultation" className="hover:text-[var(--gold)] transition-colors">Online Consultation</Link></li>
-              <li><Link href="/services/substance-use-assessment" className="hover:text-[var(--gold)] transition-colors">Substance Use Intake</Link></li>
-              <li><Link href="/services/follow-up-support" className="hover:text-[var(--gold)] transition-colors">Follow-Up Sessions</Link></li>
-              <li><Link href="/services/family-support" className="hover:text-[var(--gold)] transition-colors">Family Guidance</Link></li>
-              <li><Link href="/services/recovery-guidance" className="hover:text-[var(--gold)] transition-colors">Recovery Pathway</Link></li>
+              <li><Link to="/services/online-consultation" className="hover:text-[var(--gold)] transition-colors">Online Consultation</Link></li>
+              <li><Link to="/services/substance-use-assessment" className="hover:text-[var(--gold)] transition-colors">Substance Use Intake</Link></li>
+              <li><Link to="/services/follow-up-support" className="hover:text-[var(--gold)] transition-colors">Follow-Up Sessions</Link></li>
+              <li><Link to="/services/family-support" className="hover:text-[var(--gold)] transition-colors">Family Guidance</Link></li>
+              <li><Link to="/services/recovery-guidance" className="hover:text-[var(--gold)] transition-colors">Recovery Pathway</Link></li>
             </ul>
           </div>
 
@@ -144,11 +144,11 @@ export const Footer: React.FC = () => {
               <span>JOURNEY</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/how-it-works" className="hover:text-[var(--gold)] transition-colors">How It Works</Link></li>
-              <li><Link href="/for-families" className="hover:text-[var(--gold)] transition-colors">For Loved Ones</Link></li>
-              <li><Link href="/resources" className="hover:text-[var(--gold)] transition-colors">Educational Articles</Link></li>
-              <li><Link href="/challenges" className="hover:text-[var(--gold)] transition-colors">Awareness Campaigns</Link></li>
-              <li><Link href="/faq" className="hover:text-[var(--gold)] transition-colors">Common Questions</Link></li>
+              <li><Link to="/how-it-works" className="hover:text-[var(--gold)] transition-colors">How It Works</Link></li>
+              <li><Link to="/for-families" className="hover:text-[var(--gold)] transition-colors">For Loved Ones</Link></li>
+              <li><Link to="/resources" className="hover:text-[var(--gold)] transition-colors">Educational Articles</Link></li>
+              <li><Link to="/challenges" className="hover:text-[var(--gold)] transition-colors">Awareness Campaigns</Link></li>
+              <li><Link to="/faq" className="hover:text-[var(--gold)] transition-colors">Common Questions</Link></li>
             </ul>
           </div>
 
@@ -181,9 +181,9 @@ export const Footer: React.FC = () => {
               <span>COMPLIANCE</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/privacy-policy" className="hover:text-[var(--gold)] transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-use" className="hover:text-[var(--gold)] transition-colors">Terms of Use</Link></li>
-              <li><Link href="/cookie-policy" className="hover:text-[var(--gold)] transition-colors">Cookie Policy</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-[var(--gold)] transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-use" className="hover:text-[var(--gold)] transition-colors">Terms of Use</Link></li>
+              <li><Link to="/cookie-policy" className="hover:text-[var(--gold)] transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
 

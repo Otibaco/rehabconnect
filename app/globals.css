@@ -2,317 +2,256 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:where(.dark, .dark *));
 
-@layer base {
-  :root {
+:root {
+  /* Main surfaces */
+  --background: #080907;
+  --background-secondary: #11120F;
+  --background-tertiary: #181813;
 
-    --font-sans: var(--font-sans);
-    --font-heading: var(--font-heading);
-    --font-body: var(--font-body);
-    --font-mono: var(--font-mono);
+  /* Text */
+  --foreground: #F5F1E8;
+  --foreground-muted: #AAA59A;
+  --foreground-subtle: #77736A;
 
+  /* Brand gold */
+  --gold: #C8A45D;
+  --gold-light: #D9B873;
+  --gold-dark: #9D7B3F;
 
+  /* Recovery green */
+  --green: #6F9B69;
+  --green-light: #8EB889;
+  --green-dark: #4F704B;
 
-    --color-bg: #F5F2EC;
-    --color-surface: #ffffff;
-    --color-surface-elevated: #f8fafc;
-    --color-surface-muted: #f1f5f9;
+  /* Secondary Accent Palette for depth, visual vitality and human warmth */
+  --accent-terracotta: #C96A4B;
+  --accent-amber: #D99B26;
+  --accent-sage: #81A684;
+  --accent-slate: #5C6B73;
+  --accent-teal: #3B828E;
+  --accent-sky: #0EA5E9;
+  --accent-indigo: #6366F1;
 
-    /* New section backgrounds */
-    --color-section-soft: #FAF8F4;
-    --color-section-light: #FCFBF8;
-    --color-section-muted: #F7F9FC;
-    --color-section-accent: #F2FCFA;
+  /* Skeleton Loading Palette */
+  --skeleton-bg: rgba(92, 107, 115, 0.15);
+  --skeleton-border: rgba(92, 107, 115, 0.3);
+  --skeleton-sage-glow: rgba(129, 166, 132, 0.22);
+  --skeleton-slate-glow: rgba(92, 107, 115, 0.25);
 
+  /* Official Brand Social Colors for subtle hover states */
+  --brand-facebook: #1877F2;
+  --brand-instagram: #E4405F;
+  --brand-tiktok: #25F4EE;
+  --brand-x: #F5F1E8;
+  --brand-whatsapp: #25D366;
 
-    --color-surface-card: rgba(255, 255, 255, 0.9);
-    --color-surface-glass: rgba(255, 255, 255, 0.75);
-    --color-border: rgba(15, 23, 42, 0.12);
-    --color-border-strong: rgba(15, 23, 42, 0.18);
-    --color-border-card: #f1f5f9;
-    --color-border-glass: rgba(226, 232, 240, 0.8);
-    --color-text: #0f172a;
-    --color-text-muted: #475569;
-    --color-text-subtle: #64748b;
-    --color-accent: #0f766e;
-    --color-accent-strong: #14b8a6;
-    --color-accent-soft: #ccfbf1;
-    --color-accent-contrast: #ffffff;
-    --color-shadow: rgba(15, 23, 42, 0.08);
-    --color-shadow-strong: rgba(15, 23, 42, 0.16);
-    --color-scrollbar: rgba(148, 163, 184, 0.4);
-    --color-scrollbar-hover: rgba(100, 116, 139, 0.7);
-    --color-hero-glow: rgba(20, 184, 166, 0.08);
-    --color-hero-glow-2: rgba(59, 130, 246, 0.04);
-  }
+  /* Borders / separators */
+  --border: #292820;
+  --border-subtle: rgba(200, 164, 93, 0.18);
 
+  /* Overlays */
+  --overlay-dark: rgba(8, 9, 7, 0.72);
+  --overlay-heavy: rgba(8, 9, 7, 0.88);
 
+  /* Interactive states */
+  --accent: var(--gold);
+  --accent-hover: var(--gold-light);
+  --accent-active: var(--gold-dark);
 
-  html {
-    scroll-behavior: smooth;
-    font-family: var(--font-body);
-    color-scheme: light;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-  }
+  /* Focus */
+  --focus-ring: var(--gold);
 
-  html.dark {
-    color-scheme: dark;
-  }
-
-  body {
-    font-family: var(--font-body);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  .font-heading {
-    font-family: var(--font-heading);
-  }
-
-  .font-sans {
-    font-family: var(--font-sans);
-  }
-
-  .font-body {
-    font-family: var(--font-body);
-  }
-
-  .font-mono {
-    font-family: var(--font-mono);
-  }
+  /* Status */
+  --success: var(--green);
+  --success-light: var(--green-light);
 }
 
-
-@layer utilities {
-  .theme-transition {
-    transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, fill 300ms ease, stroke 300ms ease, opacity 300ms ease;
-  }
-
-  .theme-bg {
-    background-color: var(--color-bg);
-  }
-
-  .theme-surface {
-    background-color: var(--color-surface);
-  }
-
-  .theme-surface-elevated {
-    background-color: var(--color-surface-elevated);
-  }
-
-  .theme-surface-muted {
-    background-color: var(--color-surface-muted);
-  }
-
-  .theme-text {
-    color: var(--color-text);
-  }
-
-  .theme-text-muted {
-    color: var(--color-text-muted);
-  }
-
-  .theme-text-subtle {
-    color: var(--color-text-subtle);
-  }
-
-  .theme-border {
-    border-color: var(--color-border);
-  }
-
-  .theme-border-strong {
-    border-color: var(--color-border-strong);
-  }
-
-  .theme-accent {
-    color: var(--color-accent);
-  }
-
-  .theme-accent-soft {
-    background-color: var(--color-accent-soft);
-  }
-
-  .theme-accent-contrast {
-    color: var(--color-accent-contrast);
-  }
-
-  .theme-shadow {
-    box-shadow: 0 8px 30px var(--color-shadow);
-  }
-
-  .theme-card {
-    background-color: var(--color-surface-card);
-    border: 1px solid var(--color-border-card);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .theme-nav-shell {
-    background-color: var(--color-surface-muted);
-    border: 1px solid var(--color-border);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  }
-
-  .theme-nav-pill-active {
-    background-color: var(--color-surface-elevated);
-    color: var(--color-text);
-    border-color: var(--color-border-strong);
-    box-shadow: 0 6px 18px var(--color-shadow);
-  }
-
-  .theme-btn-primary {
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-strong) 100%);
-    color: var(--color-accent-contrast);
-    box-shadow: 0 10px 30px var(--color-shadow);
-  }
-
-  .theme-btn-ghost {
-    background-color: var(--color-surface-muted);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-  }
+@theme {
+  --font-cinzel: 'Cinzel', serif;
+  --font-sans: 'DM Sans', sans-serif;
+  
+  --color-bg-primary: var(--background);
+  --color-bg-secondary: var(--background-secondary);
+  --color-bg-tertiary: var(--background-tertiary);
+  
+  --color-text-main: var(--foreground);
+  --color-text-muted: var(--foreground-muted);
+  --color-text-subtle: var(--foreground-subtle);
+  
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  
+  --color-green: var(--green);
+  --color-green-light: var(--green-light);
+  --color-green-dark: var(--green-dark);
+  
+  --color-brand-border: var(--border);
+  --color-brand-border-subtle: var(--border-subtle);
 }
 
-/*
-========================================
-SCROLLBAR
-========================================
-*/
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-sans {
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Base resets & custom scrollbar */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'DM Sans', sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--background);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--color-scrollbar);
-  border-radius: 9999px;
+  background: var(--border);
+  border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-scrollbar-hover);
+  background: var(--gold-dark);
 }
 
-/*
-========================================
-GLASSMORPHISM
-========================================
-*/
-
-.glass-panel {
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-glass);
+/* Custom subtle noise background or gold line accents */
+.bg-grid-subtle {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(41, 40, 32, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(41, 40, 32, 0.25) 1px, transparent 1px);
 }
 
-/*
-========================================
-CARDS
-========================================
-*/
-
-.glass-card {
-  background: var(--color-surface-card);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--color-border-card);
+.bg-architectural-grid {
+  background-size: 80px 80px;
+  background-image: 
+    linear-gradient(to right, rgba(200, 164, 93, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(200, 164, 93, 0.08) 1px, transparent 1px);
 }
 
-/*
-========================================
-DARK THEME SURFACES
-
-Background: #111315
-Surface:    #181B1D
-Elevated:   #1E2224
-Border:     #2A2F31
-========================================
-*/
-
-.dark .bg-slate-950 {
-  background-color: #111315;
+.gold-gradient-text {
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--gold-light) 60%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.dark .bg-slate-900 {
-  background-color: #181B1D;
+.gold-border-glow {
+  box-shadow: 0 0 25px rgba(200, 164, 93, 0.08);
 }
 
-.dark .bg-slate-800 {
-  background-color: #1E2224;
+/* Arch & organic image framing */
+.arch-frame {
+  border-top-left-radius: 180px;
+  border-top-right-radius: 180px;
 }
 
-.dark .border-slate-800,
-.dark .border-slate-700 {
-  border-color: #2A2F31;
+@media (min-width: 768px) {
+  .arch-frame {
+    border-top-left-radius: 260px;
+    border-top-right-radius: 260px;
+  }
 }
 
-/*
-========================================
-TEXT
-========================================
-*/
-
-.dark .text-slate-100,
-.dark .text-slate-50 {
-  color: #F4F5F3;
+.asymmetric-organic-frame {
+  border-top-left-radius: 160px;
+  border-bottom-right-radius: 160px;
 }
 
-.dark .text-slate-200 {
-  color: #D7DBD8;
+/* Corner Crosshairs for Architectural Polish */
+.crosshair-corner {
+  position: relative;
+}
+.crosshair-corner::before {
+  content: '+';
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  color: var(--gold);
+  font-family: monospace;
+  font-size: 16px;
+  opacity: 0.6;
+}
+.crosshair-corner::after {
+  content: '+';
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  color: var(--gold);
+  font-family: monospace;
+  font-size: 16px;
+  opacity: 0.6;
 }
 
-.dark .text-slate-300 {
-  color: #A7AEAA;
+/* Vertical Continuous Section Spine */
+.continuous-spine {
+  position: relative;
+}
+.continuous-spine::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border-subtle) 20%, var(--border-subtle) 80%, transparent);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.dark .text-slate-400 {
-  color: #737B77;
+/* Skeleton Loading Shimmer & Pulse Animations using Slate and Sage colors */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-/*
-========================================
-HERO GRADIENTS
-========================================
-*/
-
-.hero-gradient-light {
-  background:
-    radial-gradient(circle at 50% 0%,
-      rgba(20, 184, 166, 0.08) 0%,
-      rgba(59, 130, 246, 0.04) 50%,
-      transparent 100%);
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(92, 107, 115, 0.08) 0%,
+    rgba(129, 166, 132, 0.18) 45%,
+    rgba(92, 107, 115, 0.18) 55%,
+    rgba(92, 107, 115, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 2.2s infinite ease-in-out;
 }
 
-.hero-gradient-dark {
-  background:
-    radial-gradient(circle at 50% 0%,
-      rgba(20, 184, 166, 0.10) 0%,
-      rgba(20, 184, 166, 0.04) 35%,
-      transparent 70%);
+.skeleton-sage {
+  background: linear-gradient(
+    90deg,
+    rgba(129, 166, 132, 0.1) 0%,
+    rgba(129, 166, 132, 0.22) 50%,
+    rgba(129, 166, 132, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 2.2s infinite ease-in-out;
 }
 
-/*
-========================================
-HIDE SCROLLBAR
-========================================
-*/
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.skeleton-slate {
+  background: linear-gradient(
+    90deg,
+    rgba(92, 107, 115, 0.1) 0%,
+    rgba(92, 107, 115, 0.22) 50%,
+    rgba(92, 107, 115, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 2.2s infinite ease-in-out;
 }

@@ -1,32 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-// import { ThemeProvider } from "@/context/ThemeContext";
-import { Geist, Space_Grotesk, DM_Sans, DM_Mono } from "next/font/google";
-import { AuthProvider } from "@/context/AuthContext";
-import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-// import TopBar from "@/components/layout/TopBar";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-const heading = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
-
-const body = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-body",
-});
-
-const mono = DM_Mono({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
+import { FloatingContact } from "@/components/layout/FloatingContact";
+import { CookieConsent } from "@/components/layout/CookieConsent";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rehabconnect-three.vercel.app/"),
@@ -86,21 +63,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geist.variable} ${heading.variable} ${body.variable} ${mono.variable} antialiased theme-bg theme-text`}
-        cz-shortcut-listen="true"
-      >
-        <AuthProvider>
-          {/* <TopBar /> */}
+      <body  cz-shortcut-listen="true">
+        <SiteHeader />
 
-          <div className="sticky top-0 z-[80]">
-            <Navbar />
-          </div>
+        <main>{children}</main>
 
-          <main>{children}</main>
+        <Footer />
 
-          <Footer />
-        </AuthProvider>
+        <FloatingContact />
+
+        <CookieConsent />
       </body>
     </html>
   );
