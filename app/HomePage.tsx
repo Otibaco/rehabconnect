@@ -106,10 +106,10 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* SCROLL INDICATOR — Smooth Subtle Pulse */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[10px] font-mono text-[var(--foreground-subtle)] opacity-80">
+        {/* <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-[10px] font-mono text-[var(--foreground-subtle)] opacity-80">
           <span className="tracking-widest uppercase">SCROLL</span>
           <ChevronDown className="w-4 h-4 text-[var(--gold)] animate-pulse" />
-        </div>
+        </div> */}
 
       </section>
 

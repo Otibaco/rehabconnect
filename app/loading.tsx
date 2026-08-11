@@ -1,122 +1,105 @@
-// app/loading.tsx
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { HeartHandshake } from 'lucide-react';
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
+import { motion } from "framer-motion";
+import { Shield } from "lucide-react";
 
 export default function Loading() {
-  const [isVisible, setIsVisible] = useState(true);
-
-  // Minimum display time to avoid flash
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[var(--color-bg)]"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.4, 0.25, 1] }}
-        >
-          {/* ── Decorative background ── */}
-          <div className="pointer-events-none absolute inset-0">
-            <div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-[0.06] blur-[100px]"
-              style={{ background: 'var(--color-hero-glow)' }}
-            />
-          </div>
+    <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-hidden bg-[var(--background)] font-sans">
+      {/* Subtle background glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--gold)]/10 blur-3xl" />
 
-          {/* ── Content ── */}
-          <div className="relative z-10 flex flex-col items-center gap-6">
-            {/* Logo mark with pulse */}
-            <motion.div
-              className="relative"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{
-                duration: 0.5,
-                ease: [0.25, 0.4, 0.25, 1],
+      <div className="relative z-10 flex flex-col items-center space-y-6">
+
+        {/* Animated Logo */}
+        <div className="relative flex items-center justify-center">
+
+          {/* Pulsing outer ring */}
+          <motion.div
+            className="absolute -inset-4 rounded-full border border-[var(--gold)]/30"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.7, 0.3],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+
+          {/* Spinning ring */}
+          <motion.div
+            className="absolute -inset-2 rounded-full border-2 border-transparent border-t-[var(--gold)] border-r-[var(--green)]"
+            animate={{ rotate: 360 }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+
+          {/* Logo */}
+          <motion.div
+            className="relative z-10 flex h-16 w-16 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--background-secondary)] shadow-2xl"
+            animate={{
+              scale: [0.96, 1.04, 0.96],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <Shield className="h-8 w-8 text-[var(--gold)]" />
+
+            <span className="absolute -right-1 -top-1 h-3 w-3 animate-ping rounded-full bg-[var(--green)] border-2 border-[var(--background)]" />
+            <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[var(--green)] border-2 border-[var(--background)]" />
+          </motion.div>
+        </div>
+
+        {/* Brand */}
+        <div className="space-y-1 text-center">
+          <motion.h1
+            className="font-cinzel text-xl font-extrabold tracking-wider text-[var(--foreground)] sm:text-2xl"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            REHAB <span className="text-[var(--gold)]">NIGERIA</span>
+          </motion.h1>
+
+          <p className="font-mono text-[11px] uppercase tracking-widest text-[var(--foreground-muted)]">
+            Loading...
+          </p>
+        </div>
+
+        {/* Loading dots */}
+        <div className="flex items-center gap-2">
+          {[0, 1, 2].map((i) => (
+            <motion.span
+              key={i}
+              className="h-2 w-2 rounded-full bg-[var(--gold)]"
+              animate={{
+                scale: [0.8, 1.4, 0.8],
+                opacity: [0.3, 1, 0.3],
               }}
-            >
-              {/* Outer ring */}
-              <motion.div
-                className="absolute inset-0 rounded-full border border-[var(--color-accent)]/20"
-                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.1, 0.3] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-              />
-              <motion.div
-                className="absolute inset-0 rounded-full border border-[var(--color-accent)]/10"
-                animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.05, 0.2] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: 0.3,
-                }}
-              />
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                delay: i * 0.2,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
 
-              {/* Icon */}
-              <div className="relative w-14 h-14 rounded-2xl bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)]">
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                >
-                  <HeartHandshake className="w-7 h-7" />
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Wordmark */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
-            >
-              <span className="text-lg font-bold tracking-tight text-[var(--color-text)]">
-                Rehab<span className="text-[var(--color-accent)]">Connect</span>
-              </span>
-            </motion.div>
-
-            {/* Progress bar */}
-            <motion.div
-              className="w-32 h-0.5 rounded-full bg-[var(--color-surface-muted)] overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.3 }}
-            >
-              <motion.div
-                className="h-full rounded-full bg-[var(--color-accent)]"
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{
-                  duration: 1.8,
-                  ease: [0.25, 0.4, 0.25, 1],
-                }}
-              />
-            </motion.div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      </div>
+    </div>
   );
 }

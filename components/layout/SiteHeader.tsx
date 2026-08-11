@@ -46,6 +46,10 @@ export const SiteHeader: React.FC = () => {
 
   const navItems: NavItem[] = [
     {
+      label: "HOME",
+      path: "/",
+    },
+    {
       label: "ABOUT",
       path: "/about",
     },
