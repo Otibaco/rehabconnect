@@ -229,15 +229,15 @@ export const SiteHeader: React.FC = () => {
 
           {/* DESKTOP ACTIONS */}
           <div className="hidden items-center gap-3 sm:flex">
-            <Link
-              href="/login"
+            {/* <Link
+              href="/signin"
               className="px-4 py-2 text-xs font-mono tracking-wider text-[var(--foreground-muted)] transition-colors hover:text-[var(--gold)]"
             >
               LOGIN
-            </Link>
+            </Link> */}
 
             <Link
-              href="/how-it-works"
+              href="/signin"
               className="group inline-flex items-center justify-center bg-[var(--gold)] px-5 py-2.5 text-xs font-mono font-semibold tracking-wider text-[var(--background)] transition-colors hover:bg-[var(--gold-light)]"
             >
               GET STARTED
@@ -248,7 +248,7 @@ export const SiteHeader: React.FC = () => {
           {/* MOBILE ACTIONS */}
           <div className="flex items-center gap-2 lg:hidden">
             <Link
-              href="/how-it-works"
+              href="/signin"
               className="hidden bg-[var(--gold)] px-3 py-1.5 text-[10px] font-mono font-bold tracking-wider text-[var(--background)] sm:block"
             >
               GET STARTED

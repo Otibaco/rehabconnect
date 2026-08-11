@@ -66,8 +66,8 @@ export default function NotFoundPage() {
             {siteConfig.phonePlaceholder}
           </Link>
         </div>
-
       </div>
+      
     </div>
   );
 };
