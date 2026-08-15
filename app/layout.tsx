@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer } from "@/components/layout/Footer";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 import { CookieConsent } from "@/components/layout/CookieConsent";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { AppChrome } from "@/components/layout/AppChrome";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rehabconnect-three.vercel.app/"),
@@ -63,13 +62,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body  cz-shortcut-listen="true">
-        <SiteHeader />
+      <body cz-shortcut-listen="true">
+        <AppChrome>{children}</AppChrome>
 
-        <main>{children}</main>
-
-        <Footer />
-        
         <FloatingContact />
 
         <CookieConsent />
