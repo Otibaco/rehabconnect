@@ -813,7 +813,7 @@ export default function SignupPage() {
                     <div className="space-y-2.5">
                       <button
                         type="button"
-                        onClick={() => router.push("/assessment")}
+                        onClick={() => router.push("/patient-assessment")}
                         className="w-full py-3.5 rounded-sm bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--background)] font-mono font-bold text-xs tracking-wider shadow-[0_4px_20px_rgba(200,164,93,0.15)] flex items-center justify-center gap-2 transition-all duration-300 active:scale-[0.98]"
                       >
                         <Activity className="w-4 h-4" />
@@ -822,7 +822,7 @@ export default function SignupPage() {
 
                       <button
                         type="button"
-                        onClick={() => router.push("/dashboard")}
+                        onClick={() => router.push("/patient")}
                         className="w-full py-3.5 rounded-sm bg-[var(--background-tertiary)] hover:bg-[var(--background-tertiary)]/80 text-[var(--foreground)] border border-[var(--border)] font-mono font-semibold text-xs tracking-wider transition-colors flex items-center justify-center gap-2"
                       >
                         <span>Go to Recovery Dashboard</span>
