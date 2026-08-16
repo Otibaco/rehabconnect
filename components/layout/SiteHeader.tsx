@@ -50,10 +50,6 @@ export const SiteHeader: React.FC = () => {
       path: "/",
     },
     {
-      label: "ABOUT",
-      path: "/about",
-    },
-    {
       label: "CARE & SERVICES",
       path: "/services",
       hasDropdown: true,
@@ -87,15 +83,23 @@ export const SiteHeader: React.FC = () => {
     {
       label: "HOW IT WORKS",
       path: "/how-it-works",
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          label: "ABOUT",
+          path: "/about",
+        },
+        {
+          label: "FOR FAMILIES",
+          path: "/for-families",
+        },
+        {
+          label: "PROFESSIONALS",
+          path: "/professionals",
+        },
+      ],
     },
-    {
-      label: "FOR FAMILIES",
-      path: "/for-families",
-    },
-    {
-      label: "PROFESSIONALS",
-      path: "/professionals",
-    },
+
     {
       label: "CHALLENGES",
       path: "/challenges",
@@ -107,14 +111,14 @@ export const SiteHeader: React.FC = () => {
   ];
 
   const isActive = (path: string) => {
-  if (!pathname) return false;
+    if (!pathname) return false;
 
-  if (path === "/") {
-    return pathname === "/";
-  }
+    if (path === "/") {
+      return pathname === "/";
+    }
 
-  return pathname === path || pathname.startsWith(`${path}/`);
-};
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
 
   return (
     <>

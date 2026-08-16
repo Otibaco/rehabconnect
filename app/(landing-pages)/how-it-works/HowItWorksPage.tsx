@@ -1,9 +1,9 @@
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
-import { EditorialHero } from '@/components/editorial/EditorialHero';
-import { SectionLabel } from '@/components/editorial/SectionLabel';
-import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { EditorialHero } from '@/components/pages-components/EditorialHero';
+import { SectionLabel } from '@/components/pages-components/SectionLabel';
+import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { siteConfig } from '@/lib/config';
 import { ShieldCheck, CheckCircle2, ArrowUpRight, Lock, CreditCard, Video, Calendar, Sparkles, HelpCircle } from 'lucide-react';
 import Link from 'next/link';

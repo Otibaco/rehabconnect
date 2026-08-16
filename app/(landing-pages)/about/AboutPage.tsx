@@ -1,9 +1,9 @@
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
-import { EditorialHero } from '@/components/editorial/EditorialHero';
-import { SectionLabel } from '@/components/editorial/SectionLabel';
-import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { EditorialHero } from '@/components/pages-components/EditorialHero';
+import { SectionLabel } from '@/components/pages-components/SectionLabel';
+import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { ShieldCheck, Heart, Lock, Users, Award, RefreshCw, ArrowUpRight, Compass, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 

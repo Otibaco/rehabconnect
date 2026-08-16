@@ -2,10 +2,10 @@
 import React from "react";
 import Link from "next/link";
 
-import { EditorialHero } from "@/components/editorial/EditorialHero";
-import { SectionLabel } from "@/components/editorial/SectionLabel";
-import { FinalCTA } from "@/components/editorial/FinalCTA";
-import { FAQAccordion } from "@/components/editorial/FAQAccordion";
+import { EditorialHero } from "@/components/pages-components/EditorialHero";
+import { SectionLabel } from "@/components/pages-components/SectionLabel";
+import { FinalCTA } from "@/components/pages-components/FinalCTA";
+import { FAQAccordion } from "@/components/pages-components/FAQAccordion";
 
 import { faqsData } from "@/lib/data";
 import { siteConfig } from "@/lib/config";

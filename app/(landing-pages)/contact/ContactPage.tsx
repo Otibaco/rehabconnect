@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
-import { EditorialHero } from '@/components/editorial/EditorialHero';
-import { SectionLabel } from '@/components/editorial/SectionLabel';
+import { EditorialHero } from '@/components/pages-components/EditorialHero';
+import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import { siteConfig } from '@/lib/config';
 import { Phone, Mail, MessageSquare, MapPin, Send, ArrowUpRight, CheckCircle2, CreditCard, Sparkles } from 'lucide-react';
 import Link from 'next/link';

@@ -11,15 +11,15 @@ interface MobileNavigationProps {
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({ isOpen, onClose }) => {
   const menuItems = [
-    { number: '01', label: 'ABOUT', path: '/about' },
-    { number: '02', label: 'CARE & SERVICES', path: '/services' },
-    { number: '03', label: 'HOW IT WORKS', path: '/how-it-works' },
-    { number: '04', label: 'FOR FAMILIES', path: '/for-families' },
-    { number: '05', label: 'PROFESSIONALS', path: '/professionals' },
-    { number: '06', label: 'RESOURCES', path: '/resources' },
-    { number: '07', label: 'CHALLENGES', path: '/challenges' },
-    { number: '08', label: 'FAQ', path: '/faq' },
-    { number: '09', label: 'CONTACT', path: '/contact' },
+    {label: 'ABOUT', path: '/about' },
+    {label: 'CARE & SERVICES', path: '/services' },
+    {label: 'HOW IT WORKS', path: '/how-it-works' },
+    {label: 'FOR FAMILIES', path: '/for-families' },
+    {label: 'PROFESSIONALS', path: '/professionals' },
+    {label: 'RESOURCES', path: '/resources' },
+    {label: 'CHALLENGES', path: '/challenges' },
+    {label: 'FAQ', path: '/faq' },
+    {label: 'CONTACT', path: '/contact' },
   ];
 
   return (

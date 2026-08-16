@@ -1,19 +1,19 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HeroBackgroundSlider } from '@/components/editorial/HeroBackgroundSlider';
-import { SectionLabel } from '@/components/editorial/SectionLabel';
+import { HeroBackgroundSlider } from '@/components/pages-components/HeroBackgroundSlider';
+import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, Lock, ShieldCheck, Sparkles } from 'lucide-react';
 import { siteConfig } from '@/lib/config';
-import { LargeStatement } from '@/components/editorial/LargeStatement';
-import { NumberedTimeline } from '@/components/editorial/NumberedTimeline';
+import { LargeStatement } from '@/components/pages-components/LargeStatement';
+import { NumberedTimeline } from '@/components/pages-components/NumberedTimeline';
 import { faqsData, professionalsData, resourceArticles, socialChallengesData } from '@/lib/data';
-import { ProfessionalProfile } from '@/components/editorial/ProfessionalProfile';
-import { PricingHighlight } from '@/components/editorial/PricingHighlight';
-import { ResourceList } from '@/components/editorial/ResourceList';
-import { FAQAccordion } from '@/components/editorial/FAQAccordion';
-import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { ProfessionalProfile } from '@/components/pages-components/ProfessionalProfile';
+import { PricingHighlight } from '@/components/pages-components/PricingHighlight';
+import { ResourceList } from '@/components/pages-components/ResourceList';
+import { FAQAccordion } from '@/components/pages-components/FAQAccordion';
+import { FinalCTA } from '@/components/pages-components/FinalCTA';
 
 
 export const HomePage: React.FC = () => {

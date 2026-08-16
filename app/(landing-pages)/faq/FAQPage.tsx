@@ -1,9 +1,9 @@
 "use client"
 import React, { useState } from 'react';
-import { EditorialHero } from '@/components/editorial/EditorialHero';
-import { SectionLabel } from '@/components/editorial/SectionLabel';
-import { FAQAccordion } from '@/components/editorial/FAQAccordion';
-import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { EditorialHero } from '@/components/pages-components/EditorialHero';
+import { SectionLabel } from '@/components/pages-components/SectionLabel';
+import { FAQAccordion } from '@/components/pages-components/FAQAccordion';
+import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { faqsData } from '@/lib/data';
 
 export const FAQPage: React.FC = () => {

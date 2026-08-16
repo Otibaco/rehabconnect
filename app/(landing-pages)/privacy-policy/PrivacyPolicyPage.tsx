@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
-import { EditorialHero } from '@/components/editorial/EditorialHero';
-import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { EditorialHero } from '@/components/pages-components/EditorialHero';
+import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { siteConfig } from '@/lib/config';
 
 export const PrivacyPolicyPage: React.FC = () => {
