@@ -1,5 +1,5 @@
 import { ContactPage } from "./ContactPage";
 
-export default function Home() {
+export default function Page() {
   return <ContactPage />;
 }

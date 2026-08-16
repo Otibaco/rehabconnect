@@ -1,5 +1,5 @@
 import { ResourcesPage } from "./ResourcesPage";
 
-export default function Home() {
+export default function Page() {
   return <ResourcesPage />;
 }

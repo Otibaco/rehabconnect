@@ -1,5 +1,5 @@
 import { ProfessionalsPage } from "./ProfessionalsPage";
 
-export default function Home() {
+export default function Page() {
   return <ProfessionalsPage />;
 }

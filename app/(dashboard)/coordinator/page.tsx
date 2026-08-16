@@ -1,5 +1,5 @@
 import { CoordinatorDashboardPage } from "./CoordinatorDashboardPage";
 
-export default function Home() {
+export default function Page() {
   return <CoordinatorDashboardPage />;
 }

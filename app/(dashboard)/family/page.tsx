@@ -1,5 +1,5 @@
 import { FamilyDashboardPage } from "./FamilyDashboardPage";
 
-export default function Home() {
+export default function Page() {
   return <FamilyDashboardPage />;
 }

@@ -1,5 +1,5 @@
 import { TermsOfUsePage } from "./TermsOfUsePage";
 
-export default function Home() {
+export default function Page() {
   return <TermsOfUsePage />;
 }

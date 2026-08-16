@@ -132,7 +132,7 @@ export default function SigninPage() {
           <div className="mt-8 text-center">
             <p className="text-sm font-mono text-[var(--foreground-muted)]">
               Don't have an account?{" "}
-              <Link href="/signup" className="font-semibold text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors">
+              <Link href="/auth/signup" className="font-semibold text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors">
                 Create one
               </Link>
             </p>

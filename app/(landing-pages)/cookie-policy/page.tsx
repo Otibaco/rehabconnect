@@ -1,5 +1,5 @@
 import { CookiePolicyPage } from "./CookiePolicyPage";
 
-export default function Home() {
+export default function Page() {
   return <CookiePolicyPage />;
 }

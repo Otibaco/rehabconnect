@@ -1,5 +1,5 @@
 import { PrivacyPolicyPage } from "./PrivacyPolicyPage";
 
-export default function Home() {
+export default function Page() {
   return <PrivacyPolicyPage />;
 }

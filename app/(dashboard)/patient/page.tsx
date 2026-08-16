@@ -1,5 +1,5 @@
 import { PatientDashboardPage } from "./PatientDashboardPage";
 
-export default function Home() {
+export default function Page() {
   return <PatientDashboardPage />;
 }

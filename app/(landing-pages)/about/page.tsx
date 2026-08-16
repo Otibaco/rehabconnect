@@ -1,5 +1,5 @@
 import { AboutPage } from "./AboutPage";
 
-export default function Home() {
+export default function Page() {
   return <AboutPage />;
 }
