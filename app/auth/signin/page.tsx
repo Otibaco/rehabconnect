@@ -1,5 +1,5 @@
-import { SignInPage } from "./SiginInPage";
+import SigninPage from "./SiginInPage";
 
 export default function Home() {
-  return <SignInPage />;
+  return <SigninPage />;
 }
