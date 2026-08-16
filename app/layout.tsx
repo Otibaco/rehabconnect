@@ -3,6 +3,7 @@ import "./globals.css";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { AppChrome } from "@/components/layout/AppChrome";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rehabconnect-three.vercel.app/"),
@@ -63,11 +64,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body cz-shortcut-listen="true">
-        <AppChrome>{children}</AppChrome>
+        <AuthProvider>
+          <AppChrome>{children}</AppChrome>
 
-        <FloatingContact />
+          <FloatingContact />
 
-        <CookieConsent />
+          <CookieConsent />
+        </AuthProvider>
       </body>
     </html>
   );

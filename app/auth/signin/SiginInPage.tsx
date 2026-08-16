@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Mail,
   Lock,
@@ -14,57 +14,63 @@ import {
   Award,
   ChevronLeft,
   ChevronRight,
-  HeartHandshake
-} from 'lucide-react';
-import { motion } from 'framer-motion';
+  HeartHandshake,
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 // Import generated online telehealth rehab image
-import onlineTelehealthImg from '../../assets/images/online_telehealth_rehab_1786771351588.jpg';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
-import Image from 'next/image';
-import { UserRole } from '@/types/type';
+// import onlineTelehealthImg from '../../assets/images/online_telehealth_rehab_1786771351588.jpg';
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import Image from "next/image";
+import { UserRole } from "@/types/type";
 
 export const SignInPage: React.FC = () => {
   const router = useRouter();
   const { login, switchRole } = useAuth();
-  const [email, setEmail] = useState('sarah.j@example.com');
-  const [password, setPassword] = useState('••••••••••••');
+  const [email, setEmail] = useState("sarah.j@example.com");
+  const [password, setPassword] = useState("••••••••••••");
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
 
   const sanctuarySlides = [
     {
-      title: '100% Online Rehabilitation & Doctor Care',
-      subtitle: 'Nigeria’s premier virtual rehabilitation network connecting patients and families with licensed doctors from the comfort of home.',
-      stat: '99.4% Patient Recovery Satisfaction',
-      badge: 'Virtual Telehealth Network'
+      title: "100% Online Rehabilitation & Doctor Care",
+      subtitle:
+        "Nigeria’s premier virtual rehabilitation network connecting patients and families with licensed doctors from the comfort of home.",
+      stat: "99.4% Patient Recovery Satisfaction",
+      badge: "Virtual Telehealth Network",
     },
     {
-      title: 'Attending Telehealth Doctors & Clinical Leads',
-      subtitle: 'Personalized online recovery roadmaps for stroke, orthopedic rehabilitation, mental health, and neurological wellness.',
-      stat: '24/7 Nationwide Access',
-      badge: 'Board-Certified Doctors'
-    }
+      title: "Attending Telehealth Doctors & Clinical Leads",
+      subtitle:
+        "Personalized online recovery roadmaps for stroke, orthopedic rehabilitation, mental health, and neurological wellness.",
+      stat: "24/7 Nationwide Access",
+      badge: "Board-Certified Doctors",
+    },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
-      login(email || 'sarah.j@example.com', 'patient');
+      login(email || "sarah.j@example.com", "patient");
       setLoading(false);
-      router.push('/patient/dashboard');
+      router.push("/patient/dashboard");
     }, 450);
   };
 
-  const handleQuickDemo = (role: UserRole, target: 'myself' | 'family' = 'myself') => {
+  const handleQuickDemo = (
+    role: UserRole,
+    target: "myself" | "family" = "myself",
+  ) => {
     switchRole(role, target);
-    if (role === 'admin') router.push('/admin/dashboard');
-    else if (role === 'coordinator') router.push('/coordinator/dashboard');
-    else if (role === 'family' || target === 'family') router.push('/dashboard/family');
-    else router.push('/patient/dashboard');
+    if (role === "admin") router.push("/admin/dashboard");
+    else if (role === "coordinator") router.push("/coordinator/dashboard");
+    else if (role === "family" || target === "family")
+      router.push("/dashboard/family");
+    else router.push("/patient/dashboard");
   };
 
   return (
@@ -72,7 +78,7 @@ export const SignInPage: React.FC = () => {
       {/* Top Header Bar */}
       <header className="max-w-6xl mx-auto w-full flex items-center justify-between pb-6">
         <button
-          onClick={() => router.push('/')}
+          onClick={() => router.push("/")}
           className="flex items-center gap-3 group text-left focus:outline-none"
         >
           <div className="w-10 h-10 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--gold)] shadow-sm group-hover:border-[var(--gold)] transition-colors">
@@ -89,7 +95,7 @@ export const SignInPage: React.FC = () => {
         </button>
 
         <button
-          onClick={() => router.push('/')}
+          onClick={() => router.push("/")}
           className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
@@ -152,7 +158,7 @@ export const SignInPage: React.FC = () => {
                   </label>
                   <button
                     type="button"
-                    onClick={() => router.push('/forgot-password')}
+                    onClick={() => router.push("/forgot-password")}
                     className="text-[11px] font-medium text-[var(--gold)] hover:underline"
                   >
                     Forgot password?
@@ -200,7 +206,7 @@ export const SignInPage: React.FC = () => {
 
                 <button
                   type="button"
-                  onClick={() => router.push('/register')}
+                  onClick={() => router.push("/register")}
                   className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--background-tertiary)] hover:bg-[var(--background-tertiary)]/80 text-[var(--foreground)] border border-[var(--border)] font-semibold text-xs transition-colors text-center whitespace-nowrap"
                 >
                   Create account
@@ -220,50 +226,60 @@ export const SignInPage: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                 <button
-                  onClick={() => handleQuickDemo('patient', 'myself')}
+                  onClick={() => handleQuickDemo("patient", "myself")}
                   className="p-2.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] hover:border-[var(--gold)] text-left transition-colors"
                 >
                   <div className="flex items-center gap-1 text-[var(--gold)] font-bold text-[11px] mb-0.5">
                     <User className="w-3 h-3" /> Patient
                   </div>
-                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">Sarah (Post-Op)</span>
+                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">
+                    Sarah (Post-Op)
+                  </span>
                 </button>
 
                 <button
-                  onClick={() => handleQuickDemo('family', 'family')}
+                  onClick={() => handleQuickDemo("family", "family")}
                   className="p-2.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] hover:border-[var(--green)] text-left transition-colors"
                 >
                   <div className="flex items-center gap-1 text-[var(--green)] font-bold text-[11px] mb-0.5">
                     <Users className="w-3 h-3" /> Family
                   </div>
-                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">David (Caregiver)</span>
+                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">
+                    David (Caregiver)
+                  </span>
                 </button>
 
                 <button
-                  onClick={() => handleQuickDemo('coordinator')}
+                  onClick={() => handleQuickDemo("coordinator")}
                   className="p-2.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] hover:border-[#3B828E] text-left transition-colors"
                 >
                   <div className="flex items-center gap-1 text-[#3B828E] font-bold text-[11px] mb-0.5">
                     <Stethoscope className="w-3 h-3" /> Doctor Lead
                   </div>
-                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">Dr. Amara, MD</span>
+                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">
+                    Dr. Amara, MD
+                  </span>
                 </button>
 
                 <button
-                  onClick={() => handleQuickDemo('admin')}
+                  onClick={() => handleQuickDemo("admin")}
                   className="p-2.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] hover:border-[var(--gold-light)] text-left transition-colors"
                 >
                   <div className="flex items-center gap-1 text-[var(--gold-light)] font-bold text-[11px] mb-0.5">
                     <Shield className="w-3 h-3" /> Admin
                   </div>
-                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">Victoria</span>
+                  <span className="text-[10px] text-[var(--foreground-muted)] block truncate">
+                    Victoria
+                  </span>
                 </button>
               </div>
             </div>
 
             {/* Terms & Privacy Policy Note */}
             <p className="text-[10px] text-[var(--foreground-subtle)] leading-relaxed text-center sm:text-left">
-              By signing in, you agree to Rehab Nigeria's clinical telehealth terms and verify that you have reviewed our confidential NDPR health data policy.
+              By signing in, you agree to Rehab Nigeria's clinical telehealth
+              terms and verify that you have reviewed our confidential NDPR
+              health data policy.
             </p>
           </div>
 
@@ -272,9 +288,12 @@ export const SignInPage: React.FC = () => {
             <div className="w-full h-full min-h-[560px] rounded-[24px] sm:rounded-[28px] overflow-hidden relative border border-[var(--border-subtle)] bg-[var(--background-tertiary)] flex flex-col justify-between p-8">
               {/* Background Online Telehealth Image with subtle zoom on hover */}
               <Image
-                src={onlineTelehealthImg}
-                alt="Rehab Nigeria Online Telehealth"
-                className="absolute inset-0 w-full h-full object-cover object-center transform scale-105 hover:scale-100 transition-transform duration-700 brightness-95"
+                src="https://images.unsplash.com/photo-1758721735744-2b6f0e6c4e2d?auto=format&fit=crop&w=1200&q=80"
+                alt="Rehab Nigeria Online Telehealth consultation"
+                fill
+                priority
+                sizes="(max-width: 1024px) 0vw, 50vw"
+                className="absolute inset-0 w-full h-full object-cover object-center scale-105 hover:scale-100 transition-transform duration-700 brightness-95"
                 referrerPolicy="no-referrer"
               />
 
@@ -317,14 +336,20 @@ export const SignInPage: React.FC = () => {
                 {/* Bottom navigation arrows / indicator (matching reference image) */}
                 <div className="flex items-center justify-between pt-1">
                   <div className="flex items-center gap-1.5">
-                    <div className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === 0 ? 'w-6 bg-[var(--gold)]' : 'w-2 bg-white/40'}`} />
-                    <div className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === 1 ? 'w-6 bg-[var(--gold)]' : 'w-2 bg-white/40'}`} />
+                    <div
+                      className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === 0 ? "w-6 bg-[var(--gold)]" : "w-2 bg-white/40"}`}
+                    />
+                    <div
+                      className={`h-1.5 rounded-full transition-all duration-300 ${activeSlide === 1 ? "w-6 bg-[var(--gold)]" : "w-2 bg-white/40"}`}
+                    />
                   </div>
 
                   <div className="flex items-center gap-1 bg-black/50 backdrop-blur-md p-1 rounded-xl border border-white/10">
                     <button
                       type="button"
-                      onClick={() => setActiveSlide((prev) => (prev === 0 ? 1 : 0))}
+                      onClick={() =>
+                        setActiveSlide((prev) => (prev === 0 ? 1 : 0))
+                      }
                       className="p-1 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors"
                       title="Previous"
                     >
@@ -335,7 +360,9 @@ export const SignInPage: React.FC = () => {
                     </span>
                     <button
                       type="button"
-                      onClick={() => setActiveSlide((prev) => (prev === 1 ? 0 : 1))}
+                      onClick={() =>
+                        setActiveSlide((prev) => (prev === 1 ? 0 : 1))
+                      }
                       className="p-1 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors"
                       title="Next"
                     >
@@ -351,11 +378,29 @@ export const SignInPage: React.FC = () => {
 
       {/* Footer Info */}
       <footer className="max-w-6xl mx-auto w-full pt-6 text-center text-xs text-[var(--foreground-subtle)] flex flex-col sm:flex-row items-center justify-between gap-2">
-        <span>© {new Date().getFullYear()} Rehab Nigeria Healthcare Network. Confidential Patient Records.</span>
+        <span>
+          © {new Date().getFullYear()} Rehab Nigeria Healthcare Network.
+          Confidential Patient Records.
+        </span>
         <div className="flex items-center gap-4 text-xs">
-          <button onClick={() => router.push('/privacy-policy')} className="hover:text-[var(--gold)] transition-colors">Privacy</button>
-          <button onClick={() => router.push('/terms-of-use')} className="hover:text-[var(--gold)] transition-colors">Terms</button>
-          <button onClick={() => router.push('/contact')} className="hover:text-[var(--gold)] transition-colors">Support Desk</button>
+          <button
+            onClick={() => router.push("/privacy-policy")}
+            className="hover:text-[var(--gold)] transition-colors"
+          >
+            Privacy
+          </button>
+          <button
+            onClick={() => router.push("/terms-of-use")}
+            className="hover:text-[var(--gold)] transition-colors"
+          >
+            Terms
+          </button>
+          <button
+            onClick={() => router.push("/contact")}
+            className="hover:text-[var(--gold)] transition-colors"
+          >
+            Support Desk
+          </button>
         </div>
       </footer>
     </div>

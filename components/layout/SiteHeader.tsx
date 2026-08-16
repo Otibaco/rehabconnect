@@ -241,7 +241,7 @@ export const SiteHeader: React.FC = () => {
             </Link> */}
 
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="group inline-flex items-center justify-center bg-[var(--gold)] px-5 py-2.5 text-xs font-mono font-semibold tracking-wider text-[var(--background)] transition-colors hover:bg-[var(--gold-light)]"
             >
               GET STARTED
@@ -252,7 +252,7 @@ export const SiteHeader: React.FC = () => {
           {/* MOBILE ACTIONS */}
           <div className="flex items-center gap-2 lg:hidden">
             <Link
-              href="/signin"
+              href="/auth/signin"
               className="hidden bg-[var(--gold)] px-3 py-1.5 text-[10px] font-mono font-bold tracking-wider text-[var(--background)] sm:block"
             >
               GET STARTED
