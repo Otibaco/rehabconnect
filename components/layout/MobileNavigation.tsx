@@ -77,7 +77,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ isOpen, onCl
                     className="group flex items-center justify-between py-2.5 border-b border-[var(--border-subtle)] hover:border-[var(--gold)] transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="font-mono text-xs text-[var(--gold)] font-bold">{item.number}</span>
+                      {/* <span className="font-mono text-xs text-[var(--gold)] font-bold">{item.number}</span> */}
                       <span className="font-cinzel text-xl sm:text-2xl font-semibold text-[var(--foreground)] group-hover:text-[var(--gold-light)] transition-colors tracking-wide">
                         {item.label}
                       </span>
