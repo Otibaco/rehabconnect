@@ -5,6 +5,8 @@ import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { resourceArticles } from '@/lib/data';
 import { Search, BookOpen, Clock, ArrowUpRight, X, Sparkles } from 'lucide-react';
 import { ResourceArticle } from '@/types/type';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const ResourcesPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -22,7 +24,7 @@ export const ResourcesPage: React.FC = () => {
 
   return (
     <div className="space-y-0">
-      
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -179,7 +181,7 @@ export const ResourcesPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
-
+      <Footer />
     </div>
   );
 };

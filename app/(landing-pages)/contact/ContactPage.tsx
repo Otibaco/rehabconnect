@@ -5,6 +5,8 @@ import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import { siteConfig } from '@/lib/config';
 import { Phone, Mail, MessageSquare, MapPin, Send, ArrowUpRight, CheckCircle2, CreditCard, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -24,6 +26,7 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="space-y-0">
       
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -223,6 +226,8 @@ export const ContactPage: React.FC = () => {
           </Link>
         </div>
       </section>
+
+      <Footer />
 
     </div>
   );

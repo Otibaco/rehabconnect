@@ -3,6 +3,8 @@ import React from 'react';
 import { EditorialHero } from '@/components/pages-components/EditorialHero';
 import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { siteConfig } from '@/lib/config';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const PrivacyPolicyPage: React.FC = () => {
   const sections = [
@@ -27,7 +29,7 @@ export const PrivacyPolicyPage: React.FC = () => {
 
   return (
     <div className="space-y-0">
-      
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -61,7 +63,7 @@ export const PrivacyPolicyPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
-
+      <Footer />
     </div>
   );
 };

@@ -7,6 +7,8 @@ import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { siteConfig } from '@/lib/config';
 import { ShieldCheck, CheckCircle2, ArrowUpRight, Lock, CreditCard, Video, Calendar, Sparkles, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const HowItWorksPage: React.FC = () => {
   const journeyStages = [
@@ -70,7 +72,7 @@ export const HowItWorksPage: React.FC = () => {
 
   return (
     <div className="space-y-0">
-      
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -197,6 +199,7 @@ export const HowItWorksPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
 
     </div>
   );

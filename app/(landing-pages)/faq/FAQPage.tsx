@@ -5,6 +5,8 @@ import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import { FAQAccordion } from '@/components/pages-components/FAQAccordion';
 import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { faqsData } from '@/lib/data';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const FAQPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -17,6 +19,8 @@ export const FAQPage: React.FC = () => {
 
   return (
     <div className="space-y-0">
+
+      <SiteHeader />
       
       {/* HERO */}
       <EditorialHero
@@ -56,6 +60,7 @@ export const FAQPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
 
     </div>
   );

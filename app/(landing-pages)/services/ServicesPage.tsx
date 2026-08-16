@@ -7,6 +7,8 @@ import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { servicesData } from '@/lib/data';
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Clock, CreditCard, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const ServicesPage: React.FC = () => {
   // Service category accent themes
@@ -19,7 +21,7 @@ export const ServicesPage: React.FC = () => {
 
   return (
     <div className="space-y-0">
-      
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -148,6 +150,7 @@ export const ServicesPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
 
     </div>
   );

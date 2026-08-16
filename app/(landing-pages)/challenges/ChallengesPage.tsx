@@ -7,10 +7,14 @@ import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { Share2, Award, ShieldCheck, ArrowUpRight, MessageCircle, Sparkles } from 'lucide-react';
 import { siteConfig } from '@/lib/config';
 import { socialChallengesData } from '@/lib/data';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const ChallengesPage: React.FC = () => {
   return (
     <div className="space-y-0">
+
+      <SiteHeader />
       
       {/* HERO */}
       <EditorialHero
@@ -179,6 +183,7 @@ export const ChallengesPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
 
     </div>
   );

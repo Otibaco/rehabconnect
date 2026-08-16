@@ -65,10 +65,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body cz-shortcut-listen="true">
         <AuthProvider>
-          <AppChrome>{children}</AppChrome>
-
+          <main>{children}</main>
           <FloatingContact />
-
           <CookieConsent />
         </AuthProvider>
       </body>

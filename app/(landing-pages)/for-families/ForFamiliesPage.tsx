@@ -6,11 +6,13 @@ import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { HeartHandshake, ShieldAlert, Lock, CheckCircle2, AlertTriangle, ArrowUpRight, Users, Sparkles, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const ForFamiliesPage: React.FC = () => {
   return (
     <div className="space-y-0">
-      
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -190,6 +192,7 @@ export const ForFamiliesPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
 
     </div>
   );

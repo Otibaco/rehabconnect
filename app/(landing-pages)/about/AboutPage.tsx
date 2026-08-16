@@ -6,6 +6,8 @@ import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { ShieldCheck, Heart, Lock, Users, Award, RefreshCw, ArrowUpRight, Compass, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const AboutPage: React.FC = () => {
   const values = [
@@ -61,6 +63,7 @@ export const AboutPage: React.FC = () => {
 
   return (
     <div className="space-y-0">
+      <SiteHeader />
       
       {/* HERO */}
       <EditorialHero
@@ -313,6 +316,8 @@ export const AboutPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+
+      <Footer />
 
     </div>
   );

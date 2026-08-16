@@ -11,6 +11,8 @@ import { faqsData } from "@/lib/data";
 import { siteConfig } from "@/lib/config";
 
 import { CheckCircle2, ArrowUpRight } from "lucide-react";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { Footer } from "@/components/layout/Footer";
 
 // Use your existing Service type here if you already have one.
 interface Service {
@@ -36,6 +38,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
 }) => {
   return (
     <>
+    <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number={service.number}
@@ -202,6 +205,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
     </>
   );
 };

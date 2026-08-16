@@ -7,11 +7,13 @@ import { FinalCTA } from '@/components/pages-components/FinalCTA';
 import { professionalsData } from '@/lib/data';
 import { ShieldCheck, UserPlus, Award, Stethoscope, HeartHandshake } from 'lucide-react';
 import Link from 'next/link';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const ProfessionalsPage: React.FC = () => {
   return (
     <div className="space-y-0">
-      
+      <SiteHeader />
       {/* HERO */}
       <EditorialHero
         number="01"
@@ -112,6 +114,7 @@ export const ProfessionalsPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+      <Footer />
 
     </div>
   );

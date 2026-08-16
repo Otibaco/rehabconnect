@@ -14,11 +14,14 @@ import { PricingHighlight } from '@/components/pages-components/PricingHighlight
 import { ResourceList } from '@/components/pages-components/ResourceList';
 import { FAQAccordion } from '@/components/pages-components/FAQAccordion';
 import { FinalCTA } from '@/components/pages-components/FinalCTA';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 
 export const HomePage: React.FC = () => {
   return (
     <div className="space-y-0">
+      <SiteHeader />
       
       {/* SECTION 01 — HERO */}
       <section className="relative min-h-[92vh] sm:min-h-screen flex items-center pt-28 pb-20 bg-[var(--background)] border-b border-[var(--border)] overflow-hidden">
@@ -558,6 +561,8 @@ export const HomePage: React.FC = () => {
 
       {/* SECTION 13 — FINAL CTA */}
       <FinalCTA />
+
+      <Footer />
 
     </div>
   );

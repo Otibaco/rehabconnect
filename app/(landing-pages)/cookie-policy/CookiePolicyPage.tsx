@@ -2,10 +2,14 @@
 import React from 'react';
 import { EditorialHero } from '@/components/pages-components/EditorialHero';
 import { FinalCTA } from '@/components/pages-components/FinalCTA';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 export const CookiePolicyPage: React.FC = () => {
   return (
     <div className="space-y-0">
+
+      <SiteHeader />
       
       {/* HERO */}
       <EditorialHero
@@ -59,6 +63,8 @@ export const CookiePolicyPage: React.FC = () => {
 
       {/* FINAL CTA */}
       <FinalCTA />
+
+      <Footer />
 
     </div>
   );
