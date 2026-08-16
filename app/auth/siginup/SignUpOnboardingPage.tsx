@@ -24,7 +24,7 @@ import { useAuth } from '@/context/AuthContext';
 import { OnboardingTarget } from '@/types/type';
 import { AuthLayout } from '@/components/auth/AuthLayout';
 
-export const RegisterOnboardingPage: React.FC = () => {
+export const SignUpOnboardingPage: React.FC = () => {
   const router = useRouter();
   const { switchRole, setOnboardingData, updateAssessmentProgress } = useAuth();
 

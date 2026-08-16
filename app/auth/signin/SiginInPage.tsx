@@ -25,7 +25,7 @@ import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 import { UserRole } from '@/types/type';
 
-export const LoginPage: React.FC = () => {
+export const SignInPage: React.FC = () => {
   const router = useRouter();
   const { login, switchRole } = useAuth();
   const [email, setEmail] = useState('sarah.j@example.com');
