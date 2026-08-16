@@ -1,7 +1,7 @@
+"use client";
+import { useAuth } from '@/context/AuthContext';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { Bell, CheckCircle2, Calendar, FileText, AlertCircle } from 'lucide-react';
 
 export const PatientNotificationsPage: React.FC = () => {
   const { notifications, markNotificationRead } = useAuth();

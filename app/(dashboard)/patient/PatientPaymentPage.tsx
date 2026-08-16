@@ -1,8 +1,8 @@
+"use client";
+import { useAuth } from '@/context/AuthContext';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import React, { useState } from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { PaymentTransaction, Appointment } from '../../types';
+
 import {
   CreditCard,
   ShieldCheck,
@@ -14,10 +14,12 @@ import {
   Smartphone,
   Sparkles
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { Appointment, PaymentTransaction } from '@/types/type';
 
 export const PatientPaymentPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const { currentUser, addAppointment, addPayment } = useAuth();
 
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'bank_transfer' | 'ussd'>('card');
@@ -283,7 +285,7 @@ export const PatientPaymentPage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <button
-                onClick={() => navigate('/patient/appointment-confirmation')}
+                onClick={() => router.push('/patient/appointment-confirmation')}
                 className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black font-bold text-xs shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-all hover:scale-105"
               >
                 <Sparkles className="w-4 h-4 text-black" />

@@ -1,11 +1,12 @@
+"use client";
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import React, { useState } from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
 import { CreditCard, Calendar, Download, CheckCircle2, Search, Filter } from 'lucide-react';
 
 export const PatientHistoryPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const { payments, appointments } = useAuth();
   const [activeTab, setActiveTab] = useState<'all' | 'appointments' | 'payments'>('all');
 
@@ -126,7 +127,7 @@ export const PatientHistoryPage: React.FC = () => {
                       </td>
                       <td className="py-3.5 text-right">
                         <button
-                          onClick={() => navigate('/patient/consultation-summary')}
+                          onClick={() => router.push('/patient/consultation-summary')}
                           className="text-[var(--gold)] hover:underline font-bold text-[11px]"
                         >
                           View Summary

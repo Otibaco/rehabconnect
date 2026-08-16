@@ -3,20 +3,12 @@ import React, { useState } from 'react';
 import {
   Users,
   Video,
-  FileCheck2,
   DollarSign,
   TrendingUp,
   ShieldCheck,
-  CheckCircle2,
-  Calendar,
   Layers,
-  Sparkles,
-  Search,
-  Activity,
   Sliders,
   FileSpreadsheet,
-  Clock,
-  ArrowRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';

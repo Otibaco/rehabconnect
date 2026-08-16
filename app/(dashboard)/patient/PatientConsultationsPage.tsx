@@ -1,7 +1,6 @@
+"use client";
 import React, { useState } from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useAuth } from '../../context/AuthContext';
-import { useRouter } from '../../context/RouterContext';
+
 import {
   Calendar,
   Video,
@@ -17,13 +16,19 @@ import {
   Printer,
   ShieldCheck
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ConsultationSummary } from '../../types';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { ConsultationSummary } from '@/types/type';
 
 export const PatientConsultationsPage: React.FC = () => {
   const { appointments, summaries } = useAuth();
-  const { navigate } = useRouter();
+  const router = useRouter();
   const [selectedSummary, setSelectedSummary] = useState<ConsultationSummary | null>(null);
+  const selectedExercises = selectedSummary && 'prescribedExercises' in selectedSummary
+    ? ((selectedSummary as ConsultationSummary & { prescribedExercises?: string[] }).prescribedExercises ?? [])
+    : [];
 
   const upcomingApts = appointments.filter((a) => a.status === 'scheduled');
   const pastApts = appointments.filter((a) => a.status === 'completed');
@@ -45,7 +50,7 @@ export const PatientConsultationsPage: React.FC = () => {
             <p className="text-xs text-[var(--foreground-muted)]">Connect directly with licensed Nigerian rehabilitation specialists and care coordinators.</p>
           </div>
           <button
-            onClick={() => navigate('/patient/consultations/book')}
+            onClick={() => router.push('/patient/consultations/book')}
             className="px-5 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95 whitespace-nowrap"
           >
             <Sparkles className="w-4 h-4 text-black" />
@@ -67,7 +72,7 @@ export const PatientConsultationsPage: React.FC = () => {
               <Clock className="w-8 h-8 text-[var(--foreground-subtle)] mx-auto opacity-60" />
               <p className="text-xs text-[var(--foreground-muted)]">No upcoming consultations booked.</p>
               <button
-                onClick={() => navigate('/patient/consultations/book')}
+                onClick={() => router.push('/patient/consultations/book')}
                 className="px-4 py-2 rounded-xl bg-[var(--gold)] text-black text-xs font-bold"
               >
                 Book Now
@@ -110,7 +115,7 @@ export const PatientConsultationsPage: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => navigate('/consultation/live')}
+                    onClick={() => router.push('/consultation/live')}
                     className="w-full py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95"
                   >
                     <Video className="w-4 h-4 text-black" />
@@ -141,7 +146,7 @@ export const PatientConsultationsPage: React.FC = () => {
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[var(--gold)]/10 text-[var(--gold)] border border-[var(--gold)]/20">
-                      {sum.consultationType}
+                      {sum.discussionPoints}
                     </span>
                     <h4 className="font-bold text-sm text-[var(--foreground)] mt-2">
                       Session with {sum.coordinatorName}
@@ -161,7 +166,7 @@ export const PatientConsultationsPage: React.FC = () => {
                   <div>
                     <span className="font-semibold text-[var(--foreground-muted)] block text-[11px]">Clinical Findings:</span>
                     <p className="text-[var(--foreground)] line-clamp-2 leading-relaxed mt-0.5">
-                      {sum.clinicalFindings}
+                      {sum.clinicalObservations}
                     </p>
                   </div>
                   <div className="p-2.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)]">
@@ -233,7 +238,7 @@ export const PatientConsultationsPage: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-[10px] text-[var(--foreground-subtle)] uppercase tracking-wider block">Session Type</span>
-                      <span className="font-bold text-[var(--gold)]">{selectedSummary.consultationType}</span>
+                      <span className="font-bold text-[var(--gold)]">{selectedSummary.discussionPoints}</span>
                     </div>
                   </div>
 
@@ -243,7 +248,7 @@ export const PatientConsultationsPage: React.FC = () => {
                       1. Clinical Evaluation & Observations
                     </h4>
                     <div className="p-3.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--foreground)] leading-relaxed">
-                      {selectedSummary.clinicalFindings}
+                      {selectedSummary.clinicalObservations}
                     </div>
                   </div>
 
@@ -263,13 +268,13 @@ export const PatientConsultationsPage: React.FC = () => {
                   </div>
 
                   {/* Prescribed Exercises & Regimen */}
-                  {selectedSummary.prescribedExercises && selectedSummary.prescribedExercises.length > 0 && (
+                  {selectedExercises.length > 0 && (
                     <div className="space-y-1.5">
                       <h4 className="font-bold text-[var(--foreground)] text-xs uppercase tracking-wider text-[var(--gold)]">
                         3. Home Exercise Protocol
                       </h4>
                       <div className="p-3.5 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] space-y-1.5">
-                        {selectedSummary.prescribedExercises.map((ex, i) => (
+                        {selectedExercises.map((ex, i) => (
                           <div key={i} className="flex items-center gap-2 text-[var(--foreground)]">
                             <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />
                             <span>{ex}</span>

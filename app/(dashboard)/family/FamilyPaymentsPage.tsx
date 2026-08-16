@@ -1,12 +1,13 @@
+"use client"
 import React from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useAuth } from '../../context/AuthContext';
 import { CreditCard, CheckCircle2, Download, Receipt, Sparkles } from 'lucide-react';
-import { useRouter } from '../../context/RouterContext';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const FamilyPaymentsPage: React.FC = () => {
   const { payments } = useAuth();
-  const { navigate } = useRouter();
+  const router = useRouter();
 
   return (
     <DashboardShell
@@ -27,7 +28,7 @@ export const FamilyPaymentsPage: React.FC = () => {
             </p>
           </div>
           <button
-            onClick={() => navigate('/patient/consultations/book')}
+            onClick={() => router.push('/patient/consultations/book')}
             className="px-4 py-2.5 rounded-xl bg-[var(--gold)] text-black text-xs font-bold shadow-md flex items-center gap-1.5 whitespace-nowrap"
           >
             <Sparkles className="w-4 h-4" />
@@ -49,8 +50,8 @@ export const FamilyPaymentsPage: React.FC = () => {
                     <Receipt className="w-5 h-5" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-xs sm:text-sm text-[var(--foreground)]">{pmt.description}</h5>
-                    <p className="text-[11px] text-[var(--foreground-subtle)]">{pmt.date} • {pmt.channel} • Ref: {pmt.reference}</p>
+                    <h5 className="font-bold text-xs sm:text-sm text-[var(--foreground)]">{pmt.status}</h5>
+                    <p className="text-[11px] text-[var(--foreground-subtle)]">{pmt.date} • {pmt.paymentMethod} • Ref: {pmt.reference}</p>
                   </div>
                 </div>
 

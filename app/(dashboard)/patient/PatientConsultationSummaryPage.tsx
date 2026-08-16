@@ -1,7 +1,6 @@
+"use client";
 import React from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { MOCK_COORDINATORS, MOCK_REHAB_CENTRES } from '../../data/mockData';
+
 import {
   FileText,
   Download,
@@ -9,14 +8,17 @@ import {
   Building2,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
   UserCheck
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { MOCK_COORDINATOR_PATIENTS, MOCK_REHAB_CENTRES } from '@/lib/data';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { RehabCentre } from '@/types/type';
 
 export const PatientConsultationSummaryPage: React.FC = () => {
-  const { navigate } = useRouter();
-  const coordinator = MOCK_COORDINATORS[0];
+  const router = useRouter();
+  const coordinator = MOCK_COORDINATOR_PATIENTS[0];
 
   return (
     <DashboardShell
@@ -110,7 +112,7 @@ export const PatientConsultationSummaryPage: React.FC = () => {
                     </div>
 
                     <button
-                      onClick={() => navigate('/rehab-centers')}
+                      onClick={() => router.push('/rehab-centers')}
                       className="px-4 py-2 rounded-xl bg-[var(--gold)] text-black font-bold text-xs hover:bg-[var(--gold-light)] flex items-center gap-1 shrink-0 transition-all hover:scale-105"
                     >
                       <span>Explore Facility</span>
@@ -147,7 +149,7 @@ export const PatientConsultationSummaryPage: React.FC = () => {
               </div>
 
               <button
-                onClick={() => navigate('/patient/dashboard')}
+                onClick={() => router.push('/patient/dashboard')}
                 className="w-full py-3 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black font-bold text-xs shadow-md shadow-[var(--gold)]/20 transition-all hover:scale-105"
               >
                 Back to Patient Portal

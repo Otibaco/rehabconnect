@@ -1,7 +1,6 @@
+"use client"
 import React from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useAuth } from '../../context/AuthContext';
-import { useRouter } from '../../context/RouterContext';
+
 import {
   HeartHandshake,
   User,
@@ -14,11 +13,14 @@ import {
   ShieldCheck,
   ChevronRight
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const FamilyLovedOnePage: React.FC = () => {
   const { familyJourney } = useAuth();
-  const { navigate } = useRouter();
+  const router = useRouter();
 
   return (
     <DashboardShell
@@ -50,14 +52,14 @@ export const FamilyLovedOnePage: React.FC = () => {
                   Age: 68 • Gender: Male • Location: Lekki Phase 1, Lagos
                 </p>
                 <p className="text-xs text-[var(--gold)] font-medium">
-                  Primary Condition: {familyJourney.conditionCategory}
+                  Primary Condition: {familyJourney.overallStatus}
                 </p>
               </div>
             </div>
 
             <div className="shrink-0 flex items-center gap-3">
               <button
-                onClick={() => navigate('/dashboard/family/consultations')}
+                onClick={() => router.push('/dashboard/family/consultations')}
                 className="px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95"
               >
                 <Calendar className="w-4 h-4" />
@@ -134,7 +136,7 @@ export const FamilyLovedOnePage: React.FC = () => {
                           )}
                         </div>
                         <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
-                          {stage.description}
+                          {stage.status === 'pending' && 'This stage is upcoming. Please follow the care plan and await guidance from your assigned doctor.'}
                         </p>
                       </div>
                     </div>
@@ -170,20 +172,20 @@ export const FamilyLovedOnePage: React.FC = () => {
                 <h4 className="font-bold text-sm text-[var(--foreground)]">{familyJourney.assignedCoordinatorName}</h4>
                 <ShieldCheck className="w-4 h-4 text-[var(--gold)]" />
               </div>
-              <p className="text-xs text-[var(--foreground-muted)]">{familyJourney.assignedCoordinatorRole}</p>
+              <p className="text-xs text-[var(--foreground-muted)]">{familyJourney.assignedCoordinatorName}</p>
               <p className="text-[11px] text-[var(--foreground-subtle)]">Specialist in Stroke Recovery & Senior Home Neuro-Rehab</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
-              onClick={() => navigate('/dashboard/family/messages')}
+              onClick={() => router.push('/dashboard/family/messages')}
               className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[var(--background-tertiary)] hover:bg-[var(--border)] border border-[var(--border)] text-xs font-semibold text-[var(--foreground)] transition-colors"
             >
               Ask Question
             </button>
             <button
-              onClick={() => navigate('/dashboard/family/consultations')}
+              onClick={() => router.push('/dashboard/family/consultations')}
               className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[var(--gold)] text-black text-xs font-bold"
             >
               Schedule Review

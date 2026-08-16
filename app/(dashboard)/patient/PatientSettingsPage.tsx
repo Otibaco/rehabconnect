@@ -1,6 +1,7 @@
+"use client";
 import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
+import { useAuth } from '@/context/AuthContext';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { User, Mail, Phone, Lock, Bell, Shield, Save, CheckCircle2 } from 'lucide-react';
 
 export const PatientSettingsPage: React.FC = () => {

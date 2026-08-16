@@ -1,9 +1,6 @@
+"use client";
 import React, { useState } from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { ConsultationType } from '../../types';
-import { MOCK_COORDINATORS } from '../../data/mockData';
+
 import {
   MessageSquare,
   PhoneCall,
@@ -17,16 +14,20 @@ import {
   ShieldCheck,
   Sparkles
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { ConsultationType } from '@/types/type';
+import { MOCK_COORDINATOR_PATIENTS } from '@/lib/data';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const PatientBookConsultationPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
 
   const [bookingStep, setBookingStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedType, setSelectedType] = useState<ConsultationType>('video');
   const [selectedDate, setSelectedDate] = useState('2026-08-05');
   const [selectedTime, setSelectedTime] = useState('10:30 AM');
-  const [selectedCoordinator] = useState(MOCK_COORDINATORS[0]);
+  const [selectedCoordinator] = useState(MOCK_COORDINATOR_PATIENTS[0]);
 
   const consultationTypes: { type: ConsultationType; title: string; desc: string; duration: string; icon: React.ElementType }[] = [
     {
@@ -62,7 +63,7 @@ export const PatientBookConsultationPage: React.FC = () => {
   const availableSlots = ['09:00 AM', '10:30 AM', '01:15 PM', '03:00 PM', '04:30 PM'];
 
   const handleProceedToPayment = () => {
-    navigate('/patient/payment');
+    router.push('/patient/payment');
   };
 
   return (

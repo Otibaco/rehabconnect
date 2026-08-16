@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
+
 import {
   ClipboardList,
   CheckCircle2,
@@ -12,10 +10,13 @@ import {
   Lock,
   Sparkles
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const PatientAssessmentPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const { submitAssessment } = useAuth();
 
   const [step, setStep] = useState(1); // 1-8
@@ -412,7 +413,7 @@ export const PatientAssessmentPage: React.FC = () => {
               Your clinical profile has been securely received by the Rehab Nigeria medical coordination team. A licensed Care Lead will review your records before your scheduled session.
             </p>
             <button
-              onClick={() => navigate('/patient/dashboard')}
+              onClick={() => router.push('/patient/dashboard')}
               className="px-6 py-3 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black font-bold text-xs shadow-md shadow-[var(--gold)]/20 transition-all hover:scale-105"
             >
               Return to Patient Portal

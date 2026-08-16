@@ -1,28 +1,23 @@
+"use client";
 import React from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
 import {
   CheckCircle2,
-  Clock,
   Sparkles,
   Calendar,
-  CreditCard,
-  ClipboardList,
   ArrowRight,
   Video,
   MessageSquare,
   Activity,
   ChevronRight,
-  ShieldCheck,
-  Stethoscope,
   FileText,
-  AlertCircle
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export const PatientDashboardPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const { currentUser, appointments, patientJourney, summaries } = useAuth();
 
   const nextAppointment = appointments.find((a) => a.status === 'scheduled') || appointments[0];
@@ -44,7 +39,7 @@ export const PatientDashboardPage: React.FC = () => {
                   Current Stage: 0{patientJourney.currentStage} of 05 — {patientJourney.stages[patientJourney.currentStage - 1]?.title}
                 </span>
                 <span className="text-xs text-[var(--foreground-muted)]">
-                  {patientJourney.conditionCategory}
+                  {patientJourney.overallStatus}
                 </span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold font-cinzel text-[var(--foreground)]">
@@ -57,7 +52,7 @@ export const PatientDashboardPage: React.FC = () => {
 
             <div className="shrink-0 flex items-center gap-3">
               <button
-                onClick={() => navigate('/dashboard/journey')}
+                onClick={() => router.push('/dashboard/journey')}
                 className="px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap"
               >
                 <span>View Full Journey</span>
@@ -74,7 +69,7 @@ export const PatientDashboardPage: React.FC = () => {
               return (
                 <div
                   key={stage.stageNumber}
-                  onClick={() => navigate('/dashboard/journey')}
+                  onClick={() => router.push('/dashboard/journey')}
                   className={`p-3 rounded-xl border text-center space-y-1 cursor-pointer transition-all ${
                     isCurrent
                       ? 'bg-[var(--gold)]/10 border-[var(--gold)] text-[var(--gold)] shadow-md shadow-[var(--gold)]/10'
@@ -140,14 +135,14 @@ export const PatientDashboardPage: React.FC = () => {
 
                 <div className="flex items-center gap-2 pt-2 border-t border-[var(--border-subtle)]">
                   <button
-                    onClick={() => navigate('/consultation/live')}
+                    onClick={() => router.push('/consultation/live')}
                     className="flex-1 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-transform active:scale-95"
                   >
                     <Video className="w-4 h-4 text-black" />
                     <span>Join Video Room</span>
                   </button>
                   <button
-                    onClick={() => navigate('/dashboard/consultations')}
+                    onClick={() => router.push('/dashboard/consultations')}
                     className="px-3 py-2.5 rounded-xl bg-[var(--background-secondary)] hover:bg-[var(--border)] border border-[var(--border)] text-xs text-[var(--foreground)] transition-colors"
                   >
                     Details
@@ -158,7 +153,7 @@ export const PatientDashboardPage: React.FC = () => {
               <div className="p-6 rounded-xl bg-[var(--background-tertiary)] text-center space-y-3">
                 <p className="text-xs text-[var(--foreground-muted)]">You have no upcoming consultations scheduled.</p>
                 <button
-                  onClick={() => navigate('/patient/consultations/book')}
+                  onClick={() => router.push('/patient/consultations/book')}
                   className="px-4 py-2 rounded-xl bg-[var(--gold)] text-black text-xs font-bold"
                 >
                   Book New Consultation
@@ -169,7 +164,7 @@ export const PatientDashboardPage: React.FC = () => {
             <div className="flex items-center justify-between text-xs text-[var(--foreground-muted)] pt-1">
               <span>Need to reschedule?</span>
               <button
-                onClick={() => navigate('/dashboard/messages')}
+                onClick={() => router.push('/dashboard/messages')}
                 className="text-[var(--gold)] hover:underline font-medium"
               >
                 Message Care Coordinator
@@ -195,7 +190,7 @@ export const PatientDashboardPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[var(--foreground)]">
-                    {latestSummary.consultationType}
+                    {latestSummary.discussionPoints}
                   </span>
                   <span className="text-[10px] font-semibold text-[var(--gold)]">
                     {latestSummary.coordinatorName}
@@ -203,7 +198,7 @@ export const PatientDashboardPage: React.FC = () => {
                 </div>
 
                 <p className="text-xs text-[var(--foreground-muted)] line-clamp-3 leading-relaxed">
-                  "{latestSummary.clinicalFindings}"
+                  "{latestSummary.clinicalObservations}"
                 </p>
 
                 <div className="pt-2 border-t border-[var(--border-subtle)] space-y-1.5">
@@ -215,7 +210,7 @@ export const PatientDashboardPage: React.FC = () => {
 
                 <div className="pt-2">
                   <button
-                    onClick={() => navigate('/dashboard/consultations')}
+                    onClick={() => router.push('/dashboard/consultations')}
                     className="w-full py-2 rounded-xl bg-[var(--background-secondary)] hover:bg-[var(--border)] border border-[var(--border)] text-xs font-semibold text-[var(--foreground)] transition-colors flex items-center justify-center gap-1.5"
                   >
                     <span>Read Full Consultation Summary</span>
@@ -234,7 +229,7 @@ export const PatientDashboardPage: React.FC = () => {
         {/* QUICK ACTIONS & SUPPORT FOOTER */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <button
-            onClick={() => navigate('/patient/consultations/book')}
+            onClick={() => router.push('/patient/consultations/book')}
             className="p-4 rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-all text-left flex items-center gap-3.5 group"
           >
             <div className="w-10 h-10 rounded-xl bg-[var(--gold)]/15 text-[var(--gold)] flex items-center justify-center shrink-0">
@@ -249,7 +244,7 @@ export const PatientDashboardPage: React.FC = () => {
           </button>
 
           <button
-            onClick={() => navigate('/dashboard/messages')}
+            onClick={() => router.push('/dashboard/messages')}
             className="p-4 rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-all text-left flex items-center gap-3.5 group"
           >
             <div className="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0">
@@ -264,7 +259,7 @@ export const PatientDashboardPage: React.FC = () => {
           </button>
 
           <button
-            onClick={() => navigate('/dashboard/resources')}
+            onClick={() => router.push('/dashboard/resources')}
             className="p-4 rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-all text-left flex items-center gap-3.5 group"
           >
             <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">

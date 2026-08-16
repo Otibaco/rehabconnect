@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useAuth } from '../../context/AuthContext';
+
 import {
   Send,
   Stethoscope,
@@ -10,12 +9,18 @@ import {
   Clock,
   HeartHandshake
 } from 'lucide-react';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { useAuth } from '@/context/AuthContext';
 
 export const FamilyMessagesPage: React.FC = () => {
   const { conversations, sendMessage, currentUser } = useAuth();
   const [inputText, setInputText] = useState('');
 
-  const familyConv = conversations.find((c) => c.patientName.includes('Okafor')) || conversations[0];
+  const familyConv = conversations.find((c) => c.participantName?.includes('Okafor')) ?? conversations[0];
+
+  if (!familyConv) {
+    return null;
+  }
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();

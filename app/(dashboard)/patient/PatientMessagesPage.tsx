@@ -1,8 +1,7 @@
+"use client";
+import { useRouter } from 'next/navigation';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import React, { useState } from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useRouter } from '../../context/RouterContext';
-import { MOCK_DIRECT_MESSAGES } from '../../data/mockData';
-import { DirectMessage } from '../../types';
 import {
   MessageSquare,
   Send,
@@ -12,10 +11,12 @@ import {
   ShieldCheck,
   Stethoscope
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { DirectMessage } from '@/types/type';
+import { MOCK_DIRECT_MESSAGES } from '@/lib/data';
 
 export const PatientMessagesPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const [messages, setMessages] = useState<DirectMessage[]>(MOCK_DIRECT_MESSAGES);
   const [inputText, setInputText] = useState('');
 
@@ -69,7 +70,7 @@ export const PatientMessagesPage: React.FC = () => {
           </div>
 
           <button
-            onClick={() => navigate('/patient/consultation-live')}
+            onClick={() => router.push('/patient/consultation-live')}
             className="px-4 py-2 rounded-xl bg-[var(--gold)] text-black text-xs font-bold hover:bg-[var(--gold-light)] flex items-center gap-1.5 shadow-xs transition-all"
           >
             <Video className="w-4 h-4" />

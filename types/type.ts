@@ -438,3 +438,18 @@ export interface PatientCase {
   status: 'triage_pending' | 'referred' | 'admitted' | 'discharged';
 }
 
+export interface RehabCentre {
+  id: string;
+  name: string;
+  location: string;
+  accreditation: string[];
+  specialties: string[];
+  image: string;
+  rating: number;
+  reviewsCount: number;
+  capacity: string;
+  description: string;
+  features: string[];
+  verified: boolean;
+  featured?: boolean;
+}

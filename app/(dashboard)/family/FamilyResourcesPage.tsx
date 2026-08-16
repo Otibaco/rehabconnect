@@ -1,7 +1,7 @@
 import React from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { MOCK_FAMILY_RESOURCES } from '../../data/appMockData';
 import { BookOpen, Clock, ArrowRight, ShieldCheck, Download, ExternalLink } from 'lucide-react';
+import { MOCK_FAMILY_RESOURCES } from '@/lib/data';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const FamilyResourcesPage: React.FC = () => {
   return (

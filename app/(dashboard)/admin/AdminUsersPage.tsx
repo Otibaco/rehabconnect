@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Users, Search, ShieldCheck, UserCheck, Plus, Filter } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const AdminUsersPage: React.FC = () => {

@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { ShieldCheck, Lock, Bell, Sliders } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const AdminSettingsPage: React.FC = () => {

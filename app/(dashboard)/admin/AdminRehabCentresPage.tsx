@@ -2,15 +2,8 @@ import React, { useState } from 'react';
 import {
   Layers,
   Plus,
-  ShieldCheck,
-  Video,
   Users,
-  Check,
-  X,
-  Sparkles,
-  BookOpen,
   Activity,
-  Edit2
 } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 

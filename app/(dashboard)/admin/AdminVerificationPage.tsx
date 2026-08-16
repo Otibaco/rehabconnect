@@ -3,13 +3,7 @@ import React, { useState } from 'react';
 import {
   ShieldCheck,
   CheckCircle2,
-  XCircle,
   FileText,
-  Stethoscope,
-  Clock,
-  Search,
-  Award,
-  AlertCircle
 } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 

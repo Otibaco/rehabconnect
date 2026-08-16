@@ -1,25 +1,22 @@
+"use client";
 import React from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useAuth } from '../../context/AuthContext';
-import { useRouter } from '../../context/RouterContext';
+
 import {
   Activity,
   CheckCircle2,
   Clock,
-  ArrowRight,
-  Sparkles,
   Calendar,
-  FileText,
   ShieldCheck,
   Stethoscope,
-  ChevronRight,
-  AlertCircle
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const PatientJourneyPage: React.FC = () => {
   const { patientJourney, currentUser } = useAuth();
-  const { navigate } = useRouter();
+  const router = useRouter();
 
   return (
     <DashboardShell
@@ -44,7 +41,7 @@ export const PatientJourneyPage: React.FC = () => {
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold font-cinzel text-[var(--foreground)]">
-                {patientJourney.conditionCategory}
+                {patientJourney.overallStatus}
               </h2>
               <p className="text-xs sm:text-sm text-[var(--foreground-muted)] max-w-2xl leading-relaxed">
                 {patientJourney.latestUpdate}
@@ -53,14 +50,14 @@ export const PatientJourneyPage: React.FC = () => {
 
             <div className="shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <button
-                onClick={() => navigate('/dashboard/consultations')}
+                onClick={() => router.push('/dashboard/consultations')}
                 className="px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95"
               >
                 <Calendar className="w-4 h-4" />
                 <span>View Consultations</span>
               </button>
               <button
-                onClick={() => navigate('/dashboard/messages')}
+                onClick={() => router.push('/dashboard/messages')}
                 className="px-4 py-2.5 rounded-xl bg-[var(--background-tertiary)] hover:bg-[var(--border)] border border-[var(--border)] text-[var(--foreground)] text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
               >
                 <Stethoscope className="w-4 h-4 text-[var(--gold)]" />
@@ -147,7 +144,7 @@ export const PatientJourneyPage: React.FC = () => {
                           )}
                         </div>
                         <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
-                          {stage.description}
+                          {stage.status === 'pending' ? 'This stage is scheduled to begin soon.' : stage.status === 'in_progress' ? 'This stage is currently in progress. Follow the recommended actions below.' : stage.status === 'completed' ? `This stage was completed on ${stage.completedDate}.` : ''}
                         </p>
                       </div>
                     </div>
@@ -187,20 +184,20 @@ export const PatientJourneyPage: React.FC = () => {
                 <h4 className="font-bold text-sm text-[var(--foreground)]">{patientJourney.assignedCoordinatorName}</h4>
                 <ShieldCheck className="w-4 h-4 text-[var(--gold)]" />
               </div>
-              <p className="text-xs text-[var(--foreground-muted)]">{patientJourney.assignedCoordinatorRole}</p>
+              <p className="text-xs text-[var(--foreground-muted)]">{patientJourney.assignedCoordinatorName}</p>
               <p className="text-[11px] text-[var(--foreground-subtle)]">MDCN Reg: 74921-NG • Lagos State University Teaching Hospital Partner</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
-              onClick={() => navigate('/dashboard/messages')}
+              onClick={() => router.push('/dashboard/messages')}
               className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[var(--background-tertiary)] hover:bg-[var(--border)] border border-[var(--border)] text-xs font-semibold text-[var(--foreground)] transition-colors"
             >
               Send Message
             </button>
             <button
-              onClick={() => navigate('/dashboard/consultations')}
+              onClick={() => router.push('/dashboard/consultations')}
               className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold transition-all"
             >
               Book Session

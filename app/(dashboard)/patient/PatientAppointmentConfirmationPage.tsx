@@ -1,7 +1,5 @@
+"use client"
 import React from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
 import {
   Calendar,
   Clock,
@@ -13,10 +11,13 @@ import {
   VideoOff,
   Sparkles
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const PatientAppointmentConfirmationPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const { appointments } = useAuth();
 
   const appointment = appointments[0];
@@ -86,7 +87,7 @@ export const PatientAppointmentConfirmationPage: React.FC = () => {
           {/* Action buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <button
-              onClick={() => navigate('/patient/consultation-live')}
+              onClick={() => router.push('/patient/consultation-live')}
               className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black font-bold text-xs shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-all hover:scale-105"
             >
               <Video className="w-4 h-4 text-black" />

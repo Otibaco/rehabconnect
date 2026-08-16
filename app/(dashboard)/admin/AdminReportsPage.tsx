@@ -2,14 +2,8 @@
 import React from 'react';
 import {
   BarChart3,
-  TrendingUp,
   Download,
-  Users,
-  Video,
   Activity,
-  CheckCircle2,
-  Calendar,
-  Sparkles
 } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 

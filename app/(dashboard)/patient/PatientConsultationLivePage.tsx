@@ -1,7 +1,6 @@
+"use client";
 import React, { useState } from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { MOCK_COORDINATORS } from '../../data/mockData';
+
 import {
   Mic,
   MicOff,
@@ -14,10 +13,13 @@ import {
   ShieldCheck,
   FileText
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { MOCK_COORDINATOR_PATIENTS } from '@/lib/data';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const PatientConsultationLivePage: React.FC = () => {
-  const { navigate } = useRouter();
-  const coordinator = MOCK_COORDINATORS[0];
+  const router = useRouter();
+  const coordinator = MOCK_COORDINATOR_PATIENTS[0];
 
   const [micOn, setMicOn] = useState(true);
   const [videoOn, setVideoOn] = useState(true);
@@ -36,7 +38,7 @@ export const PatientConsultationLivePage: React.FC = () => {
 
   const handleEndCall = () => {
     if (confirm('End consultation session and view clinical recommendation summary?')) {
-      navigate('/patient/consultation-summary');
+      router.push('/patient/consultation-summary');
     }
   };
 

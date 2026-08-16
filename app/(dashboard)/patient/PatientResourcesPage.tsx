@@ -1,20 +1,17 @@
+"use client"
 import React from 'react';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
-import { useRouter } from '../../context/RouterContext';
-import { MOCK_CLINICAL_RESOURCES } from '../../data/mockData';
+import { useRouter } from 'next/navigation';
+import { DashboardShell } from '@/components/dashboard/DashboardShell';
+import { MOCK_CLINICAL_RESOURCES } from '@/lib/data';
 import {
-  BookOpen,
   Download,
-  FileText,
-  Video,
   CheckCircle2,
-  Sparkles,
   Stethoscope,
   Eye
 } from 'lucide-react';
 
 export const PatientResourcesPage: React.FC = () => {
-  const { navigate } = useRouter();
+  const router = useRouter();
 
   return (
     <DashboardShell
