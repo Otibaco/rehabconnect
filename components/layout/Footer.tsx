@@ -1,7 +1,7 @@
 import React from 'react';
 import { Shield, Phone, Mail, MessageSquare, AlertTriangle } from 'lucide-react';
-import { siteConfig } from '../../lib/config';
 import Link from 'next/link';
+import { siteConfig } from '@/lib/config';
 
 // Platform Brand Social Icons
 const FacebookIcon = () => (

@@ -7,16 +7,22 @@ import {
   Appointment,
   PaymentTransaction,
   AppNotification,
-  ReferralRecord,
-} from '../types';
+} from '@/types/type';
 import {
   MOCK_ASSESSMENTS,
   MOCK_APPOINTMENTS,
   MOCK_PAYMENTS,
   MOCK_NOTIFICATIONS,
-} from '../data/appMockData';
-import { MOCK_REFERRALS } from '../data/mockData';
+} from '@/lib/data';
 import { useAuth } from './AuthContext';
+
+interface ReferralRecord {
+  id: string;
+  patientName: string;
+  source: string;
+  status: 'pending' | 'accepted' | 'declined';
+  createdAt: string;
+}
 
 interface AppDataContextType {
   appointments: Appointment[];
@@ -40,7 +46,7 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [payments, setPayments] = useState<PaymentTransaction[]>(MOCK_PAYMENTS);
   const [notifications, setNotifications] = useState<AppNotification[]>(MOCK_NOTIFICATIONS);
   const [assessmentData, setAssessmentData] = useState<PatientAssessmentData | null>(MOCK_ASSESSMENTS[0]);
-  const [referrals, setReferrals] = useState<ReferralRecord[]>(MOCK_REFERRALS);
+  const [referrals, setReferrals] = useState<ReferralRecord[]>([]);
 
   const addReferral = (ref: ReferralRecord) => {
     setReferrals((prev) => [ref, ...prev]);

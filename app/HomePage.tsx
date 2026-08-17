@@ -1,24 +1,27 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HeroBackgroundSlider } from '@/components/editorial/HeroBackgroundSlider';
-import { SectionLabel } from '@/components/editorial/SectionLabel';
+import { HeroBackgroundSlider } from '@/components/pages-components/HeroBackgroundSlider';
+import { SectionLabel } from '@/components/pages-components/SectionLabel';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown, Lock, ShieldCheck, Sparkles } from 'lucide-react';
 import { siteConfig } from '@/lib/config';
-import { LargeStatement } from '@/components/editorial/LargeStatement';
-import { NumberedTimeline } from '@/components/editorial/NumberedTimeline';
+import { LargeStatement } from '@/components/pages-components/LargeStatement';
+import { NumberedTimeline } from '@/components/pages-components/NumberedTimeline';
 import { faqsData, professionalsData, resourceArticles, socialChallengesData } from '@/lib/data';
-import { ProfessionalProfile } from '@/components/editorial/ProfessionalProfile';
-import { PricingHighlight } from '@/components/editorial/PricingHighlight';
-import { ResourceList } from '@/components/editorial/ResourceList';
-import { FAQAccordion } from '@/components/editorial/FAQAccordion';
-import { FinalCTA } from '@/components/editorial/FinalCTA';
+import { ProfessionalProfile } from '@/components/pages-components/ProfessionalProfile';
+import { PricingHighlight } from '@/components/pages-components/PricingHighlight';
+import { ResourceList } from '@/components/pages-components/ResourceList';
+import { FAQAccordion } from '@/components/pages-components/FAQAccordion';
+import { FinalCTA } from '@/components/pages-components/FinalCTA';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { Footer } from '@/components/layout/Footer';
 
 
 export const HomePage: React.FC = () => {
   return (
     <div className="space-y-0">
+      <SiteHeader />
       
       {/* SECTION 01 — HERO */}
       <section className="relative min-h-[92vh] sm:min-h-screen flex items-center pt-28 pb-20 bg-[var(--background)] border-b border-[var(--border)] overflow-hidden">
@@ -558,6 +561,8 @@ export const HomePage: React.FC = () => {
 
       {/* SECTION 13 — FINAL CTA */}
       <FinalCTA />
+
+      <Footer />
 
     </div>
   );

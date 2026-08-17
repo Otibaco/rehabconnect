@@ -11,15 +11,15 @@ interface MobileNavigationProps {
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({ isOpen, onClose }) => {
   const menuItems = [
-    { number: '01', label: 'ABOUT', path: '/about' },
-    { number: '02', label: 'CARE & SERVICES', path: '/services' },
-    { number: '03', label: 'HOW IT WORKS', path: '/how-it-works' },
-    { number: '04', label: 'FOR FAMILIES', path: '/for-families' },
-    { number: '05', label: 'PROFESSIONALS', path: '/professionals' },
-    { number: '06', label: 'RESOURCES', path: '/resources' },
-    { number: '07', label: 'CHALLENGES', path: '/challenges' },
-    { number: '08', label: 'FAQ', path: '/faq' },
-    { number: '09', label: 'CONTACT', path: '/contact' },
+    {label: 'ABOUT', path: '/about' },
+    {label: 'CARE & SERVICES', path: '/services' },
+    {label: 'HOW IT WORKS', path: '/how-it-works' },
+    {label: 'FOR FAMILIES', path: '/for-families' },
+    {label: 'PROFESSIONALS', path: '/professionals' },
+    {label: 'RESOURCES', path: '/resources' },
+    {label: 'CHALLENGES', path: '/challenges' },
+    {label: 'FAQ', path: '/faq' },
+    {label: 'CONTACT', path: '/contact' },
   ];
 
   return (
@@ -77,7 +77,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ isOpen, onCl
                     className="group flex items-center justify-between py-2.5 border-b border-[var(--border-subtle)] hover:border-[var(--gold)] transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="font-mono text-xs text-[var(--gold)] font-bold">{item.number}</span>
+                      {/* <span className="font-mono text-xs text-[var(--gold)] font-bold">{item.number}</span> */}
                       <span className="font-cinzel text-xl sm:text-2xl font-semibold text-[var(--foreground)] group-hover:text-[var(--gold-light)] transition-colors tracking-wide">
                         {item.label}
                       </span>
@@ -95,7 +95,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ isOpen, onCl
               
               <div className="grid grid-cols-2 gap-3">
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   onClick={onClose}
                   className="w-full text-center py-3 text-xs font-mono tracking-wider text-[var(--foreground)] bg-[var(--background-tertiary)] hover:bg-[var(--border)] border border-[var(--border)] rounded-sm transition-colors"
                 >
