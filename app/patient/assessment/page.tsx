@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from '../../context/RouterContext';
 import { useAuth } from '../../context/AuthContext';
-import { DashboardShell } from '../../components/dashboard/DashboardShell';
+import { DashboardShell } from '../../dashboard/DashboardShell';
 import {
   ClipboardList,
   CheckCircle2,
