@@ -1,4 +1,4 @@
-import { PatientSettingsPage } from "../PatientSettingsPage";
+import { PatientSettingsPage } from "./PatientSettingsPage";
 
 export default function Page() {
   return <PatientSettingsPage />;

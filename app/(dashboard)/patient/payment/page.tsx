@@ -1,4 +1,4 @@
-import { PatientPaymentPage } from "../PatientPaymentPage";
+import { PatientPaymentPage } from "./PatientPaymentPage";
 
 export default function Page() {
   return <PatientPaymentPage />;

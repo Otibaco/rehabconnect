@@ -1,4 +1,4 @@
-import { PatientNotificationsPage } from "../PatientNotificationsPage";
+import { PatientNotificationsPage } from "./PatientNotificationsPage";
 
 export default function Page() {
   return <PatientNotificationsPage />;
