@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { BookOpen, Clock, ArrowRight, ShieldCheck, Download, ExternalLink } from 'lucide-react';
 import { MOCK_FAMILY_RESOURCES } from '@/lib/data';
