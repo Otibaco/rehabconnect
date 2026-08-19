@@ -103,19 +103,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     {
       groupName: 'My Care',
       items: [
-        { label: 'Overview', path: '/dashboard', icon: LayoutDashboard },
-        { label: 'My Journey', path: '/dashboard/journey', icon: Activity, badge: 'Stage 02' },
-        { label: 'Consultations', path: '/dashboard/consultations', icon: Calendar },
-        { label: 'Messages', path: '/dashboard/messages', icon: MessageSquare, badge: '1 New' },
-        { label: 'Resources', path: '/dashboard/resources', icon: BookOpen },
+        { label: 'Overview', path: '/patient', icon: LayoutDashboard },
+        { label: 'My Journey', path: '/patient/patient-journey', icon: Activity, badge: 'Stage 02' },
+        { label: 'Consultations', path: '/patient/patient-consultations', icon: Calendar },
+        { label: 'Messages', path: '/patient/patient-messages', icon: MessageSquare, badge: '1 New' },
+        { label: 'Resources', path: '/patient/patient-resources', icon: BookOpen },
       ],
     },
     {
       groupName: 'Account & Billing',
       items: [
-        { label: 'Payments', path: '/dashboard/payments', icon: CreditCard },
-        { label: 'Notifications', path: '/dashboard/notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
-        { label: 'Settings', path: '/dashboard/settings', icon: Settings },
+        { label: 'Payments', path: '/patient/patient-payment', icon: CreditCard },
+        { label: 'Notifications', path: '/patient/patient-notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
+        { label: 'Settings', path: '/patient/patient-settings', icon: Settings },
       ],
     },
   ];
