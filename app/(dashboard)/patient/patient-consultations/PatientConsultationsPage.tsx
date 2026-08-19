@@ -7,14 +7,10 @@ import {
   Clock,
   FileText,
   CheckCircle2,
-  AlertCircle,
   Sparkles,
   ChevronRight,
   Download,
-  Stethoscope,
   X,
-  Printer,
-  ShieldCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
