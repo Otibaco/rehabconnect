@@ -1,7 +1,13 @@
-import React from 'react';
-import { Shield, Phone, Mail, MessageSquare, AlertTriangle } from 'lucide-react';
-import Link from 'next/link';
-import { siteConfig } from '@/lib/config';
+import React from "react";
+import {
+  Shield,
+  Phone,
+  Mail,
+  MessageSquare,
+  AlertTriangle,
+} from "lucide-react";
+import Link from "next/link";
+import { siteConfig } from "@/lib/config";
 
 // Platform Brand Social Icons
 const FacebookIcon = () => (
@@ -30,14 +36,24 @@ const XIcon = () => (
 
 const WhatsAppIcon = () => (
   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+  </svg>
+);
+
+const ThreadsIcon = () => (
+  <svg
+    className="w-4 h-4"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path d="M12.01 2C6.49 2 3 5.59 3 11.25c0 6.06 3.57 10.75 9.37 10.75 4.78 0 8.1-2.76 8.1-6.84 0-3.69-2.53-6.11-6.31-6.11-1.45 0-2.6.39-3.44 1.16-.14-1.76.59-2.76 2.25-2.76 1.13 0 1.94.48 2.49 1.45l2.12-1.08C16.58 5.03 14.99 4.1 12.84 4.1c-3.45 0-5.25 2.3-5.25 6.39 0 4.46 2.06 7.02 5.66 7.02 2.17 0 3.59-.97 4.16-2.75.42-1.3.02-2.54-1.08-3.37-.85-.64-2.02-.95-3.5-.95-1.24 0-2.17.29-2.77.86-.58.55-.77 1.31-.57 2.27.2.96.93 1.45 2.17 1.45 1.03 0 1.69-.38 1.99-1.15.09-.23.14-.5.14-.8 1.07.18 1.61.65 1.61 1.41 0 1.14-.91 1.72-2.71 1.72-2.14 0-3.31-1.51-3.31-4.25 0-2.56 1.17-3.89 3.42-3.89 2.18 0 3.66 1.23 4.42 3.66l2.27-.62C18.55 5.44 15.8 2 12.01 2Z" />
   </svg>
 );
 
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-[var(--background-secondary)] border-t border-[var(--border)] text-[var(--foreground-muted)] text-sm pt-20 pb-12 relative overflow-hidden">
-      
       {/* Background Architectural Grid Pattern */}
       <div className="absolute inset-0 bg-architectural-grid opacity-20 pointer-events-none"></div>
 
@@ -45,13 +61,14 @@ export const Footer: React.FC = () => {
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/50 to-transparent"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* TOP BRAND & EMERGENCY NOTICE GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-[var(--border)]">
-          
           {/* BRAND IDENTITY COLUMN */}
           <div className="lg:col-span-5 space-y-6">
-            <Link href= "/" className="flex items-center gap-3 group inline-flex">
+            <Link
+              href="/"
+              className="flex items-center gap-3 group inline-flex"
+            >
               <div className="flex items-center justify-center w-11 h-11 rounded-sm bg-[var(--background-tertiary)] border border-[var(--border-subtle)] group-hover:border-[var(--gold)] transition-colors shadow-lg">
                 <Shield className="w-5 h-5 text-[var(--gold)]" />
               </div>
@@ -66,14 +83,20 @@ export const Footer: React.FC = () => {
             </Link>
 
             <p className="text-xs text-[var(--foreground-muted)] leading-relaxed max-w-md font-sans">
-              Rehab Nigeria provides dignified, private online rehabilitation consultation and support for individuals and families affected by substance use across all states in Nigeria.
+              Rehab Nigeria provides dignified, private online rehabilitation
+              consultation and support for individuals and families affected by
+              substance use across all states in Nigeria.
             </p>
 
             {/* CONSULTATION FEE BANNER & WHATSAPP CHAT BUTTON */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="inline-flex items-center gap-3 p-3 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-xs font-mono">
-                <span className="text-[var(--gold)] font-bold">1-ON-1 ONLINE FEE:</span>
-                <span className="text-[var(--foreground)] font-bold">₦{siteConfig.consultationFee}</span>
+                <span className="text-[var(--gold)] font-bold">
+                  1-ON-1 ONLINE FEE:
+                </span>
+                <span className="text-[var(--foreground)] font-bold">
+                  ₦{siteConfig.consultationFee}
+                </span>
               </div>
 
               <a
@@ -98,16 +121,22 @@ export const Footer: React.FC = () => {
                 Emergency & Hospital Notice
               </span>
               <p className="text-[var(--foreground-muted)] leading-relaxed">
-                Rehab Nigeria is a digital consultation and clinical guidance platform for elective addiction rehabilitation. <strong className="text-[var(--foreground)] font-bold">It is NOT an acute hospital emergency room.</strong> If you or a family member are experiencing acute medical overdose, severe physical withdrawal symptoms, or immediate self-harm crisis, please go directly to the nearest hospital emergency department immediately.
+                Rehab Nigeria is a digital consultation and clinical guidance
+                platform for elective addiction rehabilitation.{" "}
+                <strong className="text-[var(--foreground)] font-bold">
+                  It is NOT an acute hospital emergency room.
+                </strong>{" "}
+                If you or a family member are experiencing acute medical
+                overdose, severe physical withdrawal symptoms, or immediate
+                self-harm crisis, please go directly to the nearest hospital
+                emergency department immediately.
               </p>
             </div>
           </div>
-
         </div>
 
         {/* NAVIGATION COLUMNS */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 py-16 border-b border-[var(--border)] font-sans text-xs">
-          
           {/* ABOUT */}
           <div className="space-y-4">
             <h4 className="font-mono text-xs font-bold text-[var(--gold)] tracking-widest uppercase flex items-center gap-2">
@@ -115,10 +144,38 @@ export const Footer: React.FC = () => {
               <span>ABOUT</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/about" className="hover:text-[var(--gold)] transition-colors">About Rehab Nigeria</Link></li>
-              <li><Link href="/about#story" className="hover:text-[var(--gold)] transition-colors">Our Founding Story</Link></li>
-              <li><Link href="/about#values" className="hover:text-[var(--gold)] transition-colors">Institutional Values</Link></li>
-              <li><Link href="/professionals" className="hover:text-[var(--gold)] transition-colors">Our Clinical Team</Link></li>
+              <li>
+                <Link
+                  href="/about"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  About Rehab Nigeria
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about#story"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Our Founding Story
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about#values"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Institutional Values
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/professionals"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Our Clinical Team
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -129,11 +186,46 @@ export const Footer: React.FC = () => {
               <span>SERVICES</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/services/online-consultation" className="hover:text-[var(--gold)] transition-colors">Online Consultation</Link></li>
-              <li><Link href="/services/substance-use-assessment" className="hover:text-[var(--gold)] transition-colors">Substance Use Intake</Link></li>
-              <li><Link href="/services/follow-up-support" className="hover:text-[var(--gold)] transition-colors">Follow-Up Sessions</Link></li>
-              <li><Link href="/services/family-support" className="hover:text-[var(--gold)] transition-colors">Family Guidance</Link></li>
-              <li><Link href="/services/recovery-guidance" className="hover:text-[var(--gold)] transition-colors">Recovery Pathway</Link></li>
+              <li>
+                <Link
+                  href="/services/online-consultation"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Online Consultation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/substance-use-assessment"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Substance Use Intake
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/follow-up-support"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Follow-Up Sessions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/family-support"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Family Guidance
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/recovery-guidance"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Recovery Pathway
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -144,11 +236,46 @@ export const Footer: React.FC = () => {
               <span>JOURNEY</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/how-it-works" className="hover:text-[var(--gold)] transition-colors">How It Works</Link></li>
-              <li><Link href="/for-families" className="hover:text-[var(--gold)] transition-colors">For Loved Ones</Link></li>
-              <li><Link href="/resources" className="hover:text-[var(--gold)] transition-colors">Educational Articles</Link></li>
-              <li><Link href="/challenges" className="hover:text-[var(--gold)] transition-colors">Awareness Campaigns</Link></li>
-              <li><Link href="/faq" className="hover:text-[var(--gold)] transition-colors">Common Questions</Link></li>
+              <li>
+                <Link
+                  href="/how-it-works"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/for-families"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  For Loved Ones
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/resources"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Educational Articles
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/challenges"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Awareness Campaigns
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Common Questions
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -181,21 +308,42 @@ export const Footer: React.FC = () => {
               <span>COMPLIANCE</span>
             </h4>
             <ul className="space-y-2.5">
-              <li><Link href="/privacy-policy" className="hover:text-[var(--gold)] transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-use" className="hover:text-[var(--gold)] transition-colors">Terms of Use</Link></li>
-              <li><Link href="/cookie-policy" className="hover:text-[var(--gold)] transition-colors">Cookie Policy</Link></li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms-of-use"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Terms of Use
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cookie-policy"
+                  className="hover:text-[var(--gold)] transition-colors"
+                >
+                  Cookie Policy
+                </Link>
+              </li>
             </ul>
           </div>
-
         </div>
 
         {/* BOTTOM SOCIAL BAR & COPYRIGHT */}
         <div className="pt-10 flex flex-col lg:flex-row items-center justify-between gap-6 text-xs text-[var(--foreground-subtle)] font-mono">
-          
           <div className="flex flex-wrap items-center gap-3">
             <span>© 2026 REHAB NIGERIA. ALL RIGHTS RESERVED.</span>
             <span className="hidden sm:inline text-[var(--border)]">•</span>
-            <span className="text-[var(--foreground-subtle)]">DIGITAL HEALTHCARE INITIATIVE</span>
+            <span className="text-[var(--foreground-subtle)]">
+              DIGITAL HEALTHCARE INITIATIVE
+            </span>
           </div>
 
           {/* BRANDED SOCIAL MEDIA ICONS WITH DISTINCT ACCENT HOVER COLORS */}
@@ -206,7 +354,7 @@ export const Footer: React.FC = () => {
 
             {/* Facebook */}
             <a
-              href={`https://facebook.com/${siteConfig.socialLinks.facebook}`}
+              href={`https://www.facebook.com/share/p/1CboahMkHM/`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Rehab Nigeria on Facebook"
@@ -218,7 +366,7 @@ export const Footer: React.FC = () => {
 
             {/* Instagram */}
             <a
-              href={`https://instagram.com/${siteConfig.socialLinks.instagram}`}
+              href={`https://www.instagram.com/rehab.nigeria?igsh=cnF6N3Bqdnd6dzk2`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Rehab Nigeria on Instagram"
@@ -230,7 +378,7 @@ export const Footer: React.FC = () => {
 
             {/* TikTok */}
             <a
-              href={`https://tiktok.com/@${siteConfig.socialLinks.tiktok}`}
+              href={`https://www.tiktok.com/@rehab_nigeria?_r=1&_t=ZS-98wF1JuDuqY`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Rehab Nigeria on TikTok"
@@ -242,7 +390,7 @@ export const Footer: React.FC = () => {
 
             {/* X (Twitter) */}
             <a
-              href={`https://x.com/${siteConfig.socialLinks.x}`}
+              href={`https://x.com/i/status/2088343473330258172`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Rehab Nigeria on X"
@@ -251,10 +399,19 @@ export const Footer: React.FC = () => {
             >
               <XIcon />
             </a>
+            {/* Threads */}
+            <Link
+              href={`https://www.threads.com/@rehab.nigeria`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 p-3 bg-[var(--foreground)]/10 hover:bg-[var(--foreground)]/20 border border-[var(--foreground)]/30 text-[var(--foreground)] rounded-sm text-xs font-mono font-bold transition-all"
+            >
+              <ThreadsIcon />
+            </Link>
 
             {/* WhatsApp */}
-            <a
-              href="https://wa.me/2340000000000"
+            <Link
+              href="https://wa.me/2349040116529"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Rehab Nigeria on WhatsApp"
@@ -262,11 +419,9 @@ export const Footer: React.FC = () => {
               title="WhatsApp"
             >
               <WhatsAppIcon />
-            </a>
+            </Link>
           </div>
-
         </div>
-
       </div>
     </footer>
   );
