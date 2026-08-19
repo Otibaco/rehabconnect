@@ -11,7 +11,6 @@ import {
   ChevronRight,
   FileText,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
