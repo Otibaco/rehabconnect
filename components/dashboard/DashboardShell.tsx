@@ -124,19 +124,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     {
       groupName: 'Loved One Care',
       items: [
-        { label: 'Family Overview', path: '/dashboard/family', icon: LayoutDashboard },
-        { label: 'My Patient / Loved One', path: '/dashboard/family/patient', icon: HeartHandshake, badge: 'In Treatment' },
-        { label: 'Consultations', path: '/dashboard/family/consultations', icon: Calendar },
-        { label: 'Messages with Doctor', path: '/dashboard/family/messages', icon: MessageSquare, badge: '2 New' },
-        { label: 'Family Resources', path: '/dashboard/family/resources', icon: BookOpen },
+        { label: 'Family Overview', path: '/family', icon: LayoutDashboard },
+        { label: 'My Patient / Loved One', path: '/family/family-loved-one', icon: HeartHandshake, badge: 'In Treatment' },
+        { label: 'Consultations', path: '/family/family-consultations', icon: Calendar },
+        { label: 'Messages with Doctor', path: '/family/family-messages', icon: MessageSquare, badge: '2 New' },
+        { label: 'Family Resources', path: '/family/family-resources', icon: BookOpen },
       ],
     },
     {
       groupName: 'Account',
       items: [
-        { label: 'Payments', path: '/dashboard/family/payments', icon: CreditCard },
-        { label: 'Notifications', path: '/dashboard/family/notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
-        { label: 'Family Settings', path: '/dashboard/family/settings', icon: Settings },
+        { label: 'Payments', path: '/family/family-payments', icon: CreditCard },
+        { label: 'Notifications', path: '/family', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
+        { label: 'Family Settings', path: '/family', icon: Settings },
       ],
     },
   ];
@@ -145,19 +145,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     {
       groupName: 'Clinical Workspace',
       items: [
-        { label: 'Overview', path: '/dashboard/coordinator', icon: LayoutDashboard },
-        { label: 'Patients Directory', path: '/dashboard/coordinator/patients', icon: Users, badge: '4 Active' },
-        { label: 'Consultations', path: '/dashboard/coordinator/consultations', icon: Calendar, badge: '2 Today' },
-        { label: 'Messages', path: '/dashboard/coordinator/messages', icon: MessageSquare, badge: '3 Unread' },
-        { label: 'Follow-Ups', path: '/dashboard/coordinator/follow-ups', icon: ClipboardList, badge: '3 Due' },
+        { label: 'Overview', path: '/coordinator', icon: LayoutDashboard },
+        { label: 'Patients Directory', path: '/coordinator/coordinator-patients', icon: Users, badge: '4 Active' },
+        { label: 'Consultations', path: '/coordinator/coordinator-consultations', icon: Calendar, badge: '2 Today' },
+        { label: 'Messages', path: '/coordinator/coordinator-messages', icon: MessageSquare, badge: '3 Unread' },
+        { label: 'Follow-Ups', path: '/coordinator/coordinator-followups', icon: ClipboardList, badge: '3 Due' },
       ],
     },
     {
       groupName: 'Doctor Suite',
       items: [
-        { label: 'Clinical Protocols', path: '/dashboard/coordinator/resources', icon: BookOpen },
-        { label: 'Notifications', path: '/dashboard/coordinator/notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
-        { label: 'Settings & License', path: '/dashboard/coordinator/settings', icon: Settings },
+        { label: 'Clinical Protocols', path: '/coordinator/coordinator-resources', icon: BookOpen },
+        { label: 'Notifications', path: '/coordinator/coordinator-notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
+        { label: 'Settings & License', path: '/coordinator/coordinator-settings', icon: Settings },
       ],
     },
   ];
@@ -167,10 +167,10 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       groupName: 'Executive Control',
       items: [
         { label: 'Admin Overview', path: '/admin', icon: LayoutDashboard },
-        { label: 'User Directory', path: '/admin/users', icon: Users },
-        { label: 'Coordinator Verification', path: '/admin/verification', icon: ShieldCheck, badge: '2 Pending' },
-        { label: 'Platform Reports', path: '/admin/reports', icon: PieChart },
-        { label: 'Platform Settings', path: '/admin/settings', icon: Sliders },
+        { label: 'User Directory', path: '/admin/admin-users', icon: Users },
+        { label: 'Coordinator Verification', path: '/admin/admin-verification', icon: ShieldCheck, badge: '2 Pending' },
+        { label: 'Platform Reports', path: '/admin/admin-reports', icon: PieChart },
+        { label: 'Platform Settings', path: '/admin/admin-settings', icon: Sliders },
       ],
     },
   ];
