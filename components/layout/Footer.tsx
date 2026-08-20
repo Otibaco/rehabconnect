@@ -196,7 +196,7 @@ export const Footer: React.FC = () => {
                 {articles.map((article, idx) => (
                   <Link 
                     key={idx} 
-                    href={article.href}
+                    href="https://www.threads.com/@rehab.nigeria"
                     className="group flex items-start gap-3 p-2 rounded-sm hover:bg-[var(--background-tertiary)] transition-all duration-300 hover:border-[var(--gold)] border border-transparent"
                   >
                     {/* Article Image */}
