@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { 
   Menu, 
-  Shield, 
   ArrowUpRight, 
   ChevronDown
 } from "lucide-react";
@@ -168,22 +168,22 @@ export const SiteHeader: React.FC = () => {
         }`} />
 
         <div className="mx-auto flex h-full w-full max-w-[1600px] items-center justify-between px-5 sm:px-8 lg:px-10">
-          {/* LOGO - Enhanced */}
+          {/* LOGO - With Image */}
           <Link
             href="/"
             className="group flex items-center gap-3 relative"
             aria-label="Rehab Nigeria home"
           >
-            <motion.div 
-              className="relative flex h-11 w-11 items-center justify-center rounded-sm bg-gradient-to-br from-[var(--background-tertiary)] to-[var(--background)] border border-[var(--border-subtle)] transition-all duration-300 group-hover:border-[var(--gold)] group-hover:shadow-[0_0_30px_rgba(200,164,93,0.08)]"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <Shield className="h-5 w-5 text-[var(--gold)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3" />
+            
+              <Image
+                src="/rehab-nigeria-logo.png"
+                alt="Rehab Nigeria Logo"
+                width={50}
+                height={50}
+                className="object-contain"
+                priority
+              />
               
-              {/* Status indicator */}
-              <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-[var(--green)] ring-2 ring-[var(--background)] animate-pulse" />
-            </motion.div>
 
             <div className="leading-tight">
               <span className="block font-cinzel text-base sm:text-lg font-bold tracking-wider text-[var(--foreground)] transition-colors group-hover:text-[var(--gold-light)]">

@@ -1,15 +1,16 @@
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import {
-  Shield,
   Phone,
   Mail,
-  MessageSquare,
-  AlertTriangle,
+  Calendar,
+  ArrowUpRight,
 } from "lucide-react";
-import Link from "next/link";
 import { siteConfig } from "@/lib/config";
 
-// Platform Brand Social Icons
+// Platform Brand Social Icons with Real Colors
 const FacebookIcon = () => (
   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -41,294 +42,366 @@ const WhatsAppIcon = () => (
 );
 
 const ThreadsIcon = () => (
-  <svg
-    className="w-4 h-4"
-    fill="currentColor"
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-  >
+  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
     <path d="M12.01 2C6.49 2 3 5.59 3 11.25c0 6.06 3.57 10.75 9.37 10.75 4.78 0 8.1-2.76 8.1-6.84 0-3.69-2.53-6.11-6.31-6.11-1.45 0-2.6.39-3.44 1.16-.14-1.76.59-2.76 2.25-2.76 1.13 0 1.94.48 2.49 1.45l2.12-1.08C16.58 5.03 14.99 4.1 12.84 4.1c-3.45 0-5.25 2.3-5.25 6.39 0 4.46 2.06 7.02 5.66 7.02 2.17 0 3.59-.97 4.16-2.75.42-1.3.02-2.54-1.08-3.37-.85-.64-2.02-.95-3.5-.95-1.24 0-2.17.29-2.77.86-.58.55-.77 1.31-.57 2.27.2.96.93 1.45 2.17 1.45 1.03 0 1.69-.38 1.99-1.15.09-.23.14-.5.14-.8 1.07.18 1.61.65 1.61 1.41 0 1.14-.91 1.72-2.71 1.72-2.14 0-3.31-1.51-3.31-4.25 0-2.56 1.17-3.89 3.42-3.89 2.18 0 3.66 1.23 4.42 3.66l2.27-.62C18.55 5.44 15.8 2 12.01 2Z" />
   </svg>
 );
 
-export const Footer: React.FC = () => {
-  return (
-    <footer className="bg-[var(--background-secondary)] border-t border-[var(--border)] text-[var(--foreground-muted)] text-sm pt-20 pb-12 relative overflow-hidden">
-      {/* Background Architectural Grid Pattern */}
-      <div className="absolute inset-0 bg-architectural-grid opacity-20 pointer-events-none"></div>
+// Social Media Links Configuration
+const socialLinks = [
+  {
+    name: "Facebook",
+    icon: FacebookIcon,
+    url: "https://www.facebook.com/share/p/1CboahMkHM/",
+    color: "#1877F2",
+  },
+  {
+    name: "Instagram",
+    icon: InstagramIcon,
+    url: "https://www.instagram.com/rehab.nigeria?igsh=cnF6N3Bqdnd6dzk2",
+    color: "#E4405F",
+  },
+  {
+    name: "TikTok",
+    icon: TikTokIcon,
+    url: "https://www.tiktok.com/@rehab_nigeria?_r=1&_t=ZS-98wF1JuDuqY",
+    color: "#25F4EE",
+  },
+  {
+    name: "X",
+    icon: XIcon,
+    url: "https://x.com/i/status/2088343473330258172",
+    color: "#F5F1E8",
+  },
+  {
+    name: "WhatsApp",
+    icon: WhatsAppIcon,
+    url: "https://wa.me/2349040116529",
+    color: "#25D366",
+  },
+  {
+    name: "Threads",
+    icon: ThreadsIcon,
+    url: "https://www.threads.com/@rehab.nigeria",
+    color: "#F5F1E8",
+  },
+];
 
-      {/* Decorative Gold Rule Header */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/50 to-transparent"></div>
+// Articles Data with Images
+const articles = [
+  {
+    title: "Mental Health: Living a healthy life",
+    date: "15 Mar, 2026",
+    image:
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=100&q=80",
+    href: "/resources/mental-health-living-healthy",
+  },
+  {
+    title: "Together... providing mental health care & support",
+    date: "21 Apr, 2026",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=100&q=80",
+    href: "/resources/together-mental-health-care",
+  },
+];
+
+export const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-[var(--background-secondary)] border-t border-[var(--border)] text-[var(--foreground-muted)] pt-16 pb-8 relative overflow-hidden">
+      {/* Background Patterns */}
+      <div className="absolute inset-0 bg-architectural-grid opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--gold)]/5 to-transparent pointer-events-none" />
+
+      {/* Decorative Gold Rule Top */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* TOP BRAND & EMERGENCY NOTICE GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-[var(--border)]">
-          {/* BRAND IDENTITY COLUMN */}
-          <div className="lg:col-span-5 space-y-6">
-            <Link
-              href="/"
-              className="flex items-center gap-3 group inline-flex"
-            >
-              <div className="flex items-center justify-center w-11 h-11 rounded-sm bg-[var(--background-tertiary)] border border-[var(--border-subtle)] group-hover:border-[var(--gold)] transition-colors shadow-lg">
-                <Shield className="w-5 h-5 text-[var(--gold)]" />
+        {/* MAIN GRID - OlivePrime Style */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12 border-b border-[var(--border)]">
+          
+          {/* LEFT COLUMN - Brand + Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 space-y-5"
+          >
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-sm overflow-hidden  transition-all duration-300 group-hover:border-[var(--gold)] group-hover:shadow-[0_0_30px_rgba(200,164,93,0.08)] bg-[var(--background-secondary)]">
+                <Image
+                  src="/rehab-nigeria-logo.png"
+                  alt="Rehab Nigeria Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
               </div>
               <div>
-                <span className="font-cinzel text-xl font-black tracking-wider text-[var(--foreground)] block">
+                <span className="font-cinzel text-xl font-bold tracking-wider text-[var(--foreground)] block group-hover:text-[var(--gold-light)] transition-colors">
                   REHAB NIGERIA
                 </span>
-                <span className="text-[10px] uppercase tracking-widest text-[var(--gold)] font-mono block">
-                  {siteConfig.tagline}
+                <span className="text-[10px] uppercase tracking-[0.15em] text-[var(--gold)] font-mono block">
+                  {siteConfig.tagline || "Confidential Healthcare"}
                 </span>
               </div>
             </Link>
 
-            <p className="text-xs text-[var(--foreground-muted)] leading-relaxed max-w-md font-sans">
-              Rehab Nigeria provides dignified, private online rehabilitation
-              consultation and support for individuals and families affected by
-              substance use across all states in Nigeria.
+            <p className="text-sm text-[var(--foreground-muted)] leading-relaxed max-w-md font-sans">
+              We are committed to providing individuals with a flexible pathway towards full recovery by providing hours, days and weeks of structured support as well as psychoeducation about substance use and mental disorders.
             </p>
+          </motion.div>
 
-            {/* CONSULTATION FEE BANNER & WHATSAPP CHAT BUTTON */}
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-3 p-3 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-xs font-mono">
-                <span className="text-[var(--gold)] font-bold">
-                  1-ON-1 ONLINE FEE:
-                </span>
-                <span className="text-[var(--foreground)] font-bold">
-                  ₦{siteConfig.consultationFee}
-                </span>
+          {/* MIDDLE COLUMN - Quick Links + Articles */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-4 space-y-6"
+          >
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">
+                QUICK LINKS
+              </h4>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                <Link href="/services/online-consultation" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
+                  Online Consultation
+                </Link>
+                <Link href="/services/substance-use-assessment" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
+                  Substance Use Intake
+                </Link>
+                <Link href="/services/follow-up-support" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
+                  Follow-Up Sessions
+                </Link>
+                <Link href="/services/family-support" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
+                  Family Guidance
+                </Link>
+                <Link href="/services/recovery-guidance" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
+                  Recovery Pathway
+                </Link>
               </div>
-
-              <a
-                href="https://wa.me/2340000000000?text=Hello%20Rehab%20Nigeria%2C%20I%20would%20like%20to%20inquire%20about%20a%20confidential%20consultation."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 p-3 bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 text-[#25D366] rounded-sm text-xs font-mono font-bold transition-all"
-              >
-                <WhatsAppIcon />
-                <span>CONFIDENTIAL CHAT</span>
-              </a>
             </div>
-          </div>
 
-          {/* EMERGENCY MEDICAL DISCLAIMER */}
-          <div className="lg:col-span-7 bg-[var(--background-tertiary)] border border-[var(--border)] rounded-sm p-6 sm:p-8 flex flex-col sm:flex-row gap-5 items-start relative group crosshair-corner shadow-xl">
-            <div className="p-3 bg-[var(--gold)]/10 text-[var(--gold)] rounded-sm shrink-0 border border-[var(--gold)]/20">
-              <AlertTriangle className="w-6 h-6" />
+            {/* Current Articles with Images */}
+            <div>
+              <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">
+                CURRENT ARTICLES
+              </h4>
+              <div className="space-y-3">
+                {articles.map((article, idx) => (
+                  <Link 
+                    key={idx} 
+                    href={article.href}
+                    className="group flex items-start gap-3 p-2 rounded-sm hover:bg-[var(--background-tertiary)] transition-all duration-300 hover:border-[var(--gold)] border border-transparent"
+                  >
+                    {/* Article Image */}
+                    <div className="relative w-12 h-12 rounded-sm overflow-hidden flex-shrink-0 border border-[var(--border-subtle)] group-hover:border-[var(--gold)] transition-all duration-300">
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    
+                    {/* Article Content */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 leading-snug line-clamp-2">
+                        {article.title}
+                      </p>
+                      <span className="text-[10px] font-mono text-[var(--foreground-subtle)] flex items-center gap-1 mt-0.5">
+                        <Calendar className="w-3 h-3" />
+                        {article.date}
+                      </span>
+                    </div>
+                    
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[var(--foreground-subtle)] opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                  </Link>
+                ))}
+              </div>
             </div>
-            <div className="space-y-2 font-sans text-xs">
-              <span className="font-mono text-xs text-[var(--gold)] font-bold uppercase block tracking-wider">
-                Emergency & Hospital Notice
-              </span>
-              <p className="text-[var(--foreground-muted)] leading-relaxed">
-                Rehab Nigeria is a digital consultation and clinical guidance
-                platform for elective addiction rehabilitation.{" "}
-                <strong className="text-[var(--foreground)] font-bold">
-                  It is NOT an acute hospital emergency room.
-                </strong>{" "}
-                If you or a family member are experiencing acute medical
-                overdose, severe physical withdrawal symptoms, or immediate
-                self-harm crisis, please go directly to the nearest hospital
-                emergency department immediately.
+          </motion.div>
+
+          {/* RIGHT COLUMN - Social + Contact */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-3 space-y-6"
+          >
+            {/* Our Social Media */}
+            <div>
+              <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">
+                OUR SOCIAL MEDIA
+              </h4>
+              <p className="text-xs text-[var(--foreground-muted)] leading-relaxed mb-3">
+                Join our social media platforms today!
               </p>
+              <div className="flex items-center gap-2 flex-wrap">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Rehab Nigeria on ${social.name}`}
+                    className="p-2 rounded-sm bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--foreground-muted)] transition-all duration-300 hover:scale-110 hover:shadow-lg hover:bg-[var(--gold)] hover:text-[var(--background)] hover:border-[var(--gold)] group"
+                    title={social.name}
+                  >
+                    <social.icon />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">
+                CONTACT
+              </h4>
+              <div className="space-y-1.5">
+                <a
+                  href="tel:+2348012345678"
+                  className="flex items-center gap-2 text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300"
+                >
+                  <Phone className="w-3.5 h-3.5 text-[var(--gold)]" />
+                  <span>{siteConfig.phonePlaceholder || "+234 801 234 5678"}</span>
+                </a>
+                <a
+                  href="mailto:hello@rehabnigeria.org"
+                  className="flex items-center gap-2 text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[var(--gold)]" />
+                  <span>{siteConfig.emailPlaceholder || "hello@rehabnigeria.org"}</span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* NAVIGATION COLUMNS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 py-16 border-b border-[var(--border)] font-sans text-xs">
+        {/* BOTTOM SECTION - Navigation Columns */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-b border-[var(--border)]">
           {/* ABOUT */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-xs font-bold text-[var(--gold)] tracking-widest uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[var(--gold)] rounded-full"></span>
-              <span>ABOUT</span>
+          <div className="space-y-3">
+            <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase">
+              ABOUT
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <Link
-                  href="/about"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/about" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   About Rehab Nigeria
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/about#story"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/about#story" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Our Founding Story
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/about#values"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/about#values" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Institutional Values
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/professionals"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/professionals" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Our Clinical Team
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* CARE & SERVICES */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-xs font-bold text-[var(--gold)] tracking-widest uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[var(--gold)] rounded-full"></span>
-              <span>SERVICES</span>
+          {/* SERVICES */}
+          <div className="space-y-3">
+            <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase">
+              SERVICES
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <Link
-                  href="/services/online-consultation"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/services/online-consultation" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Online Consultation
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/services/substance-use-assessment"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/services/substance-use-assessment" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Substance Use Intake
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/services/follow-up-support"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/services/follow-up-support" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Follow-Up Sessions
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/services/family-support"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/services/family-support" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Family Guidance
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/services/recovery-guidance"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/services/recovery-guidance" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Recovery Pathway
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* QUICK LINKS */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-xs font-bold text-[var(--gold)] tracking-widest uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[var(--gold)] rounded-full"></span>
-              <span>JOURNEY</span>
+          {/* JOURNEY */}
+          <div className="space-y-3">
+            <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase">
+              JOURNEY
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <Link
-                  href="/how-it-works"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/how-it-works" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/for-families"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/for-families" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   For Loved Ones
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/resources"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/resources" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Educational Articles
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/challenges"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/challenges" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Awareness Campaigns
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/faq"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/faq" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Common Questions
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* CONTACT */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-xs font-bold text-[var(--gold)] tracking-widest uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[var(--gold)] rounded-full"></span>
-              <span>CONTACT</span>
+          {/* COMPLIANCE */}
+          <div className="space-y-3">
+            <h4 className="font-mono text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase">
+              COMPLIANCE
             </h4>
-            <ul className="space-y-3 text-[var(--foreground-muted)] font-mono text-[11px]">
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-3.5 h-3.5 text-[var(--gold)] shrink-0" />
-                <span>{siteConfig.phonePlaceholder}</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="w-3.5 h-3.5 text-[var(--gold)] shrink-0" />
-                <span className="truncate">{siteConfig.emailPlaceholder}</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <MessageSquare className="w-3.5 h-3.5 text-[#25D366] shrink-0" />
-                <span>WhatsApp Available</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* LEGAL */}
-          <div className="space-y-4 col-span-2 md:col-span-1">
-            <h4 className="font-mono text-xs font-bold text-[var(--gold)] tracking-widest uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[var(--gold)] rounded-full"></span>
-              <span>COMPLIANCE</span>
-            </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <Link
-                  href="/privacy-policy"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/privacy-policy" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/terms-of-use"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/terms-of-use" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Terms of Use
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/cookie-policy"
-                  className="hover:text-[var(--gold)] transition-colors"
-                >
+                <Link href="/cookie-policy" className="text-xs text-[var(--foreground-muted)] hover:text-[var(--gold)] transition-colors duration-300">
                   Cookie Policy
                 </Link>
               </li>
@@ -336,92 +409,34 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* BOTTOM SOCIAL BAR & COPYRIGHT */}
-        <div className="pt-10 flex flex-col lg:flex-row items-center justify-between gap-6 text-xs text-[var(--foreground-subtle)] font-mono">
-          <div className="flex flex-wrap items-center gap-3">
-            <span>© 2026 REHAB NIGERIA. ALL RIGHTS RESERVED.</span>
+        {/* BOTTOM COPYRIGHT */}
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono text-[var(--foreground-subtle)]">
+            <span>© {currentYear} REHAB NIGERIA. ALL RIGHTS RESERVED.</span>
             <span className="hidden sm:inline text-[var(--border)]">•</span>
-            <span className="text-[var(--foreground-subtle)]">
-              DIGITAL HEALTHCARE INITIATIVE
-            </span>
+            <span>DIGITAL HEALTHCARE INITIATIVE</span>
           </div>
 
-          {/* BRANDED SOCIAL MEDIA ICONS WITH DISTINCT ACCENT HOVER COLORS */}
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] text-[var(--foreground-subtle)] uppercase tracking-widest mr-1">
-              CONNECT:
-            </span>
-
-            {/* Facebook */}
-            <a
-              href={`https://www.facebook.com/share/p/1CboahMkHM/`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rehab Nigeria on Facebook"
-              className="p-2 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-[var(--foreground-muted)] hover:text-[#1877F2] hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 transition-all duration-300"
-              title="Facebook"
-            >
-              <FacebookIcon />
-            </a>
-
-            {/* Instagram */}
-            <a
-              href={`https://www.instagram.com/rehab.nigeria?igsh=cnF6N3Bqdnd6dzk2`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rehab Nigeria on Instagram"
-              className="p-2 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-[var(--foreground-muted)] hover:text-[#E4405F] hover:border-[#E4405F]/50 hover:bg-[#E4405F]/10 transition-all duration-300"
-              title="Instagram"
-            >
-              <InstagramIcon />
-            </a>
-
-            {/* TikTok */}
-            <a
-              href={`https://www.tiktok.com/@rehab_nigeria?_r=1&_t=ZS-98wF1JuDuqY`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rehab Nigeria on TikTok"
-              className="p-2 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-[var(--foreground-muted)] hover:text-[#25F4EE] hover:border-[#25F4EE]/50 hover:bg-[#25F4EE]/10 transition-all duration-300"
-              title="TikTok"
-            >
-              <TikTokIcon />
-            </a>
-
-            {/* X (Twitter) */}
-            <a
-              href={`https://x.com/i/status/2088343473330258172`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rehab Nigeria on X"
-              className="p-2 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:border-[var(--foreground)]/50 hover:bg-[var(--foreground)]/10 transition-all duration-300"
-              title="X (Twitter)"
-            >
-              <XIcon />
-            </a>
-            {/* Threads */}
-            <Link
-              href={`https://www.threads.com/@rehab.nigeria`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 p-3 bg-[var(--foreground)]/10 hover:bg-[var(--foreground)]/20 border border-[var(--foreground)]/30 text-[var(--foreground)] rounded-sm text-xs font-mono font-bold transition-all"
-            >
-              <ThreadsIcon />
-            </Link>
-
-            {/* WhatsApp */}
-            <Link
-              href="https://wa.me/2349040116529"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rehab Nigeria on WhatsApp"
-              className="p-2 bg-[var(--background-tertiary)] border border-[var(--border-subtle)] rounded-sm text-[var(--foreground-muted)] hover:text-[#25D366] hover:border-[#25D366]/50 hover:bg-[#25D366]/10 transition-all duration-300"
-              title="WhatsApp"
-            >
-              <WhatsAppIcon />
-            </Link>
+          {/* Social Icons Small */}
+          <div className="flex items-center gap-2">
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Rehab Nigeria on ${social.name}`}
+                className="p-1.5 text-[var(--foreground-subtle)] hover:text-[var(--gold)] transition-colors duration-300 hover:scale-110"
+                title={social.name}
+              >
+                <social.icon />
+              </a>
+            ))}
           </div>
         </div>
+
+        {/* Bottom Decorative Gold Line */}
+        <div className="mt-6 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/20 to-transparent" />
       </div>
     </footer>
   );

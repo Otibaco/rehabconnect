@@ -49,11 +49,10 @@ export default function SigninPage() {
     return () => clearInterval(interval)
   }, [])
 
-  const onSubmit = async (values: FormData) => {
+  const onSubmit = () => {
     setIsPending(true)
       toast.success("Signed in successfully")
-      router.push("/")
-      router.refresh()
+      router.push("/patient")
     
   }
 
@@ -118,7 +117,8 @@ export default function SigninPage() {
               </Link>
             </div>
 
-            <Button 
+            <Button
+              onClick={onSubmit}
               type="submit" 
               disabled={isPending} 
               className="w-full h-14 rounded-sm bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--background)] font-mono font-bold text-base tracking-wider shadow-[0_4px_20px_rgba(200,164,93,0.15)] hover:shadow-[0_4px_30px_rgba(200,164,93,0.25)] transition-all duration-300"
