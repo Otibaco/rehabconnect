@@ -14,9 +14,11 @@ export const FamilyPaymentsPage: React.FC = () => {
       title="Family Care Billing & Invoices"
       description="Transparent records of all telehealth consultations and care plans funded for Chief Emmanuel Okafor."
       breadcrumbs={[
-        { label: 'Family Dashboard', path: '/dashboard/family' },
+        { label: 'Family Dashboard'},
         { label: 'Payments' }
       ]}
+
+      
     >
       <div className="space-y-6 max-w-5xl">
         {/* Billing Overview Card */}

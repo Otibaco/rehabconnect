@@ -1,5 +1,5 @@
-import { PatientAppointmentConfirmationPage } from "../patient-appointment-confirmation/PatientAppointmentConfirmationPage";
+import { PatientAppointmentConfirmationPage } from "./PatientAppointmentConfirmationPage";
 
 export default function Page() {
   return <PatientAppointmentConfirmationPage />;
-}
+} 

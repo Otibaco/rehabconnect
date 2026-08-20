@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Shield } from "lucide-react";
 
 export default function Loading() {
   return (
@@ -39,9 +39,9 @@ export default function Loading() {
             }}
           />
 
-          {/* Logo */}
+          {/* Logo with Image */}
           <motion.div
-            className="relative z-10 flex h-16 w-16 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--background-secondary)] shadow-2xl"
+            className="relative z-10 flex h-20 w-20 items-center justify-center rounded-md bg-[var(--background-secondary)] shadow-2xl overflow-hidden"
             animate={{
               scale: [0.96, 1.04, 0.96],
             }}
@@ -51,7 +51,14 @@ export default function Loading() {
               ease: "easeInOut",
             }}
           >
-            <Shield className="h-8 w-8 text-[var(--gold)]" />
+            <Image
+              src="/rehab-nigeria-logo.png"
+              alt="Rehab Nigeria Logo"
+              width={48}
+              height={48}
+              className="object-contain"
+              priority
+            />
 
             <span className="absolute -right-1 -top-1 h-3 w-3 animate-ping rounded-full bg-[var(--green)] border-2 border-[var(--background)]" />
             <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[var(--green)] border-2 border-[var(--background)]" />

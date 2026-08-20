@@ -113,7 +113,7 @@ export const CoordinatorConsultationsPage: React.FC = () => {
       title="Telehealth Consultations & EHR Summaries"
       description="Conduct live video appointments and complete 1-click clinical consultation summaries with synchronized care journey updates."
       breadcrumbs={[
-        { label: 'Doctor Suite', path: '/dashboard/coordinator' },
+        { label: 'Doctor Suite' },
         { label: 'Consultations' }
       ]}
     >
