@@ -875,7 +875,7 @@ export default function SignupPage() {
               <p className="text-xs font-mono text-[var(--foreground-muted)]">
                 Already have an account?{" "}
                 <Link
-                  href="/signin"
+                  href="/auth/signin"
                   className="font-semibold text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors"
                 >
                   Sign In

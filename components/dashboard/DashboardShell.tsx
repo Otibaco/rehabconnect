@@ -11,23 +11,18 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  PanelLeftClose,
-  PanelLeftOpen,
   Menu,
   X,
   Search,
   Users,
   UserCheck,
-  Layers,
   BookOpen,
   PieChart,
   Sliders,
   Sparkles,
-  CheckCircle2,
   ArrowRight,
   Stethoscope,
   ChevronDown,
-  Shield,
   MessageSquare,
   Activity,
   HeartHandshake,
@@ -57,6 +52,10 @@ interface DashboardShellProps {
   breadcrumbs?: { label: string; path?: RoutePath }[];
 }
 
+const TOPBAR_HEIGHT = 64; // px, matches h-16
+const SIDEBAR_EXPANDED = 264;
+const SIDEBAR_COLLAPSED = 78;
+
 export const DashboardShell: React.FC<DashboardShellProps> = ({
   children,
   title,
@@ -66,22 +65,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const currentPath = pathname;
-  const { currentUser, role, switchRole, logout, notifications, markNotificationRead } = useAuth();
+  const { currentUser, role, logout, notifications, markNotificationRead } = useAuth();
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
 
   const notifRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
-  const roleSwitcherRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
@@ -90,15 +86,25 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
       }
-      if (roleSwitcherRef.current && !roleSwitcherRef.current.contains(event.target as Node)) {
-        setRoleSwitcherOpen(false);
-      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Role-specific Sidebar configuration
+  // Persist collapse preference across sessions
+  useEffect(() => {
+    const saved = typeof window !== 'undefined' ? window.localStorage.getItem('rn-sidebar-collapsed') : null;
+    if (saved) setCollapsed(saved === 'true');
+  }, []);
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => {
+      const next = !prev;
+      if (typeof window !== 'undefined') window.localStorage.setItem('rn-sidebar-collapsed', String(next));
+      return next;
+    });
+  };
+
   const patientGroups: SidebarGroup[] = [
     {
       groupName: 'My Care',
@@ -194,12 +200,15 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       : 'Patient';
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col selection:bg-[var(--gold)] selection:text-black transition-colors font-sans">
-      {/* 1. TOPBAR - FULL WIDTH ACROSS THE TOP (RESPONSIVE MOBILE-FIRST) */}
-      <header className="sticky top-0 z-40 w-full h-16 bg-[var(--background-secondary)]/95 backdrop-blur-md border-b border-[var(--border)] px-3 sm:px-5 lg:px-6 flex items-center justify-between gap-2 sm:gap-4 transition-colors">
-        {/* Left Side: Mobile Menu Button, Desktop Sidebar Toggle, Brand Logo & Role Badge */}
+    // ROOT SHELL — locked to the viewport height. Nothing here scrolls except <main>,
+    // which is what keeps the sidebar from ever "running out" mid-scroll.
+    <div className="h-screen w-full overflow-hidden flex flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--gold)] selection:text-black font-sans">
+      {/* TOPBAR */}
+      <header
+        style={{ height: TOPBAR_HEIGHT }}
+        className="shrink-0 w-full bg-[var(--background-secondary)] border-b border-[var(--border)] px-3 sm:px-5 lg:px-6 flex items-center justify-between gap-2 sm:gap-4 z-40"
+      >
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Mobile Drawer Trigger (Mobile-first < lg) */}
           <button
             onClick={() => setMobileDrawerOpen(true)}
             className="lg:hidden p-2 rounded-xl text-[var(--foreground)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]"
@@ -208,21 +217,6 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             <Menu className="w-5 h-5" />
           </button>
 
-          {/* Desktop Sidebar Collapse / Expand Icon Button on Topbar for direct high-accessibility toggle */}
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors items-center justify-center min-w-[38px] min-h-[38px]"
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {collapsed ? (
-              <PanelLeftOpen className="w-4 h-4 text-[var(--gold)]" />
-            ) : (
-              <PanelLeftClose className="w-4 h-4 text-[var(--gold)]" />
-            )}
-          </button>
-
-          {/* Brand Logo */}
           <button
             onClick={() => router.push('/')}
             className="flex items-center gap-2.5 group focus:outline-none text-left"
@@ -241,15 +235,8 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           </button>
 
           <span className="hidden md:inline-block text-[var(--border)] font-light">|</span>
-
-          {/* Role badge */}
-          <span className="hidden sm:inline-flex px-2.5 sm:px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)] text-[10px] sm:text-[11px] font-semibold items-center gap-1.5 shadow-xs whitespace-nowrap">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-pulse"></span>
-            {roleBadgeText}
-          </span>
         </div>
 
-        {/* Center / Search bar (Responsive: Inline on tablet/desktop, popup trigger on mobile) */}
         <div className="flex-1 max-w-md mx-2 hidden md:block">
           <div className="relative w-full">
             <Search className="w-4 h-4 text-[var(--foreground-subtle)] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -261,9 +248,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           </div>
         </div>
 
-        {/* Right Controls: Mobile Search Toggle, Role Switcher, Notifications, Theme, User Avatar */}
         <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Mobile Search Button (< md) */}
           <button
             onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
             className="md:hidden p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors flex items-center justify-center min-w-[38px] min-h-[38px]"
@@ -272,107 +257,6 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             <Search className="w-4 h-4" />
           </button>
 
-          {/* Demo Role Switcher Dropdown */}
-          <div className="relative" ref={roleSwitcherRef}>
-            <button
-              onClick={() => setRoleSwitcherOpen(!roleSwitcherOpen)}
-              className="px-2.5 sm:px-3 py-1.5 rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/30 text-[var(--gold)] text-xs font-semibold hover:bg-[var(--gold)]/20 transition-colors flex items-center gap-1 sm:gap-1.5 shadow-xs min-h-[36px]"
-              aria-label="Switch User Role"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[var(--gold)] shrink-0" />
-              <span className="hidden sm:inline text-[11px]">Role:</span>
-              <span className="capitalize font-bold text-xs max-w-[70px] sm:max-w-none truncate">{role}</span>
-              <ChevronDown className="w-3 h-3 text-[var(--gold)] shrink-0" />
-            </button>
-
-            <AnimatePresence>
-              {roleSwitcherOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                  className="absolute right-0 mt-2 w-64 max-w-[calc(100vw-2rem)] bg-[var(--background-secondary)] rounded-2xl shadow-2xl border border-[var(--border)] p-2 z-50 text-xs space-y-1"
-                >
-                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--gold)]">
-                    Switch Prototype Role
-                  </div>
-                  <button
-                    onClick={() => {
-                      switchRole('patient', 'myself');
-                      router.push('/dashboard');
-                      setRoleSwitcherOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-colors ${
-                      role === 'patient' && currentUser.onboardingTarget === 'myself'
-                        ? 'bg-[var(--gold)]/15 text-[var(--gold)] font-bold border border-[var(--gold)]/30'
-                        : 'text-[var(--foreground)] hover:bg-[var(--background-tertiary)]'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <User className="w-3.5 h-3.5 text-[var(--gold)]" /> Patient (Personal)
-                    </span>
-                    {role === 'patient' && currentUser.onboardingTarget === 'myself' && <CheckCircle2 className="w-3.5 h-3.5 text-[var(--gold)]" />}
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      switchRole('family', 'family');
-                      router.push('/dashboard/family');
-                      setRoleSwitcherOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-colors ${
-                      role === 'family' || (role === 'patient' && currentUser.onboardingTarget === 'family')
-                        ? 'bg-[var(--green)]/15 text-[var(--green)] font-bold border border-[var(--green)]/30'
-                        : 'text-[var(--foreground)] hover:bg-[var(--background-tertiary)]'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Users className="w-3.5 h-3.5 text-[var(--green)]" /> Family (Caregiver)
-                    </span>
-                    {(role === 'family' || currentUser.onboardingTarget === 'family') && <CheckCircle2 className="w-3.5 h-3.5 text-[var(--green)]" />}
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      switchRole('coordinator');
-                      router.push('/dashboard/coordinator');
-                      setRoleSwitcherOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-colors ${
-                      role === 'coordinator'
-                        ? 'bg-[#3B828E]/15 text-[#3B828E] font-bold border border-[#3B828E]/30'
-                        : 'text-[var(--foreground)] hover:bg-[var(--background-tertiary)]'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Stethoscope className="w-3.5 h-3.5 text-[#3B828E]" /> Care Coordinator / Doctor
-                    </span>
-                    {role === 'coordinator' && <CheckCircle2 className="w-3.5 h-3.5 text-[#3B828E]" />}
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      switchRole('admin');
-                      router.push('/admin');
-                      setRoleSwitcherOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-colors ${
-                      role === 'admin'
-                        ? 'bg-[var(--gold-light)]/15 text-[var(--gold-light)] font-bold border border-[var(--gold-light)]/30'
-                        : 'text-[var(--foreground)] hover:bg-[var(--background-tertiary)]'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Shield className="w-3.5 h-3.5 text-[var(--gold-light)]" /> Platform Admin
-                    </span>
-                    {role === 'admin' && <CheckCircle2 className="w-3.5 h-3.5 text-[var(--gold-light)]" />}
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Notifications Dropdown */}
           <div className="relative" ref={notifRef}>
             <button
               onClick={() => setNotifOpen(!notifOpen)}
@@ -446,12 +330,6 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Theme Toggle */}
-          {/* <div className="shrink-0">
-            <ThemeToggle />
-          </div> */}
-
-          {/* User Profile Dropdown */}
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -481,8 +359,8 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
                   <button
                     onClick={() => {
-                      const settingsPath: RoutePath = role === 'patient' ? '/patient/settings' : role === 'coordinator' ? '/coordinator/settings' : '/admin/settings';
-                      router.push(settingsPath);
+                      const settingsPath = role === 'patient' ? '/patient/settings' : role === 'coordinator' ? '/coordinator/settings' : '/admin/settings';
+                      router.push(settingsPath as RoutePath);
                       setUserMenuOpen(false);
                     }}
                     className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-[var(--foreground)] hover:bg-[var(--background-tertiary)] flex items-center gap-2 transition-colors"
@@ -509,14 +387,14 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         </div>
       </header>
 
-      {/* Mobile Search Input Banner (Expands smoothly when tapped on mobile) */}
+      {/* Mobile search banner */}
       <AnimatePresence>
         {mobileSearchOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-[var(--background-secondary)] border-b border-[var(--border)] px-4 py-2.5 z-30 overflow-hidden"
+            className="md:hidden shrink-0 bg-[var(--background-secondary)] border-b border-[var(--border)] px-4 py-2.5 z-30 overflow-hidden"
           >
             <div className="relative flex items-center">
               <Search className="w-4 h-4 text-[var(--foreground-subtle)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -537,28 +415,30 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         )}
       </AnimatePresence>
 
-      {/* 2. BODY LAYOUT: SIDEBAR (STARTS DIRECTLY UNDER TOPBAR) + MAIN CONTENT */}
-      <div className="flex-1 flex overflow-hidden relative">
-        {/* DESKTOP SIDEBAR - STARTS FLUSH UNDER TOPBAR WITH TOP POSITIONED COLLAPSE ICON */}
+      {/* BODY ROW — this is the only region that owns layout below the topbar.
+          It never scrolls itself (overflow-hidden + min-h-0), so the aside
+          simply stretches to fill it via flex, with no sticky/vh math involved. */}
+      <div className="flex-1 flex min-h-0 overflow-hidden">
+        {/* DESKTOP SIDEBAR — a true <aside>, docked in-flow, full height of the body row.
+            Same background token as the topbar so the corner where they meet blends
+            seamlessly instead of showing a seam. */}
         <motion.aside
-          animate={{ width: collapsed ? 76 : 260 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="hidden lg:flex flex-col justify-between bg-[var(--background-secondary)] border-r border-[var(--border)] sticky top-16 h-[calc(100vh-4rem)] z-30 shrink-0 transition-colors"
+          animate={{ width: collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED }}
+          transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+          className="hidden lg:flex flex-col justify-between h-full shrink-0 bg-[var(--background-secondary)] border-r border-[var(--border)] relative overflow-hidden"
         >
-          {/* Top of Sidebar: Header with Collapse/Expand Toggle Icon */}
-          <div className="px-3 pt-3 pb-2 border-b border-[var(--border-subtle)]">
+          {/* faint gold hairline at the top edge — the one refined signature touch */}
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
+
+          <div className="px-3 pt-4 pb-2 border-b border-[var(--border-subtle)]">
             <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} w-full`}>
               {!collapsed && (
-                <div className="flex items-center gap-2 pl-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel">
-                    Navigation
-                  </span>
-                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel pl-2">
+                  Navigation
+                </span>
               )}
-
-              {/* Collapse / Expand Icon Button at the TOP of the sidebar */}
               <button
-                onClick={() => setCollapsed(!collapsed)}
+                onClick={toggleCollapsed}
                 className={`p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-all flex items-center justify-center ${
                   collapsed ? 'w-10 h-10 shadow-xs' : 'w-8 h-8'
                 }`}
@@ -574,8 +454,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             </div>
           </div>
 
-          {/* Nav Groups list */}
-          <div className="flex-1 overflow-y-auto px-3 py-3 space-y-5 no-scrollbar">
+          <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-5 no-scrollbar">
             {navGroups.map((grp, idx) => (
               <div key={idx} className="space-y-1">
                 {!collapsed && grp.groupName && (
@@ -617,9 +496,8 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
                 })}
               </div>
             ))}
-          </div>
+          </nav>
 
-          {/* Bottom Card for Patient / Family Role */}
           {(role === 'patient' || role === 'family') && !collapsed && (
             <div className="px-3 pb-3">
               <div className="p-3 rounded-2xl bg-[var(--background-tertiary)] text-[var(--foreground)] space-y-2 border border-[var(--border)] shadow-md">
@@ -653,7 +531,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           )}
         </motion.aside>
 
-        {/* MOBILE DRAWER OVERLAY (< lg) */}
+        {/* MOBILE DRAWER (fixed overlay — this one is genuinely meant to float, so it keeps position: fixed) */}
         <AnimatePresence>
           {mobileDrawerOpen && (
             <>
@@ -762,71 +640,70 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           )}
         </AnimatePresence>
 
-        {/* 3. MAIN CONTENT CANVAS */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 bg-[var(--background)] min-w-0">
-          {/* Header Banner */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
-            <div className="space-y-1 min-w-0">
-              {breadcrumbs.length > 0 && (
-                <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-subtle)] mb-1 flex-wrap">
-                  {breadcrumbs.map((b, i) => (
-                    <React.Fragment key={i}>
-                      {i > 0 && <span>/</span>}
-                      {b.path ? (
-                        <button onClick={() => router.push(b.path!)} className="hover:text-[var(--gold)] transition-colors">
-                          {b.label}
-                        </button>
-                      ) : (
-                        <span className="text-[var(--foreground-muted)] font-medium">{b.label}</span>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
+        {/* MAIN CONTENT — the only scrollable region in the whole shell */}
+        <main className="flex-1 min-w-0 overflow-y-auto">
+          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
+              <div className="space-y-1 min-w-0">
+                {breadcrumbs.length > 0 && (
+                  <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-subtle)] mb-1 flex-wrap">
+                    {breadcrumbs.map((b, i) => (
+                      <React.Fragment key={i}>
+                        {i > 0 && <span>/</span>}
+                        {b.path ? (
+                          <button onClick={() => router.push(b.path!)} className="hover:text-[var(--gold)] transition-colors">
+                            {b.label}
+                          </button>
+                        ) : (
+                          <span className="text-[var(--foreground-muted)] font-medium">{b.label}</span>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                )}
+                <h1 className="font-cinzel font-bold text-xl sm:text-2xl lg:text-3xl text-[var(--foreground)] tracking-tight truncate">
+                  {title}
+                </h1>
+                {description && (
+                  <p className="text-xs sm:text-sm text-[var(--foreground-muted)] max-w-2xl leading-relaxed">
+                    {description}
+                  </p>
+                )}
+              </div>
+
+              {role === 'patient' && (
+                <button
+                  onClick={() => router.push('/patient/consultations/book')}
+                  className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
+                >
+                  <Sparkles className="w-4 h-4 text-black" />
+                  <span>Book Consultation</span>
+                </button>
               )}
-              <h1 className="font-cinzel font-bold text-xl sm:text-2xl lg:text-3xl text-[var(--foreground)] tracking-tight truncate">
-                {title}
-              </h1>
-              {description && (
-                <p className="text-xs sm:text-sm text-[var(--foreground-muted)] max-w-2xl leading-relaxed">
-                  {description}
-                </p>
+
+              {role === 'coordinator' && (
+                <button
+                  onClick={() => router.push('/coordinator/consultation-live')}
+                  className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
+                >
+                  <Stethoscope className="w-4 h-4 text-black" />
+                  <span>Start Next Session</span>
+                </button>
+              )}
+
+              {role === 'admin' && (
+                <button
+                  onClick={() => router.push('/admin/rehab-centres')}
+                  className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
+                >
+                  <UserCheck className="w-4 h-4 text-black" />
+                  <span>Verify Centre</span>
+                </button>
               )}
             </div>
 
-            {/* Quick action button depending on role */}
-            {role === 'patient' && (
-              <button
-                onClick={() => router.push('/patient/consultations/book')}
-                className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
-              >
-                <Sparkles className="w-4 h-4 text-black" />
-                <span>Book Consultation</span>
-              </button>
-            )}
-
-            {role === 'coordinator' && (
-              <button
-                onClick={() => router.push('/coordinator/consultation-live')}
-                className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
-              >
-                <Stethoscope className="w-4 h-4 text-black" />
-                <span>Start Next Session</span>
-              </button>
-            )}
-
-            {role === 'admin' && (
-              <button
-                onClick={() => router.push('/admin/rehab-centres')}
-                className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
-              >
-                <UserCheck className="w-4 h-4 text-black" />
-                <span>Verify Centre</span>
-              </button>
-            )}
+            <div>{children}</div>
           </div>
-
-          {/* Children Content */}
-          <div>{children}</div>
         </main>
       </div>
     </div>
