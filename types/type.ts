@@ -97,6 +97,8 @@ export type RoutePath =
   | '/patient/patient-payment'
   | '/patient/patient-notifications'
   | '/patient/patient-settings'
+  | '/patient/journey'
+  | '/patient/consultations'
   | '/dashboard'
   // | '/dashboard/patient'
   // | '/dashboard/journey'

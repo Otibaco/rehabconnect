@@ -13,20 +13,101 @@ import {
 } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what the page needs from the backend. When wiring up real data,
+// fetch these shapes (or map your API response to them) and drop the
+// MOCK_* constants below.
+interface JourneyStage {
+  stageNumber: number;
+  title: string;
+  status: 'completed' | 'in_progress' | 'upcoming';
+  coordinatorNote?: string;
+}
+
+interface PatientJourney {
+  currentStage: number;
+  overallStatus: string;
+  latestUpdate: string;
+  stages: JourneyStage[];
+}
+
+interface Appointment {
+  id: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  coordinatorName: string;
+  coordinatorAvatar?: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+}
+
+interface ConsultationSummary {
+  id: string;
+  date: string;
+  coordinatorName: string;
+  discussionPoints: string;
+  clinicalObservations: string;
+  nextStep: string;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_PATIENT_NAME = 'Amaka';
+
+const MOCK_JOURNEY: PatientJourney = {
+  currentStage: 2,
+  overallStatus: 'On Track',
+  latestUpdate: 'Your recovery plan has moved into the active treatment phase.',
+  stages: [
+    { stageNumber: 1, title: 'Intake', status: 'completed' },
+    { stageNumber: 2, title: 'Assessment', status: 'in_progress', coordinatorNote: 'Active recovery plan underway.' },
+    { stageNumber: 3, title: 'Treatment', status: 'upcoming' },
+    { stageNumber: 4, title: 'Review', status: 'upcoming' },
+    { stageNumber: 5, title: 'Discharge', status: 'upcoming' },
+  ],
+};
+
+const MOCK_APPOINTMENTS: Appointment[] = [
+  {
+    id: 'apt-1',
+    status: 'scheduled',
+    coordinatorName: 'Dr. Ifeoma Chukwu',
+    coordinatorAvatar: 'https://images.unsplash.com/photo-1594824813580-28e08d66579f?auto=format&fit=crop&w=400&q=80',
+    type: 'Follow-up Consultation',
+    date: 'Thu, 4 Sep',
+    timeSlot: '10:30 AM',
+  },
+];
+
+const MOCK_SUMMARIES: ConsultationSummary[] = [
+  {
+    id: 'sum-1',
+    date: '28 Aug',
+    coordinatorName: 'Dr. Ifeoma Chukwu',
+    discussionPoints: 'Progress review & medication check-in',
+    clinicalObservations: 'Patient reports improved sleep and reduced anxiety symptoms since last session.',
+    nextStep: 'Continue current plan; reassess in 2 weeks.',
+  },
+];
 
 export const PatientDashboardPage: React.FC = () => {
   const router = useRouter();
-  const { currentUser, appointments, patientJourney, summaries } = useAuth();
+
+  // Swap these three lines for real data once fetching/session is wired up —
+  // nothing below this point needs to change.
+  const patientJourney = MOCK_JOURNEY;
+  const appointments = MOCK_APPOINTMENTS;
+  const summaries = MOCK_SUMMARIES;
 
   const nextAppointment = appointments.find((a) => a.status === 'scheduled') || appointments[0];
   const latestSummary = summaries[0];
 
   return (
     <DashboardShell
-      title={`Welcome back, ${currentUser.name}`}
+      title={`Welcome back, ${MOCK_PATIENT_NAME}`}
       description="Track your personalized recovery pathway, upcoming doctor consultations, and post-session clinical notes."
       breadcrumbs={[{ label: 'Patient Portal' }, { label: 'Overview' }]}
+      role="patient"
     >
       <div className="space-y-6 max-w-6xl">
         {/* CARE JOURNEY BANNER CARD */}
@@ -51,7 +132,7 @@ export const PatientDashboardPage: React.FC = () => {
 
             <div className="shrink-0 flex items-center gap-3">
               <button
-                onClick={() => router.push('/dashboard/journey')}
+                onClick={() => router.push('/patient/journey')}
                 className="px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap"
               >
                 <span>View Full Journey</span>
@@ -134,14 +215,14 @@ export const PatientDashboardPage: React.FC = () => {
 
                 <div className="flex items-center gap-2 pt-2 border-t border-[var(--border-subtle)]">
                   <button
-                    onClick={() => router.push('/consultation/live')}
+                    onClick={() => router.push('/patient/consultation-live')}
                     className="flex-1 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-transform active:scale-95"
                   >
                     <Video className="w-4 h-4 text-black" />
                     <span>Join Video Room</span>
                   </button>
                   <button
-                    onClick={() => router.push('/dashboard/consultations')}
+                    onClick={() => router.push('/patient/consultations')}
                     className="px-3 py-2.5 rounded-xl bg-[var(--background-secondary)] hover:bg-[var(--border)] border border-[var(--border)] text-xs text-[var(--foreground)] transition-colors"
                   >
                     Details
@@ -152,7 +233,7 @@ export const PatientDashboardPage: React.FC = () => {
               <div className="p-6 rounded-xl bg-[var(--background-tertiary)] text-center space-y-3">
                 <p className="text-xs text-[var(--foreground-muted)]">You have no upcoming consultations scheduled.</p>
                 <button
-                  onClick={() => router.push('/patient/consultations/book')}
+                  onClick={() => router.push('/patient/book-consultation')}
                   className="px-4 py-2 rounded-xl bg-[var(--gold)] text-black text-xs font-bold"
                 >
                   Book New Consultation
@@ -163,7 +244,7 @@ export const PatientDashboardPage: React.FC = () => {
             <div className="flex items-center justify-between text-xs text-[var(--foreground-muted)] pt-1">
               <span>Need to reschedule?</span>
               <button
-                onClick={() => router.push('/dashboard/messages')}
+                onClick={() => router.push('/patient/messages')}
                 className="text-[var(--gold)] hover:underline font-medium"
               >
                 Message Care Coordinator
@@ -209,7 +290,7 @@ export const PatientDashboardPage: React.FC = () => {
 
                 <div className="pt-2">
                   <button
-                    onClick={() => router.push('/dashboard/consultations')}
+                    onClick={() => router.push('/patient/consultation-summary')}
                     className="w-full py-2 rounded-xl bg-[var(--background-secondary)] hover:bg-[var(--border)] border border-[var(--border)] text-xs font-semibold text-[var(--foreground)] transition-colors flex items-center justify-center gap-1.5"
                   >
                     <span>Read Full Consultation Summary</span>
@@ -226,9 +307,9 @@ export const PatientDashboardPage: React.FC = () => {
         </div>
 
         {/* QUICK ACTIONS & SUPPORT FOOTER */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <button
-            onClick={() => router.push('/patient/consultations/book')}
+            onClick={() => router.push('/patient/book-consultation')}
             className="p-4 rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-all text-left flex items-center gap-3.5 group"
           >
             <div className="w-10 h-10 rounded-xl bg-[var(--gold)]/15 text-[var(--gold)] flex items-center justify-center shrink-0">
@@ -271,7 +352,7 @@ export const PatientDashboardPage: React.FC = () => {
               <p className="text-[11px] text-[var(--foreground-muted)]">Exercises & wellness library</p>
             </div>
           </button>
-        </div>
+        </div> */}
       </div>
     </DashboardShell>
   );

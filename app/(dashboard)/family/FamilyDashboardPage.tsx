@@ -3,34 +3,101 @@ import React from 'react';
 import {
   HeartHandshake,
   Calendar,
-  Clock,
   Video,
   FileText,
   Activity,
   ChevronRight,
-  Sparkles,
-  ShieldCheck,
   CheckCircle2,
   BookOpen,
   MessageSquare
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
-import { useAuth } from '@/context/AuthContext';
+
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface JourneyStage {
+  stageNumber: number;
+  title: string;
+  status: 'completed' | 'in_progress' | 'upcoming';
+  coordinatorNote?: string;
+}
+
+interface FamilyJourney {
+  currentStage: number;
+  overallStatus: string;
+  stages: JourneyStage[];
+}
+
+interface Appointment {
+  id: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+}
+
+interface ConsultationSummary {
+  id: string;
+  date: string;
+  patientName: string;
+  coordinatorName: string;
+  discussionPoints: string;
+  clinicalObservations: string;
+  nextStep: string;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_FAMILY_MEMBER_NAME = 'Ngozi Okafor';
+const MOCK_LOVED_ONE_NAME = 'Chief Emmanuel Okafor';
+const MOCK_LOVED_ONE_AGE = 68;
+
+const MOCK_FAMILY_JOURNEY: FamilyJourney = {
+  currentStage: 3,
+  overallStatus: 'Steady progress across this week\u2019s sessions.',
+  stages: [
+    { stageNumber: 1, title: 'Intake', status: 'completed' },
+    { stageNumber: 2, title: 'Assessment', status: 'completed' },
+    { stageNumber: 3, title: 'Treatment', status: 'in_progress', coordinatorNote: 'Patient is showing positive motor response to home exercises.' },
+    { stageNumber: 4, title: 'Review', status: 'upcoming' },
+    { stageNumber: 5, title: 'Discharge', status: 'upcoming' },
+  ],
+};
+
+const MOCK_APPOINTMENTS: Appointment[] = [
+  { id: 'apt-2', type: 'Family Tele-Rehab Guidance', date: 'Tomorrow', timeSlot: '02:00 PM' },
+];
+
+const MOCK_SUMMARIES: ConsultationSummary[] = [
+  {
+    id: 'sum-1',
+    date: '27 Aug',
+    patientName: 'Chief Emmanuel Okafor',
+    coordinatorName: 'Dr. Folake Adeyemi',
+    discussionPoints: 'Mobility progress & home exercise adherence',
+    clinicalObservations: 'Steady improvement in gait stability; mild fatigue reported after longer sessions.',
+    nextStep: 'Continue assisted walking exercises twice daily; monitor fatigue levels.',
+  },
+];
 
 export const FamilyDashboardPage: React.FC = () => {
-  const { familyJourney, appointments, currentUser, summaries } = useAuth();
   const router = useRouter();
 
-  const familyApt = appointments.find((a) => a.type.toLowerCase().includes('family') || a.id.includes('apt_2')) || appointments[0];
-  const latestSummary = summaries.find((s) => s.patientName.includes('Okafor')) || summaries[0];
+  // Swap these for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const familyJourney = MOCK_FAMILY_JOURNEY;
+  const appointments = MOCK_APPOINTMENTS;
+  const summaries = MOCK_SUMMARIES;
+
+  const familyApt = appointments[0];
+  const latestSummary = summaries[0];
 
   return (
     <DashboardShell
-      title={`Welcome, ${currentUser.name}`}
-      description="You are managing accredited rehabilitation care for your father, Chief Emmanuel Okafor (68 yrs)."
+      title={`Welcome, ${MOCK_FAMILY_MEMBER_NAME}`}
+      description={`You are managing accredited rehabilitation care for your father, ${MOCK_LOVED_ONE_NAME} (${MOCK_LOVED_ONE_AGE} yrs).`}
       breadcrumbs={[{ label: 'Family Caregiver Portal' }, { label: 'Overview' }]}
+      role="family"
     >
       <div className="space-y-6 max-w-6xl">
         {/* PATIENT CARE STATUS HERO CARD */}
@@ -40,7 +107,7 @@ export const FamilyDashboardPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
                   <HeartHandshake className="w-3.5 h-3.5" />
-                  Loved One: Chief Emmanuel Okafor
+                  Loved One: {MOCK_LOVED_ONE_NAME}
                 </span>
                 <span className="text-xs text-[var(--gold)] font-bold">
                   Stage 0{familyJourney.currentStage} of 05 — {familyJourney.stages[familyJourney.currentStage - 1]?.title}

@@ -2,23 +2,31 @@
 import React, { useState } from 'react';
 
 import {
-  ClipboardList,
   CheckCircle2,
-  ShieldCheck,
   ArrowRight,
   ArrowLeft,
-  FileText,
-  Lock,
+  ShieldCheck,
   Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
+
+// ── Local types ──────────────────────────────────────────────────────────
+interface AssessmentPayload {
+  supportCategory: string;
+  primaryCondition: string;
+  onsetDuration: string;
+  previousTreatments: string[];
+  mobilityLevel: string;
+  rehabGoals: string[];
+  preferredLocation: string;
+  budgetOrInsurance: string;
+  additionalNotes: string;
+}
 
 export const PatientAssessmentPage: React.FC = () => {
   const router = useRouter();
-  const { submitAssessment } = useAuth();
 
   const [step, setStep] = useState(1); // 1-8
   const [submitted, setSubmitted] = useState(false);
@@ -46,6 +54,12 @@ export const PatientAssessmentPage: React.FC = () => {
     );
   };
 
+  const submitAssessment = (payload: AssessmentPayload) => {
+    // TODO: call your API to persist this once the backend is ready
+    // (e.g. POST /api/patient/assessment).
+    console.log('Assessment submitted:', payload);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     submitAssessment({
@@ -67,6 +81,7 @@ export const PatientAssessmentPage: React.FC = () => {
       title="Clinical Rehabilitation Intake"
       description="Provide clinical background so our accredited Care Leads can match and recommend the ideal rehabilitation sanctuaries across Nigeria."
       breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Clinical Assessment' }]}
+      role="patient"
     >
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Confidentiality Notice */}

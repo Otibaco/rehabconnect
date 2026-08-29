@@ -10,13 +10,56 @@ import {
   Stethoscope,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface JourneyStage {
+  stageNumber: number;
+  title: string;
+  status: 'completed' | 'in_progress' | 'pending';
+  completedDate?: string;
+  coordinatorNote?: string;
+}
+
+interface PatientJourney {
+  currentStage: number;
+  overallStatus: string;
+  latestUpdate: string;
+  latestUpdateDate: string;
+  assignedCoordinatorName: string;
+  stages: JourneyStage[];
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_PATIENT_JOURNEY: PatientJourney = {
+  currentStage: 2,
+  overallStatus: 'On Track',
+  latestUpdate: 'Your recovery plan has moved into the active treatment phase, with regular check-ins scheduled twice a week.',
+  latestUpdateDate: '28 Aug',
+  assignedCoordinatorName: 'Dr. Folake Adeyemi',
+  stages: [
+    { stageNumber: 1, title: 'Intake', status: 'completed', completedDate: '10 Aug' },
+    {
+      stageNumber: 2,
+      title: 'Assessment',
+      status: 'in_progress',
+      coordinatorNote: 'Active recovery plan underway. Continue home exercises and report any discomfort.',
+    },
+    { stageNumber: 3, title: 'Treatment', status: 'pending' },
+    { stageNumber: 4, title: 'Review', status: 'pending' },
+    { stageNumber: 5, title: 'Discharge', status: 'pending' },
+  ],
+};
+
 export const PatientJourneyPage: React.FC = () => {
-  const { patientJourney, currentUser } = useAuth();
   const router = useRouter();
+
+  // Swap this for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const patientJourney = MOCK_PATIENT_JOURNEY;
 
   return (
     <DashboardShell
@@ -26,6 +69,7 @@ export const PatientJourneyPage: React.FC = () => {
         { label: 'Dashboard', path: '/dashboard' },
         { label: 'My Journey' }
       ]}
+      role="patient"
     >
       <div className="space-y-6 max-w-6xl">
         {/* Journey Header Card */}
@@ -144,7 +188,13 @@ export const PatientJourneyPage: React.FC = () => {
                           )}
                         </div>
                         <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
-                          {stage.status === 'pending' ? 'This stage is scheduled to begin soon.' : stage.status === 'in_progress' ? 'This stage is currently in progress. Follow the recommended actions below.' : stage.status === 'completed' ? `This stage was completed on ${stage.completedDate}.` : ''}
+                          {stage.status === 'pending'
+                            ? 'This stage is scheduled to begin soon.'
+                            : stage.status === 'in_progress'
+                            ? 'This stage is currently in progress. Follow the recommended actions below.'
+                            : stage.status === 'completed'
+                            ? `This stage was completed on ${stage.completedDate}.`
+                            : ''}
                         </p>
                       </div>
                     </div>
@@ -174,7 +224,7 @@ export const PatientJourneyPage: React.FC = () => {
             <div className="relative">
               <img
                 src="https://images.unsplash.com/photo-1594824813580-28e08d66579f?auto=format&fit=crop&w=400&q=80"
-                alt="Dr. Folake Adeyemi"
+                alt={patientJourney.assignedCoordinatorName}
                 className="w-14 h-14 rounded-full object-cover border-2 border-[var(--gold)]"
               />
               <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[var(--background-secondary)]" />
@@ -184,7 +234,7 @@ export const PatientJourneyPage: React.FC = () => {
                 <h4 className="font-bold text-sm text-[var(--foreground)]">{patientJourney.assignedCoordinatorName}</h4>
                 <ShieldCheck className="w-4 h-4 text-[var(--gold)]" />
               </div>
-              <p className="text-xs text-[var(--foreground-muted)]">{patientJourney.assignedCoordinatorName}</p>
+              <p className="text-xs text-[var(--foreground-muted)]">Lead Care Coordinator</p>
               <p className="text-[11px] text-[var(--foreground-subtle)]">MDCN Reg: 74921-NG • Lagos State University Teaching Hospital Partner</p>
             </div>
           </div>

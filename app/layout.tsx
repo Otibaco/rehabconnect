@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 import { CookieConsent } from "@/components/layout/CookieConsent";
-import { AppChrome } from "@/components/layout/AppChrome";
-import { AuthProvider } from "@/context/AuthContext";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
@@ -69,11 +67,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body cz-shortcut-listen="true">
-        <AuthProvider>
           <main>{children}</main>
           <FloatingContact />
           <CookieConsent />
-        </AuthProvider>
       </body>
     </html>
   );

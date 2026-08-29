@@ -1,16 +1,60 @@
 "use client";
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
-import React from 'react';
+import React, { useState } from 'react';
+
+// ── Local types ──────────────────────────────────────────────────────────
+interface AppNotification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_NOTIFICATIONS: AppNotification[] = [
+  {
+    id: 'n-1',
+    title: 'Consultation Confirmed',
+    message: 'Your follow-up consultation with Dr. Ifeoma Chukwu has been confirmed for Thu, 4 Sep at 10:30 AM.',
+    timestamp: '2h ago',
+    read: false,
+  },
+  {
+    id: 'n-2',
+    title: 'New Clinical Summary Available',
+    message: 'Dr. Ifeoma Chukwu has published a consultation summary from your last session.',
+    timestamp: '1d ago',
+    read: false,
+  },
+  {
+    id: 'n-3',
+    title: 'Payment Received',
+    message: 'Your payment of ₦10,000 for the video consultation was successfully processed.',
+    timestamp: '3d ago',
+    read: true,
+  },
+];
 
 export const PatientNotificationsPage: React.FC = () => {
-  const { notifications, markNotificationRead } = useAuth();
+  // Swap this for a real fetch/session-driven list once the backend is ready —
+  // nothing below this point needs to change.
+  const [notifications, setNotifications] = useState<AppNotification[]>(MOCK_NOTIFICATIONS);
+
+  const markNotificationRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+    // TODO: call your API to persist this once the backend is ready
+    // (e.g. PATCH /api/notifications/:id).
+  };
 
   return (
     <DashboardShell
       title="Notifications & Clinical Alerts"
       description="Stay updated with consultation schedules, clinical recommendations, and care pathway messages."
       breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Notifications' }]}
+      role="patient"
     >
       <div className="max-w-3xl mx-auto space-y-4">
         {notifications.map((n) => (

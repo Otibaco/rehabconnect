@@ -1,15 +1,11 @@
 "use client";
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import React, { useState } from 'react';
 
 import {
   CreditCard,
-  ShieldCheck,
   CheckCircle2,
   Lock,
-  ArrowRight,
-  Download,
   Building,
   Smartphone,
   Sparkles
@@ -18,9 +14,15 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Appointment, PaymentTransaction } from '@/types/type';
 
+// ── Mock data — replace with real session data once auth is wired up ────
+const MOCK_PATIENT = {
+  id: 'patient_1',
+  name: 'Amaka Nwosu',
+  avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Amaka+Nwosu',
+};
+
 export const PatientPaymentPage: React.FC = () => {
   const router = useRouter();
-  const { currentUser, addAppointment, addPayment } = useAuth();
 
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'bank_transfer' | 'ussd'>('card');
   const [cardNumber, setCardNumber] = useState('4111 2222 3333 4444');
@@ -37,8 +39,8 @@ export const PatientPaymentPage: React.FC = () => {
       const pmt: PaymentTransaction = {
         id: `pay_${Date.now()}`,
         reference: refNumber,
-        patientId: currentUser.id,
-        patientName: currentUser.name,
+        patientId: MOCK_PATIENT.id,
+        patientName: MOCK_PATIENT.name,
         coordinatorName: 'Dr. Amara Okafor',
         amount: 10000,
         currency: 'NGN',
@@ -50,9 +52,9 @@ export const PatientPaymentPage: React.FC = () => {
 
       const newApt: Appointment = {
         id: `apt_${Date.now()}`,
-        patientId: currentUser.id,
-        patientName: currentUser.name,
-        patientAvatar: currentUser.avatar,
+        patientId: MOCK_PATIENT.id,
+        patientName: MOCK_PATIENT.name,
+        patientAvatar: MOCK_PATIENT.avatar,
         coordinatorId: 'coord_1',
         coordinatorName: 'Dr. Amara Okafor',
         coordinatorTitle: 'Senior Neurological & Physical Care Lead',
@@ -67,8 +69,11 @@ export const PatientPaymentPage: React.FC = () => {
         meetingLink: 'https://meet.rehabconnect.org/room-sarah-amara',
       };
 
-      addPayment(pmt);
-      addAppointment(newApt);
+      // TODO: persist `pmt` and `newApt` via your API once the backend is ready
+      // (e.g. POST /api/payments, POST /api/appointments).
+      console.log('Payment created:', pmt);
+      console.log('Appointment created:', newApt);
+
       setProcessing(false);
       setPaymentSuccess(pmt);
     }, 1000);
@@ -83,6 +88,7 @@ export const PatientPaymentPage: React.FC = () => {
         { label: 'Book Consultation', path: '/patient/consultations/book' },
         { label: 'Payment' },
       ]}
+      role="patient"
     >
       <div className="max-w-2xl mx-auto space-y-6">
         {!paymentSuccess ? (

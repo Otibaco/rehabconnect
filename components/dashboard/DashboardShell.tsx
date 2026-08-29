@@ -6,7 +6,6 @@ import {
   Calendar,
   CreditCard,
   Bell,
-  User,
   Settings,
   LogOut,
   ChevronLeft,
@@ -31,7 +30,27 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { RoutePath } from '@/types/type';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+
+// ── Types ──────────────────────────────────────────────────────────────────
+// This is the whole surface you'll need to fill from session data later.
+export type UserRole = 'patient' | 'family' | 'coordinator' | 'admin';
+
+export interface ShellUser {
+  name: string;
+  email: string;
+  avatar: string;
+  assessmentStatus?: 'completed' | 'in_progress';
+  hasActiveConsultation?: boolean;
+}
+
+export interface ShellNotification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  actionUrl?: RoutePath;
+}
 
 interface SidebarItem {
   label: string;
@@ -50,22 +69,41 @@ interface DashboardShellProps {
   title: string;
   description?: string;
   breadcrumbs?: { label: string; path?: RoutePath }[];
+
+  // ── Everything below is what used to come from AuthContext.
+  // Pass real values once session/role-checking is wired up;
+  // until then it quietly falls back to sane placeholders.
+  role?: UserRole;
+  user?: ShellUser;
+  notifications?: ShellNotification[];
+  onLogout?: () => void;
 }
 
 const TOPBAR_HEIGHT = 64; // px, matches h-16
 const SIDEBAR_EXPANDED = 264;
 const SIDEBAR_COLLAPSED = 78;
 
+const DEFAULT_USER: ShellUser = {
+  name: 'Guest User',
+  email: 'guest@rehabnigeria.com',
+  avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=RN',
+  assessmentStatus: 'in_progress',
+  hasActiveConsultation: false,
+};
+
 export const DashboardShell: React.FC<DashboardShellProps> = ({
   children,
   title,
   description,
   breadcrumbs = [],
+  role = 'patient',
+  user = DEFAULT_USER,
+  notifications = [],
+  onLogout,
 }) => {
   const router = useRouter();
   const pathname = usePathname();
   const currentPath = pathname;
-  const { currentUser, role, logout, notifications, markNotificationRead } = useAuth();
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -73,10 +111,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
   const [notifOpen, setNotifOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
+  // Local, UI-only copy so the bell can mark things read without needing
+  // a real backend yet. Swap for context/query-driven state later.
+  const [localNotifications, setLocalNotifications] = useState(notifications);
+  useEffect(() => setLocalNotifications(notifications), [JSON.stringify(notifications)]);
+
   const notifRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = localNotifications.filter((n) => !n.read).length;
+
+  const markNotificationRead = (id: string) => {
+    setLocalNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -91,7 +138,6 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Persist collapse preference across sessions
   useEffect(() => {
     const saved = typeof window !== 'undefined' ? window.localStorage.getItem('rn-sidebar-collapsed') : null;
     if (saved) setCollapsed(saved === 'true');
@@ -105,23 +151,24 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     });
   };
 
+  // ── Nav config per role ──────────────────────────────────────────────────
   const patientGroups: SidebarGroup[] = [
     {
       groupName: 'My Care',
       items: [
         { label: 'Overview', path: '/patient', icon: LayoutDashboard },
-        { label: 'My Journey', path: '/patient/patient-journey', icon: Activity, badge: 'Stage 02' },
-        { label: 'Consultations', path: '/patient/patient-consultations', icon: Calendar },
-        { label: 'Messages', path: '/patient/patient-messages', icon: MessageSquare, badge: '1 New' },
-        { label: 'Resources', path: '/patient/patient-resources', icon: BookOpen },
+        { label: 'My Journey', path: '/patient/journey', icon: Activity, badge: 'Stage 02' },
+        { label: 'Consultations', path: '/patient/consultations', icon: Calendar },
+        // { label: 'Messages', path: '/patient/messages', icon: MessageSquare, badge: '1 New' },
+        // { label: 'Resources', path: '/patient/resources', icon: BookOpen },
       ],
     },
     {
       groupName: 'Account & Billing',
       items: [
-        { label: 'Payments', path: '/patient/patient-payment', icon: CreditCard },
-        { label: 'Notifications', path: '/patient/patient-notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
-        { label: 'Settings', path: '/patient/patient-settings', icon: Settings },
+        { label: 'Payments', path: '/patient/payment', icon: CreditCard },
+        { label: 'Notifications', path: '/patient/notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
+        { label: 'Settings', path: '/patient/settings', icon: Settings },
       ],
     },
   ];
@@ -181,23 +228,34 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     },
   ];
 
-  const navGroups =
+  // Single switch, driven entirely by the `role` prop.
+  // When session/auth lands, just pass the resolved role in from a parent
+  // layout (e.g. <DashboardShell role={session.user.role} ...>) — nothing
+  // here needs to change.
+  const navGroups: SidebarGroup[] =
     role === 'admin'
       ? adminGroups
       : role === 'coordinator'
       ? coordinatorGroups
-      : role === 'family' || currentUser?.onboardingTarget === 'family'
+      : role === 'family'
       ? familyGroups
       : patientGroups;
 
-  const roleBadgeText =
+  const roleBadgeText: string =
     role === 'admin'
       ? 'Platform Admin'
       : role === 'coordinator'
       ? 'Care Coordinator / Doctor'
-      : role === 'family' || currentUser?.onboardingTarget === 'family'
+      : role === 'family'
       ? 'Family Member'
       : 'Patient';
+
+  const settingsPathByRole: Record<UserRole, RoutePath> = {
+    patient: '/patient/patient-settings',
+    family: '/family/family-payments',
+    coordinator: '/coordinator/coordinator-settings',
+    admin: '/admin/admin-settings',
+  } as Record<UserRole, RoutePath>;
 
   return (
     // ROOT SHELL — locked to the viewport height. Nothing here scrolls except <main>,
@@ -285,12 +343,12 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
                   </div>
 
                   <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {notifications.length === 0 ? (
+                    {localNotifications.length === 0 ? (
                       <div className="py-4 text-center text-xs text-[var(--foreground-muted)]">
                         No notifications yet.
                       </div>
                     ) : (
-                      notifications.map((n) => (
+                      localNotifications.map((n) => (
                         <div
                           key={n.id}
                           onClick={() => {
@@ -316,10 +374,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
                   <div className="pt-2 border-t border-[var(--border)] text-center">
                     <button
-                      onClick={() => {
-                        router.push(role === 'patient' ? '/patient/notifications' : role === 'admin' ? '/admin/notifications' : '/coordinator/dashboard');
-                        setNotifOpen(false);
-                      }}
+                      onClick={() => setNotifOpen(false)}
                       className="text-xs font-semibold text-[var(--gold)] hover:underline"
                     >
                       View all notifications
@@ -337,8 +392,8 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
               aria-label="User profile menu"
             >
               <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
+                src={user.avatar}
+                alt={user.name}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1 ring-[var(--gold)]/30"
               />
               <ChevronDown className="w-3 h-3 text-[var(--foreground-muted)] hidden sm:block mr-1" />
@@ -353,14 +408,13 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
                   className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-[var(--background-secondary)] rounded-2xl shadow-2xl border border-[var(--border)] p-2 z-50 space-y-1"
                 >
                   <div className="px-3 py-2 border-b border-[var(--border)]">
-                    <p className="font-semibold text-xs text-[var(--foreground)] truncate">{currentUser.name}</p>
-                    <p className="text-[11px] text-[var(--foreground-subtle)] truncate">{currentUser.email}</p>
+                    <p className="font-semibold text-xs text-[var(--foreground)] truncate">{user.name}</p>
+                    <p className="text-[11px] text-[var(--foreground-subtle)] truncate">{user.email}</p>
                   </div>
 
                   <button
                     onClick={() => {
-                      const settingsPath = role === 'patient' ? '/patient/settings' : role === 'coordinator' ? '/coordinator/settings' : '/admin/settings';
-                      router.push(settingsPath as RoutePath);
+                      router.push(settingsPathByRole[role]);
                       setUserMenuOpen(false);
                     }}
                     className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-[var(--foreground)] hover:bg-[var(--background-tertiary)] flex items-center gap-2 transition-colors"
@@ -371,7 +425,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
                   <button
                     onClick={() => {
-                      logout();
+                      onLogout?.();
                       router.push('/login');
                       setUserMenuOpen(false);
                     }}
@@ -415,19 +469,15 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         )}
       </AnimatePresence>
 
-      {/* BODY ROW — this is the only region that owns layout below the topbar.
-          It never scrolls itself (overflow-hidden + min-h-0), so the aside
-          simply stretches to fill it via flex, with no sticky/vh math involved. */}
+      {/* BODY ROW — the only region below the topbar. It never scrolls itself
+          (overflow-hidden + min-h-0), so the aside just stretches to fill it. */}
       <div className="flex-1 flex min-h-0 overflow-hidden">
-        {/* DESKTOP SIDEBAR — a true <aside>, docked in-flow, full height of the body row.
-            Same background token as the topbar so the corner where they meet blends
-            seamlessly instead of showing a seam. */}
+        {/* DESKTOP SIDEBAR — a true <aside>, docked in-flow, full height. */}
         <motion.aside
           animate={{ width: collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED }}
           transition={{ type: 'spring', stiffness: 320, damping: 32 }}
           className="hidden lg:flex flex-col justify-between h-full shrink-0 bg-[var(--background-secondary)] border-r border-[var(--border)] relative overflow-hidden"
         >
-          {/* faint gold hairline at the top edge — the one refined signature touch */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
 
           <div className="px-3 pt-4 pb-2 border-b border-[var(--border-subtle)]">
@@ -498,40 +548,10 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             ))}
           </nav>
 
-          {(role === 'patient' || role === 'family') && !collapsed && (
-            <div className="px-3 pb-3">
-              <div className="p-3 rounded-2xl bg-[var(--background-tertiary)] text-[var(--foreground)] space-y-2 border border-[var(--border)] shadow-md">
-                <div className="flex items-center justify-between text-[11px] font-semibold text-[var(--gold)]">
-                  <span>Care Status</span>
-                  <span className="w-2 h-2 rounded-full bg-[var(--green)] animate-ping"></span>
-                </div>
-                <div className="space-y-1 text-xs">
-                  <div className="flex justify-between items-center text-[var(--foreground-muted)]">
-                    <span>Intake:</span>
-                    <span className="font-bold text-[var(--foreground)]">
-                      {currentUser.assessmentStatus === 'completed' ? '● Completed' : '● In Progress'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center text-[var(--foreground-muted)]">
-                    <span>Consultation:</span>
-                    <span className="font-bold text-[var(--green)]">
-                      {currentUser.hasActiveConsultation ? '● Booked' : '● Available'}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => router.push('/patient/assessment')}
-                  className="w-full mt-1.5 py-1.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black font-bold text-[11px] flex items-center justify-center gap-1 transition-colors"
-                >
-                  <span>View Details</span>
-                  <ArrowRight className="w-3 h-3 text-black" />
-                </button>
-              </div>
-            </div>
-          )}
+          
         </motion.aside>
 
-        {/* MOBILE DRAWER (fixed overlay — this one is genuinely meant to float, so it keeps position: fixed) */}
+        {/* MOBILE DRAWER (fixed overlay — meant to float, so it keeps position: fixed) */}
         <AnimatePresence>
           {mobileDrawerOpen && (
             <>
@@ -613,19 +633,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
                 <div className="pt-4 border-t border-[var(--border)] space-y-2">
                   <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)]">
                     <img
-                      src={currentUser.avatar}
-                      alt={currentUser.name}
+                      src={user.avatar}
+                      alt={user.name}
                       className="w-8 h-8 rounded-full object-cover"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-[var(--foreground)] truncate">{currentUser.name}</p>
-                      <p className="text-[10px] text-[var(--foreground-subtle)] truncate">{currentUser.email}</p>
+                      <p className="text-xs font-semibold text-[var(--foreground)] truncate">{user.name}</p>
+                      <p className="text-[10px] text-[var(--foreground-subtle)] truncate">{user.email}</p>
                     </div>
                   </div>
 
                   <button
                     onClick={() => {
-                      logout();
+                      onLogout?.();
                       router.push('/login');
                       setMobileDrawerOpen(false);
                     }}
@@ -673,7 +693,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
               {role === 'patient' && (
                 <button
-                  onClick={() => router.push('/patient/consultations/book')}
+                  onClick={() => router.push('/patient/book-consultation')}
                   className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
                 >
                   <Sparkles className="w-4 h-4 text-black" />

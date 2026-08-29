@@ -14,13 +14,72 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { ConsultationSummary } from '@/types/type';
 
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface Appointment {
+  id: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  coordinatorName: string;
+  coordinatorAvatar?: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_APPOINTMENTS: Appointment[] = [
+  {
+    id: 'apt-1',
+    status: 'scheduled',
+    coordinatorName: 'Dr. Ifeoma Chukwu',
+    coordinatorAvatar: 'https://images.unsplash.com/photo-1594824813580-28e08d66579f?auto=format&fit=crop&w=400&q=80',
+    type: 'Follow-up Consultation',
+    date: 'Thu, 4 Sep',
+    timeSlot: '10:30 AM',
+  },
+  {
+    id: 'apt-2',
+    status: 'completed',
+    coordinatorName: 'Dr. Ifeoma Chukwu',
+    coordinatorAvatar: 'https://images.unsplash.com/photo-1594824813580-28e08d66579f?auto=format&fit=crop&w=400&q=80',
+    type: 'Initial Assessment',
+    date: '18 Aug',
+    timeSlot: '9:00 AM',
+  },
+];
+
+const MOCK_SUMMARIES: (ConsultationSummary & { prescribedExercises?: string[] })[] = [
+  {
+    id: 'sum-1',
+    patientName: 'Amaka Nwosu',
+    coordinatorName: 'Dr. Ifeoma Chukwu',
+    date: '28 Aug',
+    discussionPoints: 'Progress review & medication check-in',
+    clinicalObservations: 'Patient reports improved sleep and reduced anxiety symptoms since last session. Mobility range has increased noticeably over the past two weeks.',
+    recommendations: [
+      'Continue current medication dosage',
+      'Increase daily walking duration to 20 minutes',
+      'Schedule a follow-up in two weeks',
+    ],
+    nextStep: 'Continue current plan; reassess in 2 weeks.',
+    followUpRequired: true,
+    followUpDate: '11 Sep',
+    prescribedExercises: ['Shoulder flexion stretch — 3x10 reps', 'Assisted walking — 15 min daily'],
+  } as unknown as ConsultationSummary & { prescribedExercises?: string[] },
+];
+
 export const PatientConsultationsPage: React.FC = () => {
-  const { appointments, summaries } = useAuth();
   const router = useRouter();
+
+  // Swap these for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const appointments = MOCK_APPOINTMENTS;
+  const summaries = MOCK_SUMMARIES;
+
   const [selectedSummary, setSelectedSummary] = useState<ConsultationSummary | null>(null);
   const selectedExercises = selectedSummary && 'prescribedExercises' in selectedSummary
     ? ((selectedSummary as ConsultationSummary & { prescribedExercises?: string[] }).prescribedExercises ?? [])
@@ -37,6 +96,7 @@ export const PatientConsultationsPage: React.FC = () => {
         { label: 'Dashboard', path: '/dashboard' },
         { label: 'Consultations' }
       ]}
+      role="patient"
     >
       <div className="space-y-8 max-w-6xl">
         {/* ACTION BAR */}
@@ -46,7 +106,7 @@ export const PatientConsultationsPage: React.FC = () => {
             <p className="text-xs text-[var(--foreground-muted)]">Connect directly with licensed Nigerian rehabilitation specialists and care coordinators.</p>
           </div>
           <button
-            onClick={() => router.push('/patient/consultations/book')}
+            onClick={() => router.push('/patient/book-consultation')}
             className="px-5 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95 whitespace-nowrap"
           >
             <Sparkles className="w-4 h-4 text-black" />
@@ -68,7 +128,7 @@ export const PatientConsultationsPage: React.FC = () => {
               <Clock className="w-8 h-8 text-[var(--foreground-subtle)] mx-auto opacity-60" />
               <p className="text-xs text-[var(--foreground-muted)]">No upcoming consultations booked.</p>
               <button
-                onClick={() => router.push('/patient/consultations/book')}
+                onClick={() => router.push('/patient/book-consultation')}
                 className="px-4 py-2 rounded-xl bg-[var(--gold)] text-black text-xs font-bold"
               >
                 Book Now
@@ -111,7 +171,7 @@ export const PatientConsultationsPage: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => router.push('/consultation/live')}
+                    onClick={() => router.push('/patient/consultation-live')}
                     className="w-full py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95"
                   >
                     <Video className="w-4 h-4 text-black" />

@@ -2,25 +2,42 @@
 import React from 'react';
 import {
   Calendar,
-  Clock,
   Video,
   CheckCircle2,
-  Share2,
-  ArrowRight,
-  ShieldCheck,
-  VideoOff,
-  Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
+// ── Local types ──────────────────────────────────────────────────────────
+interface ConfirmedAppointment {
+  id: string;
+  coordinatorName: string;
+  coordinatorTitle: string;
+  coordinatorAvatar: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_APPOINTMENT: ConfirmedAppointment = {
+  id: 'apt_1',
+  coordinatorName: 'Dr. Amara Okafor',
+  coordinatorTitle: 'Senior Neurological & Physical Care Lead',
+  coordinatorAvatar: 'https://images.unsplash.com/photo-1594824813566-88855ce7890b?auto=format&fit=crop&w=400&q=80',
+  type: 'video',
+  date: 'Wed, Aug 5',
+  timeSlot: '10:30 AM',
+};
+
 export const PatientAppointmentConfirmationPage: React.FC = () => {
   const router = useRouter();
-  const { appointments } = useAuth();
 
-  const appointment = appointments[0];
+  // Swap this for the real appointment (e.g. from the just-created booking
+  // or a fetch by ID) once the backend is ready — nothing below this point
+  // needs to change.
+  const appointment = MOCK_APPOINTMENT;
 
   return (
     <DashboardShell
@@ -30,6 +47,7 @@ export const PatientAppointmentConfirmationPage: React.FC = () => {
         { label: 'Healthcare Portal', path: '/patient/dashboard' },
         { label: 'Confirmed Appointment' },
       ]}
+      role="patient"
     >
       <div className="max-w-2xl mx-auto space-y-6">
         <motion.div
@@ -49,7 +67,7 @@ export const PatientAppointmentConfirmationPage: React.FC = () => {
               Consultation Confirmed
             </h2>
             <p className="text-xs text-[var(--gold)] font-bold uppercase tracking-wider">
-              Starts in 2 Days • Wed, Aug 5 at 10:30 AM
+              Starts in 2 Days • {appointment.date} at {appointment.timeSlot}
             </p>
           </div>
 

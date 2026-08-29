@@ -1,11 +1,18 @@
 "use client";
 import React, { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
-import { User, Mail, Phone, Lock, Bell, Shield, Save, CheckCircle2 } from 'lucide-react';
+import { User, Phone, Bell, Save, CheckCircle2 } from 'lucide-react';
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_PATIENT = {
+  name: 'Amaka Nwosu',
+  email: 'amaka.nwosu@example.com',
+};
 
 export const PatientSettingsPage: React.FC = () => {
-  const { currentUser } = useAuth();
+  // Swap this for real session/profile data once auth is wired up — nothing
+  // below this point needs to change.
+  const currentUser = MOCK_PATIENT;
 
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
@@ -18,6 +25,9 @@ export const PatientSettingsPage: React.FC = () => {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: persist { name, email, phone, emergencyName, emergencyPhone,
+    // emailAlerts, smsAlerts } via your API once the backend is ready
+    // (e.g. PATCH /api/patient/profile).
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -27,6 +37,7 @@ export const PatientSettingsPage: React.FC = () => {
       title="Patient Profile & Settings"
       description="Manage your verified contact details, emergency guardian contacts, and clinical notifications."
       breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Settings' }]}
+      role="patient"
     >
       <div className="max-w-3xl mx-auto space-y-6">
         <form onSubmit={handleSave} className="p-6 sm:p-8 rounded-3xl bg-[var(--background-secondary)] border border-[var(--border)] space-y-6 shadow-xl">

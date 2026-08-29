@@ -1,39 +1,115 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Stethoscope,
   Video,
   Users,
   Calendar,
-  Clock,
-  ArrowRight,
-  ShieldCheck,
   CheckCircle2,
-  AlertCircle,
   FileText,
-  Activity,
-  Sparkles,
   MessageSquare,
   ClipboardList,
   ChevronRight
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
-import { useAuth } from '@/context/AuthContext';
+
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface CoordinatorPatient {
+  id: string;
+  name: string;
+  avatar: string;
+  journeyStage: string;
+  condition: string;
+}
+
+interface Appointment {
+  id: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  patientName: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+}
+
+interface FollowUp {
+  id: string;
+  status: 'pending' | 'completed';
+  patientName: string;
+  patientAvatar: string;
+  targetDate: string;
+  reason: string;
+  notes?: string;
+}
+
+interface ConsultationSummary {
+  id: string;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_COORDINATOR_NAME = 'Dr. Folake Adeyemi';
+
+const MOCK_PATIENTS: CoordinatorPatient[] = [
+  { id: 'p-1', name: 'Sarah Jenkins', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', journeyStage: 'Stage 03', condition: 'Post-op physiotherapy' },
+  { id: 'p-2', name: 'Michael Obi', avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=200&q=80', journeyStage: 'Stage 02', condition: 'Cardiac rehabilitation' },
+  { id: 'p-3', name: 'Chiamaka Eze', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80', journeyStage: 'Stage 04', condition: 'Neurological recovery' },
+];
+
+const MOCK_APPOINTMENTS: Appointment[] = [
+  { id: 'apt-1', status: 'scheduled', patientName: 'Sarah Jenkins', type: 'Follow-up', date: 'Today', timeSlot: '10:30 AM' },
+  { id: 'apt-2', status: 'scheduled', patientName: 'Michael Obi', type: 'Initial Review', date: 'Today', timeSlot: '1:00 PM' },
+];
+
+const MOCK_FOLLOWUPS: FollowUp[] = [
+  {
+    id: 'f-1',
+    status: 'pending',
+    patientName: 'Sarah Jenkins',
+    patientAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+    targetDate: 'Due today',
+    reason: 'Check pain levels after last session and adjust exercise intensity.',
+    notes: 'Patient reported mild discomfort in left knee.',
+  },
+  {
+    id: 'f-2',
+    status: 'pending',
+    patientName: 'Chiamaka Eze',
+    patientAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80',
+    targetDate: 'Due tomorrow',
+    reason: 'Review medication adherence and schedule next scan.',
+  },
+];
+
+const MOCK_SUMMARIES: ConsultationSummary[] = [{ id: 's-1' }, { id: 's-2' }, { id: 's-3' }];
 
 export const CoordinatorDashboardPage: React.FC = () => {
   const router = useRouter();
-  const { currentUser, coordinatorPatients, followUps, completeFollowUp, appointments, summaries } = useAuth();
+
+  // Swap these for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const coordinatorPatients = MOCK_PATIENTS;
+  const appointments = MOCK_APPOINTMENTS;
+  const summaries = MOCK_SUMMARIES;
+
+  const [followUps, setFollowUps] = useState<FollowUp[]>(MOCK_FOLLOWUPS);
+
+  const completeFollowUp = (id: string) => {
+    setFollowUps((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, status: 'completed' } : f))
+    );
+    // TODO: call your API to persist this once the backend is ready.
+  };
 
   const pendingFollowUps = followUps.filter((f) => f.status === 'pending');
   const todayAppointments = appointments.filter((a) => a.status === 'scheduled');
 
   return (
     <DashboardShell
-      title={`Clinical Dashboard — Dr. Folake Adeyemi`}
+      title={`Clinical Dashboard — ${MOCK_COORDINATOR_NAME}`}
       description="Lead Care Coordinator Workspace. Oversee patient care journeys, conduct telehealth sessions, and manage post-consultation follow-ups."
       breadcrumbs={[{ label: 'Doctor Suite' }, { label: 'Overview' }]}
+      role="coordinator"
     >
       <div className="space-y-6 max-w-6xl">
         {/* STATS OVERVIEW CARDS */}
@@ -108,7 +184,7 @@ export const CoordinatorDashboardPage: React.FC = () => {
                       <div>
                         <div className="flex items-center gap-2">
                           <h4 className="font-bold text-xs sm:text-sm text-[var(--foreground)]">
-                            {apt.patientName || 'Sarah Jenkins'}
+                            {apt.patientName}
                           </h4>
                           <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[var(--gold)]/10 text-[var(--gold)] border border-[var(--gold)]/20">
                             {apt.type}
