@@ -12,14 +12,12 @@ import {
   ChevronRight,
   Menu,
   X,
-  Search,
   Users,
   UserCheck,
   BookOpen,
   PieChart,
   Sliders,
   Sparkles,
-  ArrowRight,
   Stethoscope,
   ChevronDown,
   MessageSquare,
@@ -79,7 +77,6 @@ interface DashboardShellProps {
   onLogout?: () => void;
 }
 
-const TOPBAR_HEIGHT = 64; // px, matches h-16
 const SIDEBAR_EXPANDED = 264;
 const SIDEBAR_COLLAPSED = 78;
 
@@ -107,29 +104,19 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  // Local, UI-only copy so the bell can mark things read without needing
+  // Local, UI-only copy so notification badges can update without needing
   // a real backend yet. Swap for context/query-driven state later.
   const [localNotifications, setLocalNotifications] = useState(notifications);
   useEffect(() => setLocalNotifications(notifications), [JSON.stringify(notifications)]);
 
-  const notifRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = localNotifications.filter((n) => !n.read).length;
 
-  const markNotificationRead = (id: string) => {
-    setLocalNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
-        setNotifOpen(false);
-      }
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
       }
@@ -159,8 +146,6 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         { label: 'Overview', path: '/patient', icon: LayoutDashboard },
         { label: 'My Journey', path: '/patient/journey', icon: Activity, badge: 'Stage 02' },
         { label: 'Consultations', path: '/patient/consultations', icon: Calendar },
-        // { label: 'Messages', path: '/patient/messages', icon: MessageSquare, badge: '1 New' },
-        // { label: 'Resources', path: '/patient/resources', icon: BookOpen },
       ],
     },
     {
@@ -168,7 +153,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       items: [
         { label: 'Payments', path: '/patient/payment', icon: CreditCard },
         { label: 'Notifications', path: '/patient/notifications', icon: Bell, badge: unreadCount ? String(unreadCount) : undefined },
-        { label: 'Settings', path: '/patient/settings', icon: Settings },
+        // { label: 'Settings', path: '/patient/settings', icon: Settings },
       ],
     },
   ];
@@ -257,475 +242,377 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
     admin: '/admin/admin-settings',
   } as Record<UserRole, RoutePath>;
 
-  return (
-    // ROOT SHELL — locked to the viewport height. Nothing here scrolls except <main>,
-    // which is what keeps the sidebar from ever "running out" mid-scroll.
-    <div className="h-screen w-full overflow-hidden flex flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--gold)] selection:text-black font-sans">
-      {/* TOPBAR */}
-      <header
-        style={{ height: TOPBAR_HEIGHT }}
-        className="shrink-0 w-full bg-[var(--background-secondary)] border-b border-[var(--border)] px-3 sm:px-5 lg:px-6 flex items-center justify-between gap-2 sm:gap-4 z-40"
+  // ── Reusable account menu content, shared by desktop sidebar + mobile drawer ──
+  const AccountMenuItems = ({ onNavigate }: { onNavigate: () => void }) => (
+    <>
+      <button
+        onClick={() => {
+          router.push(settingsPathByRole[role]);
+          onNavigate();
+        }}
+        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium text-[var(--foreground)] hover:bg-[var(--background-tertiary)] flex items-center gap-2.5 transition-colors"
       >
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <button
-            onClick={() => setMobileDrawerOpen(true)}
-            className="lg:hidden p-2 rounded-xl text-[var(--foreground)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]"
-            aria-label="Open mobile navigation menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
+        <Settings className="w-4 h-4 text-[var(--gold)]" />
+        <span>Account Settings</span>
+      </button>
+      {/* <button
+        onClick={() => {
+          router.push(role === 'patient' ? '/patient/notifications' : role === 'admin' ? '/admin/notifications' : role === 'family' ? '/family' : '/coordinator/coordinator-notifications');
+          onNavigate();
+        }}
+        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium text-[var(--foreground)] hover:bg-[var(--background-tertiary)] flex items-center justify-between gap-2.5 transition-colors"
+      >
+        <span className="flex items-center gap-2.5">
+          <Bell className="w-4 h-4 text-[var(--gold)]" />
+          <span>Notifications</span>
+        </span>
+        {unreadCount > 0 && (
+          <span className="w-4 h-4 rounded-full bg-[var(--gold)] text-black text-[10px] font-bold flex items-center justify-center">
+            {unreadCount}
+          </span>
+        )}
+      </button> */}
+      <div className="h-px bg-[var(--border)] my-1" />
+      <button
+        onClick={() => {
+          onLogout?.();
+          router.push('/auth/signin');
+          onNavigate();
+        }}
+        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium text-rose-400 hover:bg-rose-950/30 flex items-center gap-2.5 transition-colors"
+      >
+        <LogOut className="w-4 h-4" />
+        <span>Sign Out</span>
+      </button>
+    </>
+  );
 
+  return (
+    // ROOT SHELL — no topbar. Sidebar + main sit side by side, both locked to
+    // the full viewport height, and only <main> scrolls.
+    <div className="h-screen w-full overflow-hidden flex bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--gold)] selection:text-black font-sans">
+      {/* DESKTOP SIDEBAR — a true <aside>, full height, brand + nav + account stacked */}
+      <motion.aside
+        animate={{ width: collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED }}
+        transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+        className="hidden lg:flex flex-col h-full shrink-0 bg-[var(--background-secondary)] border-r border-[var(--border)] relative overflow-hidden"
+      >
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
+
+        {/* Brand */}
+        <div className={`px-3 pt-4 pb-3 border-b border-[var(--border-subtle)] flex items-center ${collapsed ? 'justify-center' : 'justify-between'} gap-2`}>
           <button
             onClick={() => router.push('/')}
-            className="flex items-center gap-2.5 group focus:outline-none text-left"
+            className={`flex items-center gap-2.5 group focus:outline-none text-left ${collapsed ? '' : 'flex-1 min-w-0'}`}
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--gold)] shadow-xs group-hover:border-[var(--gold)] transition-colors shrink-0">
-              <span className="font-cinzel font-bold text-xs sm:text-sm">RN</span>
+            <div className="w-9 h-9 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--gold)] shadow-xs group-hover:border-[var(--gold)] transition-colors shrink-0">
+              <span className="font-cinzel font-bold text-sm">RN</span>
             </div>
-            <div className="hidden xs:block sm:block">
-              <span className="font-cinzel font-bold text-sm sm:text-base tracking-wider text-[var(--foreground)]">
-                REHAB <span className="text-[var(--gold)]">NIGERIA</span>
-              </span>
-              <span className="text-[9px] tracking-widest uppercase text-[var(--foreground-subtle)] block hidden md:block">
-                Clinical Telehealth Portal
-              </span>
-            </div>
-          </button>
-
-          <span className="hidden md:inline-block text-[var(--border)] font-light">|</span>
-        </div>
-
-        <div className="flex-1 max-w-md mx-2 hidden md:block">
-          <div className="relative w-full">
-            <Search className="w-4 h-4 text-[var(--foreground-subtle)] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Search records, appointments, resources..."
-              className="w-full pl-10 pr-4 py-1.5 sm:py-2 rounded-xl text-xs bg-[var(--background-tertiary)] border border-[var(--border)] text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:border-[var(--gold)] focus:outline-none transition-all"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          <button
-            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-            className="md:hidden p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors flex items-center justify-center min-w-[38px] min-h-[38px]"
-            aria-label="Toggle search"
-          >
-            <Search className="w-4 h-4" />
-          </button>
-
-          <div className="relative" ref={notifRef}>
-            <button
-              onClick={() => setNotifOpen(!notifOpen)}
-              className="relative p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
-              aria-label="Notifications"
-            >
-              <Bell className="w-4 h-4" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[var(--gold)] text-black text-[10px] font-bold flex items-center justify-center shadow-xs">
-                  {unreadCount}
+            {!collapsed && (
+              <div className="min-w-0">
+                <span className="font-cinzel font-bold text-sm tracking-wider text-[var(--foreground)] block truncate">
+                  REHAB <span className="text-[var(--gold)]">NIGERIA</span>
                 </span>
-              )}
-            </button>
+                <span className="text-[9px] tracking-widest uppercase text-[var(--foreground-subtle)] block truncate">
+                  {roleBadgeText}
+                </span>
+              </div>
+            )}
+          </button>
 
-            <AnimatePresence>
-              {notifOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                  className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-[var(--background-secondary)] rounded-2xl shadow-2xl border border-[var(--border)] p-3 z-50"
-                >
-                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-[var(--border)]">
-                    <span className="font-cinzel font-bold text-xs text-[var(--foreground)] tracking-wider">NOTIFICATIONS</span>
-                    <span className="text-[11px] text-[var(--gold)] font-semibold">{unreadCount} unread</span>
-                  </div>
-
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {localNotifications.length === 0 ? (
-                      <div className="py-4 text-center text-xs text-[var(--foreground-muted)]">
-                        No notifications yet.
-                      </div>
-                    ) : (
-                      localNotifications.map((n) => (
-                        <div
-                          key={n.id}
-                          onClick={() => {
-                            markNotificationRead(n.id);
-                            if (n.actionUrl) router.push(n.actionUrl);
-                            setNotifOpen(false);
-                          }}
-                          className={`p-2.5 rounded-xl text-xs cursor-pointer transition-colors border ${
-                            !n.read
-                              ? 'bg-[var(--background-tertiary)] border-[var(--border-subtle)] text-[var(--foreground)]'
-                              : 'bg-transparent border-transparent hover:bg-[var(--background-tertiary)] text-[var(--foreground-muted)]'
-                          }`}
-                        >
-                          <div className="font-semibold text-[var(--foreground)] flex items-center justify-between">
-                            <span>{n.title}</span>
-                            <span className="text-[10px] text-[var(--foreground-subtle)] font-normal">{n.timestamp}</span>
-                          </div>
-                          <p className="text-[var(--foreground-muted)] mt-1 leading-snug">{n.message}</p>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  <div className="pt-2 border-t border-[var(--border)] text-center">
-                    <button
-                      onClick={() => setNotifOpen(false)}
-                      className="text-xs font-semibold text-[var(--gold)] hover:underline"
-                    >
-                      View all notifications
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <div className="relative" ref={userMenuRef}>
+          {!collapsed && (
             <button
-              onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="flex items-center gap-1.5 p-1 rounded-full hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-colors min-h-[38px]"
-              aria-label="User profile menu"
+              onClick={toggleCollapsed}
+              className="p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-all flex items-center justify-center w-8 h-8 shrink-0"
+              title="Collapse sidebar"
+              aria-label="Collapse sidebar"
             >
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1 ring-[var(--gold)]/30"
-              />
-              <ChevronDown className="w-3 h-3 text-[var(--foreground-muted)] hidden sm:block mr-1" />
+              <ChevronLeft className="w-4 h-4 text-[var(--gold)]" />
             </button>
+          )}
+        </div>
 
-            <AnimatePresence>
-              {userMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                  className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-[var(--background-secondary)] rounded-2xl shadow-2xl border border-[var(--border)] p-2 z-50 space-y-1"
-                >
-                  <div className="px-3 py-2 border-b border-[var(--border)]">
+        {collapsed && (
+          <div className="px-3 py-2 flex justify-center border-b border-[var(--border-subtle)]">
+            <button
+              onClick={toggleCollapsed}
+              className="p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-all flex items-center justify-center w-10 h-10 shadow-xs"
+              title="Expand sidebar"
+              aria-label="Expand sidebar"
+            >
+              <ChevronRight className="w-4 h-4 text-[var(--gold)]" />
+            </button>
+          </div>
+        )}
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-5 no-scrollbar">
+          {navGroups.map((grp, idx) => (
+            <div key={idx} className="space-y-1">
+              {!collapsed && grp.groupName && (
+                <h3 className="px-3 text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel">
+                  {grp.groupName}
+                </h3>
+              )}
+              {grp.items.map((item) => {
+                const isActive = currentPath === item.path;
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => router.push(item.path)}
+                    title={collapsed ? item.label : undefined}
+                    className={`w-full flex items-center ${collapsed ? 'justify-center px-2' : 'justify-between px-3'} py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? 'bg-[var(--gold)] text-black font-bold shadow-md shadow-[var(--gold)]/20'
+                        : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] border border-transparent hover:border-[var(--border-subtle)]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-black' : 'text-[var(--foreground-subtle)]'}`} />
+                      {!collapsed && <span className="truncate">{item.label}</span>}
+                    </div>
+                    {!collapsed && item.badge && (
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          isActive
+                            ? 'bg-black/20 text-black'
+                            : 'bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)]'
+                        }`}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </nav>
+
+        {/* ACCOUNT CARD — click to expand a menu (Account Settings, Notifications, Sign Out) */}
+        <div className="relative border-t border-[var(--border-subtle)] p-3" ref={userMenuRef}>
+          <button
+            onClick={() => setUserMenuOpen((v) => !v)}
+            className={`w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-[var(--background-tertiary)] transition-colors ${collapsed ? 'justify-center' : ''}`}
+            aria-label="Account menu"
+          >
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="w-9 h-9 rounded-full object-cover ring-2 ring-[var(--gold)]/30 shrink-0"
+            />
+            {!collapsed && (
+              <>
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="text-xs font-semibold text-[var(--foreground)] truncate">{user.name}</p>
+                  <p className="text-[10px] text-[var(--foreground-subtle)] truncate">{user.email}</p>
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-[var(--foreground-muted)] shrink-0 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+              </>
+            )}
+          </button>
+
+          <AnimatePresence>
+            {userMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                className={`absolute bottom-full mb-2 bg-[var(--background-secondary)] border border-[var(--border)] rounded-2xl shadow-2xl p-2 z-50 space-y-0.5 ${
+                  collapsed ? 'left-full ml-2 w-60' : 'left-3 right-3'
+                }`}
+              >
+                {!collapsed && (
+                  <div className="px-3 py-2 border-b border-[var(--border)] mb-1">
                     <p className="font-semibold text-xs text-[var(--foreground)] truncate">{user.name}</p>
                     <p className="text-[11px] text-[var(--foreground-subtle)] truncate">{user.email}</p>
                   </div>
-
-                  <button
-                    onClick={() => {
-                      router.push(settingsPathByRole[role]);
-                      setUserMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-[var(--foreground)] hover:bg-[var(--background-tertiary)] flex items-center gap-2 transition-colors"
-                  >
-                    <Settings className="w-3.5 h-3.5 text-[var(--gold)]" />
-                    <span>Account Settings</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      onLogout?.();
-                      router.push('/login');
-                      setUserMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-rose-400 hover:bg-rose-950/30 flex items-center gap-2 transition-colors"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    <span>Sign Out</span>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                )}
+                <AccountMenuItems onNavigate={() => setUserMenuOpen(false)} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </header>
+      </motion.aside>
 
-      {/* Mobile search banner */}
+      {/* MOBILE FLOATING MENU TRIGGER — no topbar to host it, so it floats */}
+      <button
+        onClick={() => setMobileDrawerOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-40 p-3 rounded-2xl bg-[var(--background-secondary)] text-[var(--foreground)] border border-[var(--border)] shadow-lg backdrop-blur-md flex items-center justify-center"
+        aria-label="Open navigation menu"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
+      {/* MOBILE DRAWER (fixed overlay — meant to float, so it keeps position: fixed) */}
       <AnimatePresence>
-        {mobileSearchOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="md:hidden shrink-0 bg-[var(--background-secondary)] border-b border-[var(--border)] px-4 py-2.5 z-30 overflow-hidden"
-          >
-            <div className="relative flex items-center">
-              <Search className="w-4 h-4 text-[var(--foreground-subtle)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                autoFocus
-                placeholder="Search records, consults..."
-                className="w-full pl-9 pr-8 py-2 rounded-xl text-xs bg-[var(--background-tertiary)] border border-[var(--border)] text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:border-[var(--gold)] focus:outline-none"
-              />
-              <button
-                onClick={() => setMobileSearchOpen(false)}
-                className="absolute right-2 p-1 text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </motion.div>
+        {mobileDrawerOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileDrawerOpen(false)}
+              className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs lg:hidden"
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="fixed top-0 bottom-0 left-0 w-72 max-w-[85vw] z-50 bg-[var(--background-secondary)] shadow-2xl flex flex-col border-r border-[var(--border)]"
+            >
+              {/* Brand */}
+              <div className="p-4 flex items-center justify-between border-b border-[var(--border)]">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--gold)] font-cinzel font-bold text-sm">
+                    RN
+                  </div>
+                  <div>
+                    <span className="font-cinzel font-bold text-base text-[var(--foreground)] block">
+                      REHAB <span className="text-[var(--gold)]">NIGERIA</span>
+                    </span>
+                    <span className="text-[9px] text-[var(--gold)] font-semibold block">{roleBadgeText}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className="p-2 rounded-xl text-[var(--foreground-subtle)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+                  aria-label="Close navigation"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Nav */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-5">
+                {navGroups.map((grp, idx) => (
+                  <div key={idx} className="space-y-1">
+                    {grp.groupName && (
+                      <h3 className="px-3 text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel">
+                        {grp.groupName}
+                      </h3>
+                    )}
+                    {grp.items.map((item) => {
+                      const isActive = currentPath === item.path;
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.path}
+                          onClick={() => {
+                            router.push(item.path);
+                            setMobileDrawerOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all min-h-[44px] ${
+                            isActive
+                              ? 'bg-[var(--gold)] text-black font-bold shadow-md shadow-[var(--gold)]/20'
+                              : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <Icon className={`w-4 h-4 ${isActive ? 'text-black' : 'text-[var(--foreground-subtle)]'}`} />
+                            <span>{item.label}</span>
+                          </div>
+                          {item.badge && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)] font-bold">
+                              {item.badge}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+
+              {/* Account block — same menu items, always expanded on mobile (no need for a popover on a full-width drawer) */}
+              <div className="p-4 border-t border-[var(--border)] space-y-2">
+                <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)]">
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-9 h-9 rounded-full object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-[var(--foreground)] truncate">{user.name}</p>
+                    <p className="text-[10px] text-[var(--foreground-subtle)] truncate">{user.email}</p>
+                  </div>
+                </div>
+                <div className="space-y-0.5">
+                  <AccountMenuItems onNavigate={() => setMobileDrawerOpen(false)} />
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
-      {/* BODY ROW — the only region below the topbar. It never scrolls itself
-          (overflow-hidden + min-h-0), so the aside just stretches to fill it. */}
-      <div className="flex-1 flex min-h-0 overflow-hidden">
-        {/* DESKTOP SIDEBAR — a true <aside>, docked in-flow, full height. */}
-        <motion.aside
-          animate={{ width: collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED }}
-          transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-          className="hidden lg:flex flex-col justify-between h-full shrink-0 bg-[var(--background-secondary)] border-r border-[var(--border)] relative overflow-hidden"
-        >
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
-
-          <div className="px-3 pt-4 pb-2 border-b border-[var(--border-subtle)]">
-            <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} w-full`}>
-              {!collapsed && (
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel pl-2">
-                  Navigation
-                </span>
-              )}
-              <button
-                onClick={toggleCollapsed}
-                className={`p-2 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] transition-all flex items-center justify-center ${
-                  collapsed ? 'w-10 h-10 shadow-xs' : 'w-8 h-8'
-                }`}
-                title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              >
-                {collapsed ? (
-                  <ChevronRight className="w-4 h-4 text-[var(--gold)]" />
-                ) : (
-                  <ChevronLeft className="w-4 h-4 text-[var(--gold)]" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-5 no-scrollbar">
-            {navGroups.map((grp, idx) => (
-              <div key={idx} className="space-y-1">
-                {!collapsed && grp.groupName && (
-                  <h3 className="px-3 text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel">
-                    {grp.groupName}
-                  </h3>
-                )}
-                {grp.items.map((item) => {
-                  const isActive = currentPath === item.path;
-                  const Icon = item.icon;
-                  return (
-                    <button
-                      key={item.path}
-                      onClick={() => router.push(item.path)}
-                      title={collapsed ? item.label : undefined}
-                      className={`w-full flex items-center ${collapsed ? 'justify-center px-2' : 'justify-between px-3'} py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                        isActive
-                          ? 'bg-[var(--gold)] text-black font-bold shadow-md shadow-[var(--gold)]/20'
-                          : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] border border-transparent hover:border-[var(--border-subtle)]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-black' : 'text-[var(--foreground-subtle)]'}`} />
-                        {!collapsed && <span className="truncate">{item.label}</span>}
-                      </div>
-                      {!collapsed && item.badge && (
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            isActive
-                              ? 'bg-black/20 text-black'
-                              : 'bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)]'
-                          }`}
-                        >
-                          {item.badge}
-                        </span>
+      {/* MAIN CONTENT — the only scrollable region in the whole shell */}
+      <main className="flex-1 min-w-0 overflow-y-auto">
+        <div className="p-4 pt-20 lg:pt-8 sm:p-6 lg:p-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
+            <div className="space-y-1 min-w-0">
+              {breadcrumbs.length > 0 && (
+                <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-subtle)] mb-1 flex-wrap">
+                  {breadcrumbs.map((b, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && <span>/</span>}
+                      {b.path ? (
+                        <button onClick={() => router.push(b.path!)} className="hover:text-[var(--gold)] transition-colors">
+                          {b.label}
+                        </button>
+                      ) : (
+                        <span className="text-[var(--foreground-muted)] font-medium">{b.label}</span>
                       )}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </nav>
-
-          
-        </motion.aside>
-
-        {/* MOBILE DRAWER (fixed overlay — meant to float, so it keeps position: fixed) */}
-        <AnimatePresence>
-          {mobileDrawerOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setMobileDrawerOpen(false)}
-                className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs lg:hidden"
-              />
-              <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                className="fixed top-0 bottom-0 left-0 w-72 max-w-[85vw] z-50 bg-[var(--background-secondary)] shadow-2xl p-4 flex flex-col justify-between overflow-y-auto border-r border-[var(--border)]"
-              >
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--gold)] font-cinzel font-bold text-sm">
-                        RN
-                      </div>
-                      <div>
-                        <span className="font-cinzel font-bold text-base text-[var(--foreground)] block">
-                          REHAB <span className="text-[var(--gold)]">NIGERIA</span>
-                        </span>
-                        <span className="text-[9px] text-[var(--gold)] font-semibold block">{roleBadgeText}</span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setMobileDrawerOpen(false)}
-                      className="p-2 rounded-xl text-[var(--foreground-subtle)] hover:text-[var(--gold)] hover:bg-[var(--background-tertiary)] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
-                      aria-label="Close navigation"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  {navGroups.map((grp, idx) => (
-                    <div key={idx} className="space-y-1">
-                      {grp.groupName && (
-                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-subtle)] font-cinzel">
-                          {grp.groupName}
-                        </h3>
-                      )}
-                      {grp.items.map((item) => {
-                        const isActive = currentPath === item.path;
-                        const Icon = item.icon;
-                        return (
-                          <button
-                            key={item.path}
-                            onClick={() => {
-                              router.push(item.path);
-                              setMobileDrawerOpen(false);
-                            }}
-                            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all min-h-[44px] ${
-                              isActive
-                                ? 'bg-[var(--gold)] text-black font-bold shadow-md shadow-[var(--gold)]/20'
-                                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)]'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <Icon className={`w-4 h-4 ${isActive ? 'text-black' : 'text-[var(--foreground-subtle)]'}`} />
-                              <span>{item.label}</span>
-                            </div>
-                            {item.badge && (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] bg-[var(--background-tertiary)] border border-[var(--border-subtle)] text-[var(--gold)] font-bold">
-                                {item.badge}
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    </React.Fragment>
                   ))}
                 </div>
-
-                <div className="pt-4 border-t border-[var(--border)] space-y-2">
-                  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-[var(--background-tertiary)] border border-[var(--border-subtle)]">
-                    <img
-                      src={user.avatar}
-                      alt={user.name}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-[var(--foreground)] truncate">{user.name}</p>
-                      <p className="text-[10px] text-[var(--foreground-subtle)] truncate">{user.email}</p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      onLogout?.();
-                      router.push('/login');
-                      setMobileDrawerOpen(false);
-                    }}
-                    className="w-full py-2.5 rounded-xl bg-rose-950/30 text-rose-400 border border-rose-900/30 text-xs font-semibold flex items-center justify-center gap-2 min-h-[44px]"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* MAIN CONTENT — the only scrollable region in the whole shell */}
-        <main className="flex-1 min-w-0 overflow-y-auto">
-          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
-              <div className="space-y-1 min-w-0">
-                {breadcrumbs.length > 0 && (
-                  <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-subtle)] mb-1 flex-wrap">
-                    {breadcrumbs.map((b, i) => (
-                      <React.Fragment key={i}>
-                        {i > 0 && <span>/</span>}
-                        {b.path ? (
-                          <button onClick={() => router.push(b.path!)} className="hover:text-[var(--gold)] transition-colors">
-                            {b.label}
-                          </button>
-                        ) : (
-                          <span className="text-[var(--foreground-muted)] font-medium">{b.label}</span>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                )}
-                <h1 className="font-cinzel font-bold text-xl sm:text-2xl lg:text-3xl text-[var(--foreground)] tracking-tight truncate">
-                  {title}
-                </h1>
-                {description && (
-                  <p className="text-xs sm:text-sm text-[var(--foreground-muted)] max-w-2xl leading-relaxed">
-                    {description}
-                  </p>
-                )}
-              </div>
-
-              {role === 'patient' && (
-                <button
-                  onClick={() => router.push('/patient/book-consultation')}
-                  className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
-                >
-                  <Sparkles className="w-4 h-4 text-black" />
-                  <span>Book Consultation</span>
-                </button>
               )}
-
-              {role === 'coordinator' && (
-                <button
-                  onClick={() => router.push('/coordinator/consultation-live')}
-                  className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
-                >
-                  <Stethoscope className="w-4 h-4 text-black" />
-                  <span>Start Next Session</span>
-                </button>
-              )}
-
-              {role === 'admin' && (
-                <button
-                  onClick={() => router.push('/admin/rehab-centres')}
-                  className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
-                >
-                  <UserCheck className="w-4 h-4 text-black" />
-                  <span>Verify Centre</span>
-                </button>
+              <h1 className="font-cinzel font-bold text-xl sm:text-2xl lg:text-3xl text-[var(--foreground)] tracking-tight truncate">
+                {title}
+              </h1>
+              {description && (
+                <p className="text-xs sm:text-sm text-[var(--foreground-muted)] max-w-2xl leading-relaxed">
+                  {description}
+                </p>
               )}
             </div>
 
-            <div>{children}</div>
+            {role === 'patient' && (
+              <button
+                onClick={() => router.push('/patient/book-consultation')}
+                className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
+              >
+                <Sparkles className="w-4 h-4 text-black" />
+                <span>Book Consultation</span>
+              </button>
+            )}
+
+            {role === 'coordinator' && (
+              <button
+                onClick={() => router.push('/coordinator/consultation-live')}
+                className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
+              >
+                <Stethoscope className="w-4 h-4 text-black" />
+                <span>Start Next Session</span>
+              </button>
+            )}
+
+            {role === 'admin' && (
+              <button
+                onClick={() => router.push('/admin/rehab-centres')}
+                className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap min-h-[40px]"
+              >
+                <UserCheck className="w-4 h-4 text-black" />
+                <span>Verify Centre</span>
+              </button>
+            )}
           </div>
-        </main>
-      </div>
+
+          <div>{children}</div>
+        </div>
+      </main>
     </div>
   );
 };
