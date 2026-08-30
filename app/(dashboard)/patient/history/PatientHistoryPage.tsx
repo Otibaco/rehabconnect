@@ -1,13 +1,80 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import React, { useState } from 'react';
-import { CreditCard, Calendar, Download, CheckCircle2, Search, Filter } from 'lucide-react';
+import { CreditCard, Calendar, Download } from 'lucide-react';
+
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface PaymentRecord {
+  id: string;
+  reference: string;
+  coordinatorName: string;
+  date: string;
+  amount: number;
+  status: string;
+}
+
+interface AppointmentRecord {
+  id: string;
+  coordinatorName: string;
+  coordinatorAvatar: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+  status: string;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_PAYMENTS: PaymentRecord[] = [
+  {
+    id: 'pay-1',
+    reference: 'RN-PAY-84213890',
+    coordinatorName: 'Dr. Amara Okafor',
+    date: '18 Aug',
+    amount: 10000,
+    status: 'successful',
+  },
+  {
+    id: 'pay-2',
+    reference: 'RN-PAY-11029384',
+    coordinatorName: 'Dr. Amara Okafor',
+    date: '2 Aug',
+    amount: 10000,
+    status: 'successful',
+  },
+];
+
+const MOCK_APPOINTMENTS: AppointmentRecord[] = [
+  {
+    id: 'apt-1',
+    coordinatorName: 'Dr. Amara Okafor',
+    coordinatorAvatar: 'https://images.unsplash.com/photo-1594824813566-88855ce7890b?auto=format&fit=crop&w=400&q=80',
+    type: 'video',
+    date: 'Thu, 4 Sep',
+    timeSlot: '10:30 AM',
+    status: 'scheduled',
+  },
+  {
+    id: 'apt-2',
+    coordinatorName: 'Dr. Amara Okafor',
+    coordinatorAvatar: 'https://images.unsplash.com/photo-1594824813566-88855ce7890b?auto=format&fit=crop&w=400&q=80',
+    type: 'video',
+    date: '18 Aug',
+    timeSlot: '9:00 AM',
+    status: 'completed',
+  },
+];
 
 export const PatientHistoryPage: React.FC = () => {
   const router = useRouter();
-  const { payments, appointments } = useAuth();
+
+  // Swap these for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const payments = MOCK_PAYMENTS;
+  const appointments = MOCK_APPOINTMENTS;
+
   const [activeTab, setActiveTab] = useState<'all' | 'appointments' | 'payments'>('all');
 
   return (
@@ -15,6 +82,7 @@ export const PatientHistoryPage: React.FC = () => {
       title="History & Transactions"
       description="View past clinical consultations, scheduled sessions, and payment receipts."
       breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'History' }]}
+      role="patient"
     >
       <div className="space-y-6">
         {/* Controls Bar */}

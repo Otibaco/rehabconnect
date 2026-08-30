@@ -2,24 +2,14 @@
 import React, { useState } from 'react';
 
 import {
-  Settings,
-  User,
-  Stethoscope,
   ShieldCheck,
   Video,
-  Bell,
-  Lock,
   CheckCircle2,
   Save,
-  Clock,
-  Sparkles
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const CoordinatorSettingsPage: React.FC = () => {
-  const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'telehealth' | 'security'>('profile');
   const [name, setName] = useState('Dr. Amara Okafor, MD');
   const [title, setTitle] = useState('Senior Clinical Care Lead & Neuro-Rehab Physician');
@@ -31,6 +21,8 @@ export const CoordinatorSettingsPage: React.FC = () => {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: persist { name, title, licenseNumber, specialty } via your API
+    // once the backend is ready (e.g. PATCH /api/coordinator/profile).
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -40,6 +32,7 @@ export const CoordinatorSettingsPage: React.FC = () => {
       title="Doctor Clinical Profile & Settings"
       description="Manage medical licensing, online consultation configurations, and security credentials."
       breadcrumbs={[{ label: 'Doctor Suite' }, { label: 'Settings' }]}
+      role="coordinator"
     >
       <div className="space-y-6">
         {/* TABS HEADER */}
