@@ -84,7 +84,7 @@ export const PatientPaymentPage: React.FC = () => {
       title="Secure Clinical Checkout"
       description="Bank-grade encrypted gateway for Rehab Nigeria healthcare consultation fees."
       breadcrumbs={[
-        { label: 'Healthcare Portal', path: '/patient/dashboard' },
+        { label: 'Healthcare Portal', path: '/patient' },
         { label: 'Book Consultation', path: '/patient/consultations/book' },
         { label: 'Payment' },
       ]}

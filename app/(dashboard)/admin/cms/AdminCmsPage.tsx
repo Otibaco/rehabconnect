@@ -19,7 +19,7 @@ export const AdminCmsPage: React.FC = () => {
     <DashboardShell
       title="Public Website CMS & Pricing Control"
       description="Update public marketing copy, telehealth hero headlines, and virtual consultation pricing in real time."
-      breadcrumbs={[{ label: 'Admin Portal', path: '/admin/dashboard' }, { label: 'CMS Control' }]}
+      breadcrumbs={[{ label: 'Admin Portal', path: '/admin' }, { label: 'CMS Control' }]}
     >
       <div className="max-w-2xl mx-auto space-y-6">
         <form onSubmit={handleSave} className="p-6 sm:p-8 rounded-3xl bg-[var(--background-secondary)] border border-[var(--border)] space-y-6 shadow-xl">

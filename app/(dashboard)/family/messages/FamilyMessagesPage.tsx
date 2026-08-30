@@ -3,30 +3,77 @@ import React, { useState } from 'react';
 
 import {
   Send,
-  Stethoscope,
   ShieldCheck,
-  Paperclip,
-  CheckCircle2,
-  Clock,
-  HeartHandshake
 } from 'lucide-react';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
-import { useAuth } from '@/context/AuthContext';
+
+// ── Local types ──────────────────────────────────────────────────────────
+interface ChatMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderRole: string;
+  text: string;
+  timestamp: string;
+}
+
+interface Conversation {
+  id: string;
+  participantName: string;
+  messages: ChatMessage[];
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_CURRENT_USER_ID = 'family_1';
+
+const MOCK_CONVERSATION: Conversation = {
+  id: 'conv-1',
+  participantName: 'Chief Emmanuel Okafor',
+  messages: [
+    {
+      id: 'm-1',
+      senderId: 'coord_1',
+      senderName: 'Dr. Folake Adeyemi',
+      senderRole: 'Care Coordinator',
+      text: 'Good afternoon — your father is responding well to the current exercise plan. Please continue the assisted walking sessions twice daily.',
+      timestamp: '10:14 AM',
+    },
+    {
+      id: 'm-2',
+      senderId: MOCK_CURRENT_USER_ID,
+      senderName: 'Ngozi Okafor',
+      senderRole: 'Family Member',
+      text: 'Thank you, doctor. He mentioned some mild fatigue after the evening session — should we shorten it?',
+      timestamp: '10:22 AM',
+    },
+  ],
+};
 
 export const FamilyMessagesPage: React.FC = () => {
-  const { conversations, sendMessage, currentUser } = useAuth();
   const [inputText, setInputText] = useState('');
 
-  const familyConv = conversations.find((c) => c.participantName?.includes('Okafor')) ?? conversations[0];
+  // Swap this for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const [conversation, setConversation] = useState<Conversation>(MOCK_CONVERSATION);
 
-  if (!familyConv) {
-    return null;
-  }
+  const sendMessage = (conversationId: string, text: string) => {
+    const newMessage: ChatMessage = {
+      id: `m-${Date.now()}`,
+      senderId: MOCK_CURRENT_USER_ID,
+      senderName: 'Ngozi Okafor',
+      senderRole: 'Family Member',
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+    setConversation((prev) => ({ ...prev, messages: [...prev.messages, newMessage] }));
+    // TODO: call your API to persist this once the backend is ready
+    // (e.g. POST /api/conversations/:id/messages).
+  };
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
-    sendMessage(familyConv.id, inputText);
+    sendMessage(conversation.id, inputText);
     setInputText('');
   };
 
@@ -35,9 +82,10 @@ export const FamilyMessagesPage: React.FC = () => {
       title="Messages with Care Coordinator"
       description="Direct clinical communication with Dr. Folake Adeyemi regarding Chief Emmanuel Okafor's progress."
       breadcrumbs={[
-        { label: 'Family Dashboard', path: '/dashboard/family' },
+        { label: 'Family Dashboard', path: '/family' },
         { label: 'Messages' }
       ]}
+      role="family"
     >
       <div className="max-w-4xl h-[calc(100vh-14rem)] min-h-[500px] flex flex-col rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] overflow-hidden">
         {/* Chat Header with Coordinator Context */}
@@ -72,8 +120,8 @@ export const FamilyMessagesPage: React.FC = () => {
             </span>
           </div>
 
-          {familyConv.messages.map((msg) => {
-            const isMe = msg.senderId === currentUser.id || msg.senderRole.includes('Family');
+          {conversation.messages.map((msg) => {
+            const isMe = msg.senderId === MOCK_CURRENT_USER_ID || msg.senderRole.includes('Family');
 
             return (
               <div

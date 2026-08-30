@@ -44,7 +44,7 @@ export const PatientAppointmentConfirmationPage: React.FC = () => {
       title="Appointment Confirmed"
       description="Your upcoming clinical consultation details and live session link."
       breadcrumbs={[
-        { label: 'Healthcare Portal', path: '/patient/dashboard' },
+        { label: 'Healthcare Portal', path: '/patient' },
         { label: 'Confirmed Appointment' },
       ]}
       role="patient"

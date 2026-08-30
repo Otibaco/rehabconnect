@@ -123,7 +123,7 @@ export const FamilyDashboardPage: React.FC = () => {
 
             <div className="shrink-0 flex items-center gap-3">
               <button
-                onClick={() => router.push('/dashboard/family/patient')}
+                onClick={() => router.push('/family/loved-one')}
                 className="px-4 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center gap-2 transition-transform active:scale-95 whitespace-nowrap"
               >
                 <span>Track Care Pathway</span>
@@ -140,7 +140,7 @@ export const FamilyDashboardPage: React.FC = () => {
               return (
                 <div
                   key={stage.stageNumber}
-                  onClick={() => router.push('/dashboard/family/patient')}
+                  onClick={() => router.push('/family/loved-one')}
                   className={`p-3 rounded-xl border text-center space-y-1 cursor-pointer transition-all ${
                     isCurrent
                       ? 'bg-[var(--gold)]/10 border-[var(--gold)] text-[var(--gold)] shadow-md shadow-[var(--gold)]/10'
@@ -205,7 +205,7 @@ export const FamilyDashboardPage: React.FC = () => {
 
               <div className="flex items-center gap-2 pt-2 border-t border-[var(--border-subtle)]">
                 <button
-                  onClick={() => router.push('/consultation/live')}
+                  onClick={() => router.push('/family/consultation-live')}
                   className="flex-1 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-transform active:scale-95"
                 >
                   <Video className="w-4 h-4 text-black" />
@@ -270,7 +270,7 @@ export const FamilyDashboardPage: React.FC = () => {
         </div>
 
         {/* QUICK SHORTCUTS FOR FAMILIES */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <button
             onClick={() => router.push('/dashboard/family/patient')}
             className="p-4 rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-all text-left flex items-center gap-3.5 group"
@@ -315,7 +315,7 @@ export const FamilyDashboardPage: React.FC = () => {
               <p className="text-[11px] text-[var(--foreground-muted)]">Caregiver support guides</p>
             </div>
           </button>
-        </div>
+        </div> */}
       </div>
     </DashboardShell>
   );

@@ -128,7 +128,7 @@ export const AdminRehabCentresPage: React.FC = () => {
     <DashboardShell
       title="Online Programs & Digital Clinical Protocols"
       description="Manage 100% virtual rehabilitation programs, clinical specialty suites, evidence-based recovery protocols, and attending doctors."
-      breadcrumbs={[{ label: 'Admin Portal', path: '/admin/dashboard' }, { label: 'Online Programs' }]}
+      breadcrumbs={[{ label: 'Admin Portal', path: '/admin' }, { label: 'Online Programs' }]}
     >
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

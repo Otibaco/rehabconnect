@@ -3,28 +3,86 @@ import React, { useState } from 'react';
 import {
   Calendar,
   Video,
-  Clock,
   FileText,
   CheckCircle2,
-  AlertCircle,
-  Sparkles,
-  Plus,
   X,
   Stethoscope,
-  ChevronRight,
-  ShieldCheck,
   Activity,
-  Send
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
-import { Appointment } from '@/types/type';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface Appointment {
+  id: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  patientName: string;
+  type: string;
+  date: string;
+  timeSlot: string;
+}
+
+interface ConsultationSummary {
+  id: string;
+  patientName: string;
+  coordinatorName: string;
+  date: string;
+  mainConcerns: string;
+  findingsAndAssessment: string;
+  clientFacingSummary: string;
+  nextStep: string;
+}
+
+interface SummaryPayload {
+  appointmentId: string;
+  patientId: string;
+  patientName: string;
+  coordinatorName: string;
+  date: string;
+  status: 'followup_required' | 'completed';
+  mainConcerns: string;
+  findingsAndAssessment: string;
+  recommendations: string[];
+  nextStep: string;
+  clientFacingSummary: string;
+  journeyStageUpdatedTo: number;
+  followUpRequired: boolean;
+  followUpDate?: string;
+  discussionPoints: string[];
+  recommendedResources: string[];
+  recommendedFacilities: string[];
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_APPOINTMENTS: Appointment[] = [
+  { id: 'apt-1', status: 'scheduled', patientName: 'Sarah Jenkins', type: 'HD Video Tele-Rehab', date: 'Today', timeSlot: '10:30 AM' },
+  { id: 'apt-2', status: 'scheduled', patientName: 'Chief Emmanuel Okafor', type: 'Family Telehealth Review', date: 'Today', timeSlot: '02:00 PM' },
+  { id: 'apt-3', status: 'completed', patientName: 'Michael Obi', type: 'Cardiac Follow-up', date: 'Yesterday', timeSlot: '9:00 AM' },
+];
+
+const MOCK_SUMMARIES: ConsultationSummary[] = [
+  {
+    id: 'sum-1',
+    patientName: 'Michael Obi',
+    coordinatorName: 'Dr. Folake Adeyemi',
+    date: 'Yesterday',
+    mainConcerns: 'Cardiac Follow-up',
+    findingsAndAssessment: 'Blood pressure stable, heart rate within normal range during light exertion tests.',
+    clientFacingSummary: 'Cardiac Follow-up: Blood pressure stable, heart rate within normal range during light exertion tests.',
+    nextStep: 'Continue current medication; reassess in 3 weeks.',
+  },
+];
+
 export const CoordinatorConsultationsPage: React.FC = () => {
-  const { appointments, summaries, saveConsultationSummaryAndComplete, coordinatorPatients } = useAuth();
   const router = useRouter();
+
+  // Swap these for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const [appointments, setAppointments] = useState<Appointment[]>(MOCK_APPOINTMENTS);
+  const [summaries, setSummaries] = useState<ConsultationSummary[]>(MOCK_SUMMARIES);
 
   const [activeModalAppt, setActiveModalAppt] = useState<Appointment | null>(null);
   const [successToast, setSuccessToast] = useState<string | null>(null);
@@ -79,6 +137,31 @@ export const CoordinatorConsultationsPage: React.FC = () => {
     setPrescribedExercises(prescribedExercises.filter((_, i) => i !== idx));
   };
 
+  const saveConsultationSummaryAndComplete = (payload: SummaryPayload) => {
+    // TODO: call your API to persist this once the backend is ready
+    // (e.g. POST /api/coordinator/consultation-summaries), then refetch
+    // appointments + summaries instead of updating local state directly.
+    console.log('Consultation summary saved:', payload);
+
+    setAppointments((prev) =>
+      prev.map((a) => (a.id === payload.appointmentId ? { ...a, status: 'completed' } : a))
+    );
+
+    setSummaries((prev) => [
+      {
+        id: `sum-${Date.now()}`,
+        patientName: payload.patientName,
+        coordinatorName: payload.coordinatorName,
+        date: payload.date,
+        mainConcerns: payload.mainConcerns,
+        findingsAndAssessment: payload.findingsAndAssessment,
+        clientFacingSummary: payload.clientFacingSummary,
+        nextStep: payload.nextStep,
+      },
+      ...prev,
+    ]);
+  };
+
   const handleSubmitSummary = (e: React.FormEvent) => {
     e.preventDefault();
     if (!activeModalAppt) return;
@@ -116,6 +199,7 @@ export const CoordinatorConsultationsPage: React.FC = () => {
         { label: 'Doctor Suite' },
         { label: 'Consultations' }
       ]}
+      role="coordinator"
     >
       <div className="space-y-8 max-w-6xl">
         {/* SUCCESS NOTIFICATION TOAST */}
@@ -172,7 +256,7 @@ export const CoordinatorConsultationsPage: React.FC = () => {
                         className="w-12 h-12 rounded-full object-cover border-2 border-[var(--gold)]"
                       />
                       <div>
-                        <h4 className="font-bold text-sm text-[var(--foreground)]">{apt.patientName || 'Sarah Jenkins'}</h4>
+                        <h4 className="font-bold text-sm text-[var(--foreground)]">{apt.patientName}</h4>
                         <span className="text-xs text-[var(--gold)] font-medium block">{apt.type}</span>
                         <p className="text-[11px] text-[var(--foreground-muted)]">{apt.date} • {apt.timeSlot}</p>
                       </div>

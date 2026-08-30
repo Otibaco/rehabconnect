@@ -15,12 +15,10 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
 export const CoordinatorNotificationsPage: React.FC = () => {
   const router = useRouter();
-  const { notifications, markNotificationRead } = useAuth();
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
   const doctorNotifications = [

@@ -19,7 +19,7 @@ export const AdminUsersPage: React.FC = () => {
     <DashboardShell
       title="User Management & Role Security"
       description="Manage accounts, verify clinical credentials, and control access levels across RehabConnect."
-      breadcrumbs={[{ label: 'Admin Portal', path: '/admin/dashboard' }, { label: 'Users' }]}
+      breadcrumbs={[{ label: 'Admin Portal', path: '/admin' }, { label: 'Users' }]}
     >
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">

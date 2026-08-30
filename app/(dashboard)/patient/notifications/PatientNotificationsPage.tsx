@@ -53,7 +53,7 @@ export const PatientNotificationsPage: React.FC = () => {
     <DashboardShell
       title="Notifications & Clinical Alerts"
       description="Stay updated with consultation schedules, clinical recommendations, and care pathway messages."
-      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Notifications' }]}
+      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient' }, { label: 'Notifications' }]}
       role="patient"
     >
       <div className="max-w-3xl mx-auto space-y-4">

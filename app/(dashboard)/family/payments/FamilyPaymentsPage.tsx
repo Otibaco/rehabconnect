@@ -1,13 +1,48 @@
 "use client"
 import React from 'react';
-import { CreditCard, CheckCircle2, Download, Receipt, Sparkles } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import { CheckCircle2, Download, Receipt, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
+// ── Local types ──────────────────────────────────────────────────────────
+interface PaymentTransaction {
+  id: string;
+  status: string;
+  date: string;
+  paymentMethod: string;
+  reference: string;
+  currency: string;
+  amount: number;
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_PAYMENTS: PaymentTransaction[] = [
+  {
+    id: 'pay-1',
+    status: 'Video Consultation',
+    date: '18 Aug',
+    paymentMethod: 'Card',
+    reference: 'RN-PAY-84213890',
+    currency: 'NGN',
+    amount: 10000,
+  },
+  {
+    id: 'pay-2',
+    status: 'Family Telehealth Review',
+    date: '2 Aug',
+    paymentMethod: 'Bank Transfer',
+    reference: 'RN-PAY-11029384',
+    currency: 'NGN',
+    amount: 10000,
+  },
+];
+
 export const FamilyPaymentsPage: React.FC = () => {
-  const { payments } = useAuth();
   const router = useRouter();
+
+  // Swap this for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const payments = MOCK_PAYMENTS;
 
   return (
     <DashboardShell
@@ -17,8 +52,7 @@ export const FamilyPaymentsPage: React.FC = () => {
         { label: 'Family Dashboard'},
         { label: 'Payments' }
       ]}
-
-      
+      role="family"
     >
       <div className="space-y-6 max-w-5xl">
         {/* Billing Overview Card */}

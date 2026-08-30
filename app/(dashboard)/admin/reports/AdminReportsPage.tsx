@@ -12,7 +12,7 @@ export const AdminReportsPage: React.FC = () => {
     <DashboardShell
       title="Telehealth Analytics & Clinical Outcomes"
       description="Analytical reports on online rehabilitation adherence, HD video consultation metrics, and nationwide patient trajectories."
-      breadcrumbs={[{ label: 'Admin Portal', path: '/admin/dashboard' }, { label: 'Reports' }]}
+      breadcrumbs={[{ label: 'Admin Portal', path: '/admin' }, { label: 'Reports' }]}
     >
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

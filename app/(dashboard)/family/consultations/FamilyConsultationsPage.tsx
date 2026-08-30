@@ -11,30 +11,48 @@ import {
   ChevronRight,
   Download,
   X,
-  HeartHandshake
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { ConsultationSummary } from '@/types/type';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
-export const FamilyConsultationsPage: React.FC = () => {
-  const { appointments, summaries } = useAuth();
-  const router = useRouter();
-  const [selectedSummary, setSelectedSummary] = useState<ConsultationSummary | null>(null);
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_SUMMARIES: ConsultationSummary[] = [
+  {
+    id: 'sum-1',
+    patientName: 'Chief Emmanuel Okafor',
+    coordinatorName: 'Dr. Folake Adeyemi',
+    date: '27 Aug',
+    discussionPoints: 'Mobility progress & home exercise adherence',
+    clinicalObservations: 'Steady improvement in gait stability; mild fatigue reported after longer sessions.',
+    recommendations: [
+      'Continue assisted walking exercises twice daily',
+      'Monitor fatigue levels and adjust session length as needed',
+      'Schedule a follow-up joint session in two weeks',
+    ],
+    nextStep: 'Continue assisted walking exercises twice daily; monitor fatigue levels.',
+  } as unknown as ConsultationSummary,
+];
 
-  const familySummaries = summaries.filter((s) => s.patientName.includes('Okafor'));
-  const allSummaries = familySummaries.length > 0 ? familySummaries : summaries;
+export const FamilyConsultationsPage: React.FC = () => {
+  const router = useRouter();
+
+  // Swap this for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const summaries = MOCK_SUMMARIES;
+
+  const [selectedSummary, setSelectedSummary] = useState<ConsultationSummary | null>(null);
 
   return (
     <DashboardShell
       title="Family Telehealth Consultations"
       description="Manage scheduled joint video sessions and review clinical consultation summaries for Chief Emmanuel Okafor."
       breadcrumbs={[
-        { label: 'Family Dashboard', path: '/dashboard/family' },
+        { label: 'Family Dashboard', path: '/family' },
         { label: 'Consultations' }
       ]}
+      role="family"
     >
       <div className="space-y-8 max-w-6xl">
         {/* ACTION BAR */}
@@ -44,7 +62,7 @@ export const FamilyConsultationsPage: React.FC = () => {
             <p className="text-xs text-[var(--foreground-muted)]">3-way video session connecting you, your loved one, and Dr. Folake Adeyemi.</p>
           </div>
           <button
-            onClick={() => router.push('/patient/consultations/book')}
+            onClick={() => router.push('/family/book-consultation')}
             className="px-5 py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95 whitespace-nowrap"
           >
             <Sparkles className="w-4 h-4 text-black" />
@@ -91,7 +109,7 @@ export const FamilyConsultationsPage: React.FC = () => {
               </div>
 
               <button
-                onClick={() => router.push('/consultation/live')}
+                onClick={() => router.push('/family/consultation-live')}
                 className="w-full py-2.5 rounded-xl bg-[var(--gold)] hover:bg-[var(--gold-light)] text-black text-xs font-bold shadow-md shadow-[var(--gold)]/20 flex items-center justify-center gap-2 transition-transform active:scale-95"
               >
                 <Video className="w-4 h-4 text-black" />
@@ -111,7 +129,7 @@ export const FamilyConsultationsPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {allSummaries.map((sum) => (
+            {summaries.map((sum) => (
               <div
                 key={sum.id}
                 className="p-5 rounded-2xl bg-[var(--background-secondary)] border border-[var(--border)] space-y-4 hover:border-[var(--gold)]/40 transition-colors"

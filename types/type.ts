@@ -117,32 +117,32 @@ export type RoutePath =
   // | '/dashboard/assessment'
   // Family Unified Routes
   | '/family'
-  | '/family/family-loved-one'
-  | '/family/family-consultations'
+  | '/family/loved-one'
+  | '/family/consultations'
   | `/dashboard/family/consultation-room/${string}`
-  | '/dashboard/family/consultation-room'
-  | '/family/family-messages'
-  | '/family/family-resources'
-  | '/family/family-payments'
-  | '/dashboard/family/notifications'
-  // | '/dashboard/family/settings'
+  | '/family/consultation'
+  | '/family/messages'
+  | '/family/resources'
+  | '/family/payments'
+  | '/family/notifications'
+  | '/family/settings'
 
 
   // Care Coordinator Unified Routes
   | '/coordinator'
-  | '/coordinator/coordinator-patients'
-  | `/coordinator/coordinator-patients/${string}`
-  | '/coordinator/coordinator-consultations'
-  | `/coordinator/coordinator-consultations/${string}`
-  | '/coordinator/coordinator-consultation'
-  | '/coordinator/coordinator-messages'
-  | '/coordinator/coordinator-resources'
-  | '/coordinator/coordinator-protocols'
-  | '/coordinator/coordinator-followups'
-  | '/coordinator/coordinator-notifications'
-  | '/coordinator/coordinator-settings'
+  | '/coordinator/patients'
+  | `/coordinator/patients/${string}`
+  | '/coordinator/consultations'
+  | `/coordinator/consultations/${string}`
+  | '/coordinator/consultation'
+  | '/coordinator/messages'
+  | '/coordinator/resources'
+  | '/coordinator/protocols'
+  | '/coordinator/followups'
+  | '/coordinator/notifications'
+  | '/coordinator/settings'
   // Legacy / Aliases for seamless backward compatibility
-  | '/patient/dashboard'
+  | '/patient'
   | '/patient/assessment'
   | '/patient/consultations/book'
   | '/patient/payment'
@@ -169,23 +169,22 @@ export type RoutePath =
   | '/coordinator/profile'
   // Admin Unified Routes
   | '/admin'
-  | '/admin/dashboard'
-  | '/admin/admin-users'
-  | '/admin/admin-verification'
-  | '/admin/admin-reports'
-  | '/admin/admin-settings'
-  | '/admin/admin-rehab-centres'
-  | '/admin/admin-appointments'
-  | '/admin/admin-cms'
-  | '/admin/admin-patients'
-  | '/admin/admin-coordinators'
-  | '/admin/admin-payments'
-  | '/admin/admin-consultation-reports'
-  | '/admin/admin-content'
-  | '/admin/admin-blog'
-  | '/admin/admin-notifications'
-  | '/admin/admin-analytics'
-  | '/admin/admin-activity';
+  | '/admin/users'
+  | '/admin/verification'
+  | '/admin/reports'
+  | '/admin/settings'
+  | '/admin/rehab-centres'
+  | '/admin/appointments'
+  | '/admin/cms'
+  | '/admin/patients'
+  | '/admin/coordinators'
+  | '/admin/payments'
+  | '/admin/consultation-reports'
+  | '/admin/content'
+  | '/admin/blog'
+  | '/admin/notifications'
+  | '/admin/analytics'
+  | '/admin/activity';
 
 
 export type UserRole = 'patient' | 'family' | 'coordinator' | 'admin';
@@ -465,3 +464,46 @@ export interface RehabCentre {
   verified: boolean;
   featured?: boolean;
 }
+
+
+
+// import { RoutePath } from "@/types/type";
+
+// export type UserRole = "patient" | "family" | "coordinator" | "admin";
+
+export interface ShellUser {
+  name: string;
+  email: string;
+  avatar: string;
+  assessmentStatus?: "completed" | "in_progress";
+  hasActiveConsultation?: boolean;
+}
+
+export interface ShellNotification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  actionUrl?: RoutePath;
+}
+
+export interface SidebarItem {
+  label: string;
+  path: RoutePath;
+  icon: React.ElementType;
+  badge?: string;
+}
+
+export interface SidebarGroup {
+  groupName?: string;
+  items: SidebarItem[];
+}
+
+export const DEFAULT_USER: ShellUser = {
+  name: "Guest User",
+  email: "guest@rehabnigeria.com",
+  avatar: "https://api.dicebear.com/7.x/initials/svg?seed=RN",
+  assessmentStatus: "in_progress",
+  hasActiveConsultation: false,
+};

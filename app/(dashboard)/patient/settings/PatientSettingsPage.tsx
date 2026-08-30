@@ -36,7 +36,7 @@ export const PatientSettingsPage: React.FC = () => {
     <DashboardShell
       title="Patient Profile & Settings"
       description="Manage your verified contact details, emergency guardian contacts, and clinical notifications."
-      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Settings' }]}
+      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient' }, { label: 'Settings' }]}
       role="patient"
     >
       <div className="max-w-3xl mx-auto space-y-6">

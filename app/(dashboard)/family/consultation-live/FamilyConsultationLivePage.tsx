@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { MOCK_COORDINATOR_PATIENTS } from '@/lib/data';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
-export const PatientConsultationLivePage: React.FC = () => {
+export const FamilyConsultationLivePage: React.FC = () => {
   const router = useRouter();
   const coordinator = MOCK_COORDINATOR_PATIENTS[0];
 
@@ -38,7 +38,7 @@ export const PatientConsultationLivePage: React.FC = () => {
 
   const handleEndCall = () => {
     if (confirm('End consultation session and view clinical recommendation summary?')) {
-      router.push('/patient/consultation-summary');
+      router.push('/family/consultation-summary');
     }
   };
 
@@ -47,7 +47,7 @@ export const PatientConsultationLivePage: React.FC = () => {
       title="Live Clinical Consultation"
       description="Confidential encrypted telehealth room with Dr. Amara Okafor."
       breadcrumbs={[
-        { label: 'Patient Portal', path: '/patient' },
+        { label: 'Healthcare Portal', path: '/family' },
         { label: 'Live Consultation' },
       ]}
     >

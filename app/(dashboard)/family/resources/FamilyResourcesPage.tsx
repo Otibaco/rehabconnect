@@ -10,7 +10,7 @@ export const FamilyResourcesPage: React.FC = () => {
       title="Family Caregiver Knowledge Library"
       description="Clinical guidance, home safety tips, and emotional wellness resources curated for Nigerian families."
       breadcrumbs={[
-        { label: 'Family Dashboard', path: '/dashboard/family' },
+        { label: 'Family Dashboard', path: '/family' },
         { label: 'Resources' }
       ]}
     >

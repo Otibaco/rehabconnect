@@ -80,7 +80,7 @@ export const PatientAssessmentPage: React.FC = () => {
     <DashboardShell
       title="Clinical Rehabilitation Intake"
       description="Provide clinical background so our accredited Care Leads can match and recommend the ideal rehabilitation sanctuaries across Nigeria."
-      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Clinical Assessment' }]}
+      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient' }, { label: 'Clinical Assessment' }]}
       role="patient"
     >
       <div className="max-w-3xl mx-auto space-y-6">

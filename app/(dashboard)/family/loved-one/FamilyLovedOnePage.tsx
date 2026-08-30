@@ -2,34 +2,68 @@
 import React from 'react';
 
 import {
-  HeartHandshake,
-  User,
   Activity,
   CheckCircle2,
-  Clock,
   Calendar,
-  FileText,
   Stethoscope,
   ShieldCheck,
-  ChevronRight
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 
+// ── Local types ──────────────────────────────────────────────────────────
+// Mirrors what this page needs from the backend. Fetch these shapes (or map
+// your API response to them) once real data is ready.
+interface JourneyStage {
+  stageNumber: number;
+  title: string;
+  status: 'completed' | 'in_progress' | 'pending';
+  completedDate?: string;
+  coordinatorNote?: string;
+}
+
+interface FamilyJourney {
+  currentStage: number;
+  overallStatus: string;
+  assignedCoordinatorName: string;
+  stages: JourneyStage[];
+}
+
+// ── Mock data — replace with real fetches/session data ──────────────────
+const MOCK_FAMILY_JOURNEY: FamilyJourney = {
+  currentStage: 3,
+  overallStatus: 'Post-Stroke Neurological Rehabilitation',
+  assignedCoordinatorName: 'Dr. Folake Adeyemi',
+  stages: [
+    { stageNumber: 1, title: 'Intake', status: 'completed', completedDate: '2 Aug' },
+    { stageNumber: 2, title: 'Assessment', status: 'completed', completedDate: '10 Aug' },
+    {
+      stageNumber: 3,
+      title: 'Treatment',
+      status: 'in_progress',
+      coordinatorNote: 'Patient is showing positive motor response to home exercises. Continue assisted walking sessions twice daily.',
+    },
+    { stageNumber: 4, title: 'Review', status: 'pending' },
+    { stageNumber: 5, title: 'Discharge', status: 'pending' },
+  ],
+};
+
 export const FamilyLovedOnePage: React.FC = () => {
-  const { familyJourney } = useAuth();
   const router = useRouter();
+
+  // Swap this for real data once fetching/session is wired up — nothing
+  // below this point needs to change.
+  const familyJourney = MOCK_FAMILY_JOURNEY;
 
   return (
     <DashboardShell
       title="Loved One Care Journey"
       description="Detailed rehabilitation roadmap, clinical milestones, and doctor notes for Chief Emmanuel Okafor."
       breadcrumbs={[
-        { label: 'Family Dashboard', path: '/dashboard/family' },
+        { label: 'Family Dashboard', path: '/family' },
         { label: 'My Patient' }
       ]}
+      role="family"
     >
       <div className="space-y-6 max-w-6xl">
         {/* Loved One Profile Header Card */}
@@ -164,7 +198,7 @@ export const FamilyLovedOnePage: React.FC = () => {
           <div className="flex items-center gap-4">
             <img
               src="https://images.unsplash.com/photo-1594824813580-28e08d66579f?auto=format&fit=crop&w=400&q=80"
-              alt="Dr. Folake Adeyemi"
+              alt={familyJourney.assignedCoordinatorName}
               className="w-14 h-14 rounded-full object-cover border-2 border-[var(--gold)]"
             />
             <div>
@@ -172,7 +206,7 @@ export const FamilyLovedOnePage: React.FC = () => {
                 <h4 className="font-bold text-sm text-[var(--foreground)]">{familyJourney.assignedCoordinatorName}</h4>
                 <ShieldCheck className="w-4 h-4 text-[var(--gold)]" />
               </div>
-              <p className="text-xs text-[var(--foreground-muted)]">{familyJourney.assignedCoordinatorName}</p>
+              <p className="text-xs text-[var(--foreground-muted)]">Lead Care Coordinator</p>
               <p className="text-[11px] text-[var(--foreground-subtle)]">Specialist in Stroke Recovery & Senior Home Neuro-Rehab</p>
             </div>
           </div>

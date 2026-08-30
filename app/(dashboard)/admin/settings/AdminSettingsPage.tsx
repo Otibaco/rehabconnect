@@ -8,7 +8,7 @@ export const AdminSettingsPage: React.FC = () => {
     <DashboardShell
       title="Platform Security & Global Configuration"
       description="Manage enterprise access policies, Paystack gateway credentials, and automated notification webhooks."
-      breadcrumbs={[{ label: 'Admin Portal', path: '/admin/dashboard' }, { label: 'Settings' }]}
+      breadcrumbs={[{ label: 'Admin Portal', path: '/admin' }, { label: 'Settings' }]}
     >
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="p-6 sm:p-8 rounded-3xl bg-[var(--background-secondary)] border border-[var(--border)] space-y-6 shadow-xl">
