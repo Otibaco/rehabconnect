@@ -10,7 +10,9 @@
   --background-tertiary: #181813;
 
   /* Text */
-  --foreground: #F5F1E8;
+  /* --foreground: #F5F1E8; */
+    --foreground: #f7c244;
+
   --foreground-muted: #AAA59A;
   --foreground-subtle: #77736A;
 
