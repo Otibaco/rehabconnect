@@ -81,7 +81,7 @@ export const PatientHistoryPage: React.FC = () => {
     <DashboardShell
       title="History & Transactions"
       description="View past clinical consultations, scheduled sessions, and payment receipts."
-      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'History' }]}
+      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient' }, { label: 'History' }]}
       role="patient"
     >
       <div className="space-y-6">

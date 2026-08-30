@@ -70,7 +70,7 @@ export const PatientBookConsultationPage: React.FC = () => {
     <DashboardShell
       title="Book a Clinical Consultation"
       description="Schedule a 1-on-1 session with an accredited Nigerian healthcare coordinator."
-      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient/dashboard' }, { label: 'Book Consultation' }]}
+      breadcrumbs={[{ label: 'Healthcare Portal', path: '/patient' }, { label: 'Book Consultation' }]}
     >
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Step Indicator */}

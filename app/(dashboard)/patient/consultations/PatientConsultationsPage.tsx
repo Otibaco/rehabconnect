@@ -93,7 +93,7 @@ export const PatientConsultationsPage: React.FC = () => {
       title="Telehealth Consultations & Summaries"
       description="Manage your video consultations, join live clinical sessions, and access official doctor consultation summaries."
       breadcrumbs={[
-        { label: 'Dashboard', path: '/dashboard' },
+        { label: 'Dashboard', path: '/patient' },
         { label: 'Consultations' }
       ]}
       role="patient"

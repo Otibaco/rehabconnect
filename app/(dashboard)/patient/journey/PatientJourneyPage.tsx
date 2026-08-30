@@ -66,7 +66,7 @@ export const PatientJourneyPage: React.FC = () => {
       title="My Rehabilitation Journey"
       description="Track your 5-stage personalized recovery pathway, milestones, and doctor recommendations."
       breadcrumbs={[
-        { label: 'Dashboard', path: '/dashboard' },
+        { label: 'Dashboard', path: '/patient' },
         { label: 'My Journey' }
       ]}
       role="patient"

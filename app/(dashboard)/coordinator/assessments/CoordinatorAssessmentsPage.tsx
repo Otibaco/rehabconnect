@@ -9,7 +9,7 @@ export const CoordinatorAssessmentsPage: React.FC = () => {
     <DashboardShell
       title="Assessment Triage Queue"
       description="Review submitted patient rehabilitation questionnaires and assign matched facilities."
-      breadcrumbs={[{ label: 'Care Portal', path: '/coordinator/dashboard' }, { label: 'Assessments' }]}
+      breadcrumbs={[{ label: 'Care Portal', path: '/coordinator' }, { label: 'Assessments' }]}
     >
       <div className="space-y-4">
         <div className="p-6 rounded-3xl bg-[var(--background-secondary)] border border-[var(--border)] space-y-4 shadow-xl">
