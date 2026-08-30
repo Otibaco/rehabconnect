@@ -95,7 +95,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({ isOpen, onCl
               
               <div className="grid grid-cols-2 gap-3">
                 <Link
-                  href="/auth/login"
+                  href="/auth/signin"
                   onClick={onClose}
                   className="w-full text-center py-3 text-xs font-mono tracking-wider text-[var(--foreground)] bg-[var(--background-tertiary)] hover:bg-[var(--border)] border border-[var(--border)] rounded-sm transition-colors"
                 >
