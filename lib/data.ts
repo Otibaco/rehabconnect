@@ -601,7 +601,7 @@ export const MOCK_NOTIFICATIONS: AppNotification[] = [
     type: 'success',
     read: false,
     timestamp: '10 minutes ago',
-    actionUrl: '/patient/dashboard',
+    actionUrl: '/patient',
   },
   {
     id: 'notif_2',
